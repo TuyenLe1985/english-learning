@@ -43,6 +43,7 @@ services:
     command: >
       redis-server
       --appendonly yes
+      --maxmemory 512mb
       --maxmemory-policy noeviction
     ports:
       - "127.0.0.1:6379:6379"
