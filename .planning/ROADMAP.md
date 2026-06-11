@@ -33,7 +33,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `pnpm db:migrate` runs the full Prisma schema (all tables and composite indexes) against the running Postgres container with zero errors
   3. The Next.js 14 app and NestJS 11 API both start, serve a health-check endpoint, and return 200 on the smoke-test route
   4. A CLAUDE.md file documents the monorepo layout, Docker topology, and the two-Redis split rationale
-**Plans**: TBD
+**Plans**: 6 plans
+Plans:
+- [ ] 01-01-PLAN.md — Monorepo scaffold (workspace, turbo, shared packages: @repo/tsconfig, @repo/eslint-config, @repo/shared, @repo/database)
+- [ ] 01-02-PLAN.md — Docker backing services (Postgres 16, Redis BullMQ noeviction+AOF, Redis Cache allkeys-lru, MinIO)
+- [ ] 01-03-PLAN.md — Full Prisma schema (25+ models, all 8 phases) + [BLOCKING] initial migration
+- [ ] 01-04-PLAN.md — NestJS 11 skeleton (health endpoint, SWC compiler, ValidationPipe, Vitest)
+- [ ] 01-05-PLAN.md — Next.js 14 skeleton (health route, Tailwind 3.x, transpilePackages, Vitest)
+- [ ] 01-06-PLAN.md — GitHub Actions CI + Wave 0 Vitest configs + human smoke test checkpoint
 **UI hint**: yes
 
 ### Phase 2: Authentication + User Profile
@@ -141,7 +148,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Infrastructure | 0/TBD | Not started | - |
+| 1. Foundation + Infrastructure | 0/6 | Not started | - |
 | 2. Authentication + User Profile | 0/TBD | Not started | - |
 | 3. Vocabulary Module + SRS Core | 0/TBD | Not started | - |
 | 4. Grammar Module | 0/TBD | Not started | - |
