@@ -1,0 +1,583 @@
+// Prisma schema — Full schema for all 8 phases (D-08)
+// All tables defined upfront; future phases add feature logic only.
+// CEFR levels: B1, B2, C1 (platform target range)
+// SRS: FSRS algorithm fields (D-09) — matches ts-fsrs Card interface
+// Audio: storage keys, NOT full URLs (D-10)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum CefrLevel {
+  B1
+  B2
+  C1
+}
+
+enum CardState {
+  New
+  Learning
+  Review
+  Relearning
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
+}
+
+enum ContentType {
+  ARTICLE
+  NEWS
+  BLOG_POST
+  ACADEMIC
+  STORY
+  OPINION
+  CONVERSATION
+  INTERVIEW
+  PODCAST
+  LECTURE
+  NEWS_REPORT
+}
+
+enum ExerciseType {
+  MULTIPLE_CHOICE
+  FILL_IN_THE_BLANK
+  SENTENCE_TRANSFORMATION
+  ERROR_CORRECTION
+  DRAG_AND_DROP
+  FLASHCARD
+  MATCHING
+  CONTEXT_SELECTION
+  CLOZE
+  SYNONYM_ID
+  RECALL
+  DICTATION
+  FILL_MISSING_WORDS
+  SPEAKER_INTENTION
+  SEQUENCE_ORDERING
+  NOTE_TAKING
+}
+
+enum SkillArea {
+  GRAMMAR
+  VOCABULARY
+  READING
+  LISTENING
+  MIXED
+}
+
+// ─── Phase 2: User & Auth ─────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  avatarUrl     String?
+  role          UserRole  @default(STUDENT)
+  cefrLevel     CefrLevel @default(B1)
+  xpTotal       Int       @default(0)
+  level         Int       @default(1)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastActiveAt  DateTime  @default(now())
+
+  // Relations
+  accounts          Account[]
+  sessions          Session[]
+  srsCards          SrsCard[]
+  vocabularyItems   UserVocabularyItem[]
+  quizSessions      QuizSession[]
+  xpEvents          XpEvent[]
+  achievements      UserAchievement[]
+  readingProgress   ReadingProgress[]
+  listeningProgress ListeningProgress[]
+  grammarProgress   GrammarProgress[]
+  skillScores       SkillScore[]
+  highlights        Highlight[]
+  notes             Note[]
+  bookmarks         Bookmark[]
+  activityLogs      ActivityLog[]
+
+  @@index([cefrLevel])
+  @@index([xpTotal])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Phase 3: Vocabulary & SRS ────────────────────────────────────────────────
+
+model VocabularyWord {
+  id               String    @id @default(cuid())
+  word             String    @unique
+  definition       String    @db.Text
+  partOfSpeech     String?
+  examples         String[]
+  synonyms         String[]
+  pronunciationKey String?
+  audioStorageKey  String?   // R2 storage key — NOT full URL (D-10)
+  cefrLevel        CefrLevel
+  cefrConfidence   Float     @default(0.0)
+  topic            String?
+  category         String?   // business, travel, technology, etc.
+  frequency        Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  srsCards  SrsCard[]
+  userItems UserVocabularyItem[]
+
+  @@index([cefrLevel])
+  @@index([category])
+  @@index([topic])
+}
+
+model UserVocabularyItem {
+  id              String   @id @default(cuid())
+  userId          String
+  wordId          String
+  addedAt         DateTime @default(now())
+  contextSentence String?  @db.Text // sentence from reading/listening (VOCAB-08)
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  word    VocabularyWord @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  srsCard SrsCard?
+
+  @@unique([userId, wordId])
+  @@index([userId])
+}
+
+// FSRS-aligned SRS card — fields match ts-fsrs Card interface exactly (D-09)
+model SrsCard {
+  id              String    @id @default(cuid())
+  userId          String
+  wordId          String?
+  userVocabItemId String?   @unique
+  due             DateTime
+  stability       Float     @default(0)
+  difficulty      Float     @default(0)
+  elapsedDays     Int       @default(0)
+  scheduledDays   Int       @default(0)
+  reps            Int       @default(0)
+  lapses          Int       @default(0)
+  state           CardState @default(New)
+  lastReview      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  word          VocabularyWord?    @relation(fields: [wordId], references: [id])
+  userVocabItem UserVocabularyItem? @relation(fields: [userVocabItemId], references: [id])
+
+  @@index([userId, due])
+  @@index([userId, state])
+}
+
+// ─── Phase 4: Grammar ─────────────────────────────────────────────────────────
+
+model GrammarArea {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  description String?
+  sortOrder   Int            @default(0)
+  topics      GrammarTopic[]
+}
+
+model GrammarTopic {
+  id          String    @id @default(cuid())
+  areaId      String
+  title       String
+  slug        String    @unique
+  description String?   @db.Text
+  cefrLevel   CefrLevel
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  area     GrammarArea       @relation(fields: [areaId], references: [id])
+  lessons  GrammarLesson[]
+  progress GrammarProgress[]
+
+  @@index([areaId])
+  @@index([cefrLevel])
+}
+
+model GrammarLesson {
+  id          String   @id @default(cuid())
+  topicId     String
+  title       String
+  explanation String   @db.Text
+  examples    String[]
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  topic     GrammarTopic      @relation(fields: [topicId], references: [id])
+  questions GrammarQuestion[]
+
+  @@index([topicId])
+}
+
+model GrammarQuestion {
+  id           String       @id @default(cuid())
+  lessonId     String
+  exerciseType ExerciseType
+  prompt       String       @db.Text
+  answer       String       @db.Text
+  distractors  String[]
+  explanation  String?      @db.Text
+  difficulty   Int          @default(1)
+  xpReward     Int          @default(10)
+  createdAt    DateTime     @default(now())
+
+  lesson   GrammarLesson    @relation(fields: [lessonId], references: [id])
+  attempts GrammarAttempt[]
+
+  @@index([lessonId])
+  @@index([exerciseType])
+}
+
+model GrammarAttempt {
+  id          String   @id @default(cuid())
+  questionId  String
+  userId      String
+  isCorrect   Boolean
+  userAnswer  String?
+  attemptedAt DateTime @default(now())
+
+  question GrammarQuestion @relation(fields: [questionId], references: [id])
+
+  @@index([questionId, userId])
+}
+
+model GrammarProgress {
+  id            String    @id @default(cuid())
+  userId        String
+  topicId       String
+  masteryPct    Float     @default(0)
+  attempts      Int       @default(0)
+  correct       Int       @default(0)
+  lastAttemptAt DateTime?
+
+  user  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic GrammarTopic @relation(fields: [topicId], references: [id])
+
+  @@unique([userId, topicId])
+  @@index([userId])
+}
+
+// ─── Phase 5: Reading + Content Pipeline ─────────────────────────────────────
+
+model ReadingPassage {
+  id               String      @id @default(cuid())
+  title            String
+  content          String      @db.Text
+  sourceUrl        String?     @unique
+  contentHash      String?     @unique
+  contentType      ContentType
+  cefrLevel        CefrLevel
+  cefrConfidence   Float       @default(0.0)
+  topic            String?
+  wordCount        Int         @default(0)
+  isPublished      Boolean     @default(false)
+  flaggedForReview Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  questions  ReadingQuestion[]
+  progress   ReadingProgress[]
+  bookmarks  Bookmark[]
+  highlights Highlight[]
+  notes      Note[]
+
+  @@index([cefrLevel])
+  @@index([topic])
+  @@index([contentType])
+  @@index([isPublished])
+}
+
+model ReadingQuestion {
+  id           String   @id @default(cuid())
+  passageId    String
+  questionType String
+  prompt       String   @db.Text
+  answer       String   @db.Text
+  distractors  String[]
+  explanation  String?  @db.Text
+  xpReward     Int      @default(10)
+  sortOrder    Int      @default(0)
+
+  passage ReadingPassage @relation(fields: [passageId], references: [id], onDelete: Cascade)
+
+  @@index([passageId])
+}
+
+model ReadingProgress {
+  id             String    @id @default(cuid())
+  userId         String
+  passageId      String
+  score          Float?
+  accuracy       Float?
+  readingTimeSec Int?
+  completedAt    DateTime?
+  lastViewedAt   DateTime  @default(now())
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passage ReadingPassage @relation(fields: [passageId], references: [id])
+
+  @@unique([userId, passageId])
+  @@index([userId])
+}
+
+model Highlight {
+  id          String   @id @default(cuid())
+  userId      String
+  passageId   String
+  startOffset Int
+  endOffset   Int
+  text        String   @db.Text
+  createdAt   DateTime @default(now())
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passage ReadingPassage @relation(fields: [passageId], references: [id])
+
+  @@index([userId, passageId])
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  userId    String
+  passageId String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passage ReadingPassage @relation(fields: [passageId], references: [id])
+
+  @@index([userId, passageId])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  passageId String
+  createdAt DateTime @default(now())
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passage ReadingPassage @relation(fields: [passageId], references: [id])
+
+  @@unique([userId, passageId])
+  @@index([userId])
+}
+
+// ─── Phase 6: Listening ───────────────────────────────────────────────────────
+
+model ListeningContent {
+  id               String      @id @default(cuid())
+  title            String
+  transcriptText   String      @db.Text
+  audioStorageKey  String?     // R2 storage key — NOT full URL (D-10)
+  sourceUrl        String?     @unique
+  contentHash      String?     @unique
+  contentType      ContentType
+  cefrLevel        CefrLevel
+  cefrConfidence   Float       @default(0.0)
+  topic            String?
+  durationSec      Int?
+  isPublished      Boolean     @default(false)
+  flaggedForReview Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  questions ListeningQuestion[]
+  progress  ListeningProgress[]
+
+  @@index([cefrLevel])
+  @@index([topic])
+  @@index([contentType])
+  @@index([isPublished])
+}
+
+model ListeningQuestion {
+  id           String       @id @default(cuid())
+  contentId    String
+  exerciseType ExerciseType
+  prompt       String       @db.Text
+  answer       String       @db.Text
+  distractors  String[]
+  explanation  String?      @db.Text
+  timestampSec Int?
+  xpReward     Int          @default(10)
+  sortOrder    Int          @default(0)
+
+  content ListeningContent @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@index([contentId])
+}
+
+model ListeningProgress {
+  id           String    @id @default(cuid())
+  userId       String
+  contentId    String
+  score        Float?
+  accuracy     Float?
+  completedAt  DateTime?
+  lastViewedAt DateTime  @default(now())
+
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content ListeningContent @relation(fields: [contentId], references: [id])
+
+  @@unique([userId, contentId])
+  @@index([userId])
+}
+
+// ─── Phase 7: Quiz & Gamification ─────────────────────────────────────────────
+
+model QuizSession {
+  id           String    @id @default(cuid())
+  userId       String
+  skillArea    SkillArea
+  topic        String?
+  score        Float     @default(0)
+  accuracy     Float     @default(0)
+  timeTakenSec Int?
+  xpEarned     Int       @default(0)
+  completedAt  DateTime?
+  startedAt    DateTime  @default(now())
+
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers QuizAnswer[]
+
+  @@index([userId])
+  @@index([skillArea])
+}
+
+model QuizAnswer {
+  id            String    @id @default(cuid())
+  sessionId     String
+  questionRef   String    // polymorphic: "{type}:{questionId}" e.g. "grammar:clxyz"
+  skillArea     SkillArea
+  isCorrect     Boolean
+  userAnswer    String?
+  correctAnswer String?
+  xpEarned      Int       @default(0)
+  answeredAt    DateTime  @default(now())
+
+  session QuizSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+}
+
+model XpEvent {
+  id        String     @id @default(cuid())
+  userId    String
+  amount    Int
+  reason    String
+  skillArea SkillArea?
+  sourceRef String?
+  createdAt DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  iconUrl     String?
+  xpReward    Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  earnedAt      DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+}
+
+// ─── Phase 8: Adaptive / Analytics ───────────────────────────────────────────
+
+model SkillScore {
+  id        String    @id @default(cuid())
+  userId    String
+  skillArea SkillArea
+  score     Float     @default(0)
+  accuracy  Float     @default(0)
+  isWeak    Boolean   @default(false)
+  updatedAt DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillArea])
+  @@index([userId])
+}
+
+model ActivityLog {
+  id           String     @id @default(cuid())
+  userId       String
+  activityType String
+  skillArea    SkillArea?
+  metadata     Json?
+  loggedAt     DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, loggedAt])
+}
