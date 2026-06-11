@@ -1,0 +1,99 @@
+# docker-compose.yml — dev backing services only (D-05)
+# Apps (NestJS, Next.js) run natively via `turbo dev`. This file starts
+# ONLY the 4 backing services: Postgres 16, Redis BullMQ, Redis Cache, MinIO.
+#
+# Two-Redis topology rationale:
+#   redis-bullmq: noeviction + AOF — BullMQ stores SRS review jobs as Redis sorted
+#     set entries. Any LRU policy would silently evict jobs under memory pressure,
+#     causing users to miss scheduled reviews. AOF persistence ensures jobs survive
+#     container restarts.
+#   redis-cache: allkeys-lru — HTTP cache loss is a cache miss, not data loss.
+#     No persistence volume needed.
+#
+# Security: all dev ports are bound to 127.0.0.1 (localhost only) — not 0.0.0.0.
+# This prevents unintended exposure on public/LAN network interfaces (T-1-03).
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: el_postgres
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-english_learning}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis-bullmq:
+    image: redis:7-alpine
+    container_name: el_redis_bullmq
+    # CRITICAL: noeviction policy is MANDATORY — BullMQ stores delayed SRS review
+    # jobs as Redis sorted set entries. With any LRU policy, jobs evict under memory
+    # pressure and user review sessions vanish silently. AOF persistence ensures jobs
+    # survive container restarts.
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory-policy noeviction
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_bullmq_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis-cache:
+    image: redis:7-alpine
+    container_name: el_redis_cache
+    # allkeys-lru: HTTP cache eviction on memory pressure is correct — cache miss
+    # is the failure mode, not data loss. No AOF persistence needed.
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "127.0.0.1:6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  minio:
+    image: minio/minio
+    container_name: el_minio
+    command: server /data --console-address ":9001"
+    env_file: .env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - minio_data:/data
+    # curl healthcheck used instead of `mc ready local` — mc requires prior alias
+    # setup which is not available in a fresh container (research note A3).
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  postgres_data:
+  redis_bullmq_data:
+  minio_data:
