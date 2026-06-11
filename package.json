@@ -1,0 +1,19 @@
+{
+  "name": "english-learning",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "db:generate": "pnpm --filter @repo/database run db:generate",
+    "db:migrate": "pnpm --filter @repo/database run db:migrate",
+    "db:migrate:deploy": "pnpm --filter @repo/database run db:migrate:deploy"
+  },
+  "devDependencies": {
+    "turbo": "^2.9.18",
+    "typescript": "^5.4.0"
+  }
+}
