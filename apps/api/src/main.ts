@@ -26,4 +26,7 @@ async function bootstrap(): Promise<void> {
   await app.listen(port);
 }
 
-bootstrap();
+bootstrap().catch((err: unknown) => {
+  console.error('Fatal startup error:', err);
+  process.exit(1);
+});
