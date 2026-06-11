@@ -2,6 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { GET } from './route';
 
 describe('Health route', () => {
+  it('returns HTTP 200', async () => {
+    const response = await GET();
+    expect(response.status).toBe(200);
+  });
+
   it('returns status ok', async () => {
     const response = await GET();
     const json = await response.json();
