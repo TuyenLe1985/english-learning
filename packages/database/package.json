@@ -5,6 +5,7 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "_exportNote": "Exporting TypeScript source directly is intentional. Both consumer apps (Next.js with bundler resolution, NestJS with SWC) transpile on the fly. This package is internal to the Turborepo monorepo and will never be published to npm.",
   "scripts": {
     "db:generate": "prisma generate --schema ./prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema ./prisma/schema.prisma",
