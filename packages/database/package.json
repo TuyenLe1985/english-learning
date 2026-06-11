@@ -9,12 +9,17 @@
     "db:generate": "prisma generate --schema ./prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema ./prisma/schema.prisma",
     "db:migrate:deploy": "prisma migrate deploy --schema ./prisma/schema.prisma",
-    "db:push": "prisma db push --schema ./prisma/schema.prisma"
+    "db:push": "prisma db push --schema ./prisma/schema.prisma",
+    "test": "vitest run",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3"
   },
   "devDependencies": {
-    "prisma": "^6.19.3"
+    "prisma": "^6.19.3",
+    "vitest": "^2.0.0",
+    "@repo/tsconfig": "workspace:*",
+    "typescript": "^5.4.0"
   }
 }

@@ -5,7 +5,16 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "test": "vitest run",
+    "type-check": "tsc --noEmit"
+  },
   "dependencies": {
     "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0",
+    "@repo/tsconfig": "workspace:*",
+    "typescript": "^5.4.0"
   }
 }

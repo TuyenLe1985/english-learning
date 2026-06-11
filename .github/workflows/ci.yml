@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  ci:
+    name: Type-check, Lint, Migrate
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: english_learning_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/english_learning_test
+      REDIS_URL_BULLMQ: redis://localhost:6379
+      REDIS_URL_CACHE: redis://localhost:6380
+      MINIO_ENDPOINT: http://localhost:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: english-learning
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter @repo/database run db:generate
+
+      - name: Type-check
+        run: pnpm turbo run type-check
+
+      - name: Lint
+        run: pnpm turbo run lint
+
+      - name: Run database migrations
+        run: pnpm --filter @repo/database run db:migrate:deploy
