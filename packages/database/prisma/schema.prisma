@@ -102,6 +102,7 @@ model User {
   readingProgress   ReadingProgress[]
   listeningProgress ListeningProgress[]
   grammarProgress   GrammarProgress[]
+  grammarAttempts   GrammarAttempt[]
   skillScores       SkillScore[]
   highlights        Highlight[]
   notes             Note[]
@@ -290,6 +291,7 @@ model GrammarAttempt {
   attemptedAt DateTime @default(now())
 
   question GrammarQuestion @relation(fields: [questionId], references: [id])
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([questionId, userId])
 }
