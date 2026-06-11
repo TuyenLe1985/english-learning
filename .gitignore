@@ -1,0 +1,37 @@
+# Dependencies
+node_modules
+
+# Environment variables — NEVER commit actual secrets
+.env
+.env.local
+.env.*.local
+
+# Next.js
+.next
+
+# NestJS / TypeScript build output
+dist
+
+# Turborepo cache
+.turbo
+
+# Generated Prisma client
+packages/database/generated/
+
+# Test coverage
+coverage
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo

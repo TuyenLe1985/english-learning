@@ -1,0 +1,14 @@
+{
+  "name": "@repo/eslint-config",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.mjs",
+    "./nextjs": "./nextjs.mjs",
+    "./nestjs": "./nestjs.mjs"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0"
+  }
+}
