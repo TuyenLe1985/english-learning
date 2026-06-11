@@ -1,0 +1,153 @@
+# docker-compose.prod.yml — production orchestration skeleton (D-06)
+# Wires all 6 services: 4 backing services + NestJS API + Next.js web app.
+#
+# Phase 1 note: This is a skeleton for production deployment. The NestJS API and
+# Next.js app serve only a health endpoint at this stage — feature logic is added
+# in subsequent phases.
+#
+# Production deployment checklist (before going live):
+#   1. Set strong POSTGRES_PASSWORD in .env (use: openssl rand -base64 32)
+#   2. Set strong NEXTAUTH_SECRET (use: openssl rand -base64 32)
+#   3. Set strong JWT_SECRET (use: openssl rand -base64 32)
+#   4. Change MINIO_ACCESS_KEY and MINIO_SECRET_KEY from defaults
+#   5. Set NEXTAUTH_URL to the production domain
+#   6. Use a reverse proxy (Nginx/Traefik) in front of ports 3000/3001
+#   7. Do NOT expose postgres/redis ports externally — they are backend-only
+#
+# Security: postgres and redis ports remain bound to 127.0.0.1 in production.
+# MinIO ports 9000/9001 are accessible for S3-compatible API and console.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: el_postgres
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-english_learning}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  redis-bullmq:
+    image: redis:7-alpine
+    container_name: el_redis_bullmq
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory-policy noeviction
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_bullmq_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  redis-cache:
+    image: redis:7-alpine
+    container_name: el_redis_cache
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "127.0.0.1:6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio
+    container_name: el_minio
+    command: server /data --console-address ":9001"
+    env_file: .env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    ports:
+      # MinIO S3 API port — needed for app services and CDN integration
+      - "9000:9000"
+      # MinIO console port — restrict access in production via firewall rules
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: el_api
+    ports:
+      - "3001:3001"
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis-bullmq:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: el_web
+    ports:
+      - "3000:3000"
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # NEXTAUTH_URL must be set to production domain in .env
+      # NEXTAUTH_SECRET must be set in .env
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_bullmq_data:
+  minio_data:
