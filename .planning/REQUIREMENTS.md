@@ -168,25 +168,80 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 – AUTH-06 | Phase TBD | Pending |
-| PROF-01 – PROF-03 | Phase TBD | Pending |
-| DASH-01 – DASH-04 | Phase TBD | Pending |
-| GRAM-01 – GRAM-06 | Phase TBD | Pending |
-| VOCAB-01 – VOCAB-08 | Phase TBD | Pending |
-| READ-01 – READ-07 | Phase TBD | Pending |
-| LIST-01 – LIST-07 | Phase TBD | Pending |
-| QUIZ-01 – QUIZ-05 | Phase TBD | Pending |
-| GAME-01 – GAME-05 | Phase TBD | Pending |
-| PIPE-01 – PIPE-06 | Phase TBD | Pending |
-| ADPT-01 – ADPT-05 | Phase TBD | Pending |
-| SRCH-01 – SRCH-04 | Phase TBD | Pending |
-| ANLT-01 – ANLT-02 | Phase TBD | Pending |
+| AUTH-01 | Phase 2 | Pending |
+| AUTH-02 | Phase 2 | Pending |
+| AUTH-03 | Phase 2 | Pending |
+| AUTH-04 | Phase 2 | Pending |
+| AUTH-05 | Phase 2 | Pending |
+| AUTH-06 | Phase 2 | Pending |
+| PROF-01 | Phase 2 | Pending |
+| PROF-02 | Phase 2 | Pending |
+| PROF-03 | Phase 2 | Pending |
+| VOCAB-01 | Phase 3 | Pending |
+| VOCAB-02 | Phase 3 | Pending |
+| VOCAB-03 | Phase 3 | Pending |
+| VOCAB-04 | Phase 3 | Pending |
+| VOCAB-05 | Phase 3 | Pending |
+| VOCAB-06 | Phase 3 | Pending |
+| VOCAB-07 | Phase 3 | Pending |
+| VOCAB-08 | Phase 5 | Pending |
+| GRAM-01 | Phase 4 | Pending |
+| GRAM-02 | Phase 4 | Pending |
+| GRAM-03 | Phase 4 | Pending |
+| GRAM-04 | Phase 4 | Pending |
+| GRAM-05 | Phase 4 | Pending |
+| GRAM-06 | Phase 4 | Pending |
+| READ-01 | Phase 5 | Pending |
+| READ-02 | Phase 5 | Pending |
+| READ-03 | Phase 5 | Pending |
+| READ-04 | Phase 5 | Pending |
+| READ-05 | Phase 5 | Pending |
+| READ-06 | Phase 5 | Pending |
+| READ-07 | Phase 5 | Pending |
+| PIPE-01 | Phase 5 | Pending |
+| PIPE-02 | Phase 5 | Pending |
+| PIPE-03 | Phase 5 | Pending |
+| PIPE-04 | Phase 5 | Pending |
+| PIPE-05 | Phase 5 | Pending |
+| PIPE-06 | Phase 5 | Pending |
+| LIST-01 | Phase 6 | Pending |
+| LIST-02 | Phase 6 | Pending |
+| LIST-03 | Phase 6 | Pending |
+| LIST-04 | Phase 6 | Pending |
+| LIST-05 | Phase 6 | Pending |
+| LIST-06 | Phase 6 | Pending |
+| LIST-07 | Phase 6 | Pending |
+| QUIZ-01 | Phase 7 | Pending |
+| QUIZ-02 | Phase 7 | Pending |
+| QUIZ-03 | Phase 7 | Pending |
+| QUIZ-04 | Phase 7 | Pending |
+| QUIZ-05 | Phase 7 | Pending |
+| GAME-01 | Phase 7 | Pending |
+| GAME-02 | Phase 7 | Pending |
+| GAME-03 | Phase 7 | Pending |
+| GAME-04 | Phase 7 | Pending |
+| GAME-05 | Phase 7 | Pending |
+| ADPT-01 | Phase 8 | Pending |
+| ADPT-02 | Phase 8 | Pending |
+| ADPT-03 | Phase 8 | Pending |
+| ADPT-04 | Phase 8 | Pending |
+| ADPT-05 | Phase 8 | Pending |
+| DASH-01 | Phase 8 | Pending |
+| DASH-02 | Phase 8 | Pending |
+| DASH-03 | Phase 8 | Pending |
+| DASH-04 | Phase 8 | Pending |
+| SRCH-01 | Phase 8 | Pending |
+| SRCH-02 | Phase 8 | Pending |
+| SRCH-03 | Phase 8 | Pending |
+| SRCH-04 | Phase 8 | Pending |
+| ANLT-01 | Phase 8 | Pending |
+| ANLT-02 | Phase 8 | Pending |
 
 **Coverage:**
-- v1 requirements: 66 total
-- Mapped to phases: 0 (populated by roadmapper)
-- Unmapped: 66 ⚠️ (will be resolved during roadmap creation)
+- v1 requirements: 68 total (file header stated 66; actual count by ID is 68 — AUTH×6, PROF×3, DASH×4, GRAM×6, VOCAB×8, READ×7, LIST×7, QUIZ×5, GAME×5, PIPE×6, ADPT×5, SRCH×4, ANLT×2)
+- Mapped to phases: 68 ✓
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-11*
-*Last updated: 2026-06-11 after initial definition*
+*Last updated: 2026-06-11 — traceability populated by roadmapper; all 68 v1 requirements mapped to phases 2–8*
