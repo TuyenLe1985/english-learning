@@ -81,10 +81,10 @@ services:
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
     ports:
-      # MinIO S3 API port — needed for app services and CDN integration
-      - "9000:9000"
-      # MinIO console port — restrict access in production via firewall rules
-      - "9001:9001"
+      # MinIO S3 API port — accessed by sibling containers via internal Docker network
+      - "127.0.0.1:9000:9000"
+      # MinIO console port — bound to localhost only; expose via reverse proxy if needed
+      - "127.0.0.1:9001:9001"
     volumes:
       - minio_data:/data
     healthcheck:
