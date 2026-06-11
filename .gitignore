@@ -11,6 +11,7 @@ node_modules
 
 # NestJS / TypeScript build output
 dist
+*.tsbuildinfo
 
 # Turborepo cache
 .turbo
