@@ -33,14 +33,27 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `pnpm db:migrate` runs the full Prisma schema (all tables and composite indexes) against the running Postgres container with zero errors
   3. The Next.js 14 app and NestJS 11 API both start, serve a health-check endpoint, and return 200 on the smoke-test route
   4. A CLAUDE.md file documents the monorepo layout, Docker topology, and the two-Redis split rationale
-**Plans**: 6 plans
-Plans:
+**Plans**: 6 plans in 4 waves
+
+**Wave 1** *(no dependencies — run in parallel)*
 - [ ] 01-01-PLAN.md — Monorepo scaffold (workspace, turbo, shared packages: @repo/tsconfig, @repo/eslint-config, @repo/shared, @repo/database)
 - [ ] 01-02-PLAN.md — Docker backing services (Postgres 16, Redis BullMQ noeviction+AOF, Redis Cache allkeys-lru, MinIO)
+
+**Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 01-03-PLAN.md — Full Prisma schema (25+ models, all 8 phases) + [BLOCKING] initial migration
+
+**Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 01-04-PLAN.md — NestJS 11 skeleton (health endpoint, SWC compiler, ValidationPipe, Vitest)
 - [ ] 01-05-PLAN.md — Next.js 14 skeleton (health route, Tailwind 3.x, transpilePackages, Vitest)
+
+**Wave 4** *(blocked on Wave 3 completion)*
 - [ ] 01-06-PLAN.md — GitHub Actions CI + Wave 0 Vitest configs + human smoke test checkpoint
+
+**Cross-cutting constraints:**
+- Pin Prisma to ^6.19.3 (npm latest is 7.x — breaking changes)
+- Turborepo 2.x requires `"tasks"` key in turbo.json (not `"pipeline"`)
+- All Docker services bind to 127.0.0.1 in dev (not 0.0.0.0)
+- Node.js 20+ base image required for NestJS 11
 **UI hint**: yes
 
 ### Phase 2: Authentication + User Profile
@@ -148,7 +161,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Infrastructure | 0/6 | Not started | - |
+| 1. Foundation + Infrastructure | 0/6 | Planned | - |
 | 2. Authentication + User Profile | 0/TBD | Not started | - |
 | 3. Vocabulary Module + SRS Core | 0/TBD | Not started | - |
 | 4. Grammar Module | 0/TBD | Not started | - |
