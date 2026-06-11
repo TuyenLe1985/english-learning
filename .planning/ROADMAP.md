@@ -50,8 +50,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-04-PLAN.md — NestJS 11 skeleton (health endpoint, SWC compiler, ValidationPipe, Vitest)
-- [ ] 01-05-PLAN.md — Next.js 14 skeleton (health route, Tailwind 3.x, transpilePackages, Vitest)
+- [x] 01-04-PLAN.md — NestJS 11 skeleton (health endpoint, SWC compiler, ValidationPipe, Vitest)
+- [x] 01-05-PLAN.md — Next.js 14 skeleton (health route, Tailwind 3.x, transpilePackages, Vitest)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -192,7 +192,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Infrastructure | 3/6 | In Progress|  |
+| 1. Foundation + Infrastructure | 5/6 | In Progress|  |
 | 2. Authentication + User Profile | 0/TBD | Not started | - |
 | 3. Vocabulary Module + SRS Core | 0/TBD | Not started | - |
 | 4. Grammar Module | 0/TBD | Not started | - |
