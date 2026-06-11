@@ -13,7 +13,7 @@ Eight phases take the platform from an empty monorepo to a fully seeded, adaptiv
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation + Infrastructure** - Monorepo scaffold, Docker services, full Prisma schema, deployable skeleton
+- [x] **Phase 1: Foundation + Infrastructure** - Monorepo scaffold, Docker services, full Prisma schema, deployable skeleton (completed 2026-06-11)
 - [ ] **Phase 2: Authentication + User Profile** - Secure account creation, login, OAuth, session management, user profile
 - [ ] **Phase 3: Vocabulary Module + SRS Core** - Vocabulary browsing, 6 exercise types, FSRS scheduling, review queue
 - [ ] **Phase 4: Grammar Module** - Grammar topic browsing, lesson explanations, 5 exercise types, mastery tracking
@@ -55,7 +55,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 01-06-PLAN.md — GitHub Actions CI + Wave 0 Vitest configs + human smoke test checkpoint
+- [x] 01-06-PLAN.md — GitHub Actions CI + Wave 0 Vitest configs + human smoke test checkpoint
 
 **Cross-cutting constraints:**
 
@@ -192,7 +192,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Infrastructure | 5/6 | In Progress|  |
+| 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 0/TBD | Not started | - |
 | 3. Vocabulary Module + SRS Core | 0/TBD | Not started | - |
 | 4. Grammar Module | 0/TBD | Not started | - |
