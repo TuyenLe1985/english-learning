@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { ProfileModule } from './profile/profile.module';
 import { VocabularyModule } from './vocabulary/vocabulary.module';
+import { SrsModule } from './srs/srs.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { VocabularyModule } from './vocabulary/vocabulary.module';
     UsersModule,
     ProfileModule,
     VocabularyModule,
+    SrsModule,
   ],
   controllers: [],
   providers: [],
