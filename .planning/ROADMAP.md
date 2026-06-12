@@ -14,7 +14,7 @@ Eight phases take the platform from an empty monorepo to a fully seeded, adaptiv
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Infrastructure** - Monorepo scaffold, Docker services, full Prisma schema, deployable skeleton (completed 2026-06-11)
-- [ ] **Phase 2: Authentication + User Profile** - Secure account creation, login, OAuth, session management, user profile
+- [x] **Phase 2: Authentication + User Profile** - Secure account creation, login, OAuth, session management, user profile (completed 2026-06-12)
 - [ ] **Phase 3: Vocabulary Module + SRS Core** - Vocabulary browsing, 6 exercise types, FSRS scheduling, review queue
 - [ ] **Phase 4: Grammar Module** - Grammar topic browsing, lesson explanations, 5 exercise types, mastery tracking
 - [ ] **Phase 5: Reading Comprehension + Content Pipeline** - Reading passages with highlights/notes/bookmarks, crawler, CEFR classifier, seed scripts, vocab-in-context
@@ -94,8 +94,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 02-05-PLAN.md — Google OAuth sign-in + password reset (AUTH-03, AUTH-04) [TDD]
-- [ ] 02-06-PLAN.md — Profile endpoints, avatar presigned upload, CEFR badge (PROF-01, PROF-02, PROF-03) [TDD]
+- [x] 02-05-PLAN.md — Google OAuth sign-in + password reset (AUTH-03, AUTH-04) [TDD]
+- [x] 02-06-PLAN.md — Profile endpoints, avatar presigned upload, CEFR badge (PROF-01, PROF-02, PROF-03) [TDD]
 **UI hint**: yes
 
 ### Phase 3: Vocabulary Module + SRS Core
@@ -208,7 +208,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
-| 2. Authentication + User Profile | 4/6 | In Progress|  |
+| 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 0/TBD | Not started | - |
 | 4. Grammar Module | 0/TBD | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |

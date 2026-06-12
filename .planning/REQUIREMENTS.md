@@ -18,7 +18,7 @@
 
 - [x] **PROF-01**: User has a profile storing name, email, avatar URL, CEFR level, XP total, registration date, and last activity timestamp
 - [x] **PROF-02**: User can update display name and avatar
-- [ ] **PROF-03**: User's current CEFR level (B1/B2/C1) is displayed throughout the app and updates based on XP thresholds
+- [x] **PROF-03**: User's current CEFR level (B1/B2/C1) is displayed throughout the app and updates based on XP thresholds
 
 ### Dashboard
 
@@ -176,7 +176,7 @@
 | AUTH-06 | Phase 2 | Pending |
 | PROF-01 | Phase 2 | Complete |
 | PROF-02 | Phase 2 | Complete |
-| PROF-03 | Phase 2 | Pending |
+| PROF-03 | Phase 2 | Complete |
 | VOCAB-01 | Phase 3 | Pending |
 | VOCAB-02 | Phase 3 | Pending |
 | VOCAB-03 | Phase 3 | Pending |
