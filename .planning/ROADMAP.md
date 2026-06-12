@@ -125,7 +125,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 03-03-PLAN.md — SrsModule API: enroll, due queue, FSRS review, session-complete (VOCAB-04, VOCAB-05, VOCAB-06) [TDD]
+- [x] 03-03-PLAN.md — SrsModule API: enroll, due queue, FSRS review, session-complete (VOCAB-04, VOCAB-05, VOCAB-06) [TDD]
 
 **Wave 4** *(blocked on Wave 3 — parallel)*
 
@@ -232,7 +232,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
-| 3. Vocabulary Module + SRS Core | 2/6 | In Progress|  |
+| 3. Vocabulary Module + SRS Core | 3/6 | In Progress|  |
 | 4. Grammar Module | 0/TBD | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
