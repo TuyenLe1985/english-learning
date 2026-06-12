@@ -1,0 +1,103 @@
+/**
+ * VocabularyController — NestJS controller for vocabulary browsing + personal word list.
+ *
+ * VOCAB-01: GET /api/vocabulary/categories — 8 categories with word counts
+ * VOCAB-01: GET /api/vocabulary/:category/words — paginated word list (20/page, A-Z)
+ * VOCAB-02: GET /api/vocabulary/:category/:wordId — full word detail
+ * VOCAB-07: GET /api/vocabulary/my-words — personal word list filtered by SRS status
+ *
+ * Security (T-03-03):
+ *   - @UseGuards(JwtAuthGuard) applied to every endpoint
+ *   - userId always sourced from req.user.userId (JWT payload), never request body
+ */
+
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { VocabularyService } from './vocabulary.service';
+import type {
+  VocabularyWordDto,
+  PaginatedWordsDto,
+  CategoryDto,
+  MyWordDto,
+} from '@repo/shared';
+
+// Type for the decoded JWT payload attached to request.user by JwtAuthGuard
+interface AuthenticatedRequest {
+  user: {
+    userId: string;
+    role?: string;
+    cefrLevel?: string;
+    email?: string;
+  };
+}
+
+@Controller('vocabulary')
+export class VocabularyController {
+  constructor(private readonly vocabularyService: VocabularyService) {}
+
+  /**
+   * VOCAB-01 — GET /api/vocabulary/categories
+   * Returns the 8 fixed categories with live word counts.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('categories')
+  async getCategories(): Promise<CategoryDto[]> {
+    return this.vocabularyService.getCategories();
+  }
+
+  /**
+   * VOCAB-07 — GET /api/vocabulary/my-words
+   * Returns the authenticated user's vocabulary items with SRS status.
+   * Optional query param: status (new | learning | reviewing | mastered)
+   *
+   * NOTE: This route must appear before :category/words to avoid NestJS
+   * route matching "my-words" as a :category parameter.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('my-words')
+  async getMyWords(
+    @Request() req: AuthenticatedRequest,
+    @Query('status') status?: string,
+  ): Promise<MyWordDto[]> {
+    return this.vocabularyService.getMyWords(req.user.userId, status);
+  }
+
+  /**
+   * VOCAB-01 — GET /api/vocabulary/:category/words
+   * Returns paginated word list for a category (20/page, A-Z by default).
+   * Query params: page (default 1), limit (default 20).
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get(':category/words')
+  async getWordsByCategory(
+    @Param('category') category: string,
+    @Query('page') page = 1,
+    @Query('limit') limit = 20,
+  ): Promise<PaginatedWordsDto> {
+    return this.vocabularyService.getWordsByCategory(
+      category,
+      +page,
+      +limit,
+    );
+  }
+
+  /**
+   * VOCAB-02 — GET /api/vocabulary/:category/:wordId
+   * Returns full word detail (definition, examples, synonyms, pronunciation key).
+   * Throws 404 if wordId does not exist.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get(':category/:wordId')
+  async getWordDetail(
+    @Param('wordId') wordId: string,
+  ): Promise<VocabularyWordDto> {
+    return this.vocabularyService.getWordDetail(wordId);
+  }
+}
