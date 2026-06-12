@@ -805,22 +805,25 @@ export function ReviewQueueClient() {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Seed script location: `apps/api/prisma/seed-data/` vs `packages/database/prisma/`**
    - What we know: D-14 says data at `apps/api/prisma/seed-data/vocabulary.json`. Prisma `db seed` must be invoked from the package owning the schema (`packages/database`). No `seed.ts` exists yet.
    - What's unclear: Should seed data JSON live in `apps/api` (as D-14 says) while seed script is in `packages/database` importing it cross-package? Or should planner consolidate both under `packages/database`?
    - Recommendation: Planner should consolidate both under `packages/database/prisma/seed-data/vocabulary.json` for cleaner monorepo structure, noting the departure from D-14 literal path.
+   - **RESOLVED:** Both `seed.ts` and `vocabulary.json` placed under `packages/database/prisma/` to avoid cross-package file imports. D-14 literal path (`apps/api`) is overridden by architectural necessity — Prisma seed must run from the schema owner. Deviation noted in Plan 03-01 objective.
 
 2. **`learning_steps` schema gap: ignore or add migration?**
    - What we know: ts-fsrs v5 Card has `learning_steps`; `SrsCard` schema does not. The field is used internally by FSRS-6 for short-term learning step tracking. Defaulting to 0 and not persisting it means FSRS cannot accurately resume interrupted learning steps across sessions.
    - What's unclear: How significant is this for a Phase 3 MVP? Is a zero-migration add of `learningSteps Int @default(0)` worth it?
    - Recommendation: Add `learningSteps Int @default(0)` to `SrsCard` in a new migration. The accuracy cost of not persisting it is non-trivial for words in early learning stages. This is a Wave 0 task.
+   - **RESOLVED:** Phase 3 keeps schema read-only (no new migration). `learning_steps` is defaulted to 0 on read from DB and discarded on write-back via explicit `dbCardToFsrsCard()` / `fsrsCardToDbUpdate()` mapper functions. Accuracy cost is acceptable for MVP; persisting `learningSteps` deferred to a future phase if SRS quality feedback warrants it.
 
 3. **`NEXT_PUBLIC_R2_PUBLIC_URL` env var for Phase 3 client-side audio**
    - What we know: Audio playback (D-10) needs to construct the full R2 URL from `audioStorageKey`. This requires `NEXT_PUBLIC_R2_PUBLIC_URL` to be available in the browser.
    - What's unclear: Is this env var already defined in `.env.example`? Phase 5 adds TTS generation; Phase 3 only wires playback.
    - Recommendation: Wave 0 ensures `NEXT_PUBLIC_R2_PUBLIC_URL` (or `NEXT_PUBLIC_MINIO_PUBLIC_URL` for local dev) is added to `.env.example`.
+   - **RESOLVED:** Plan 03-01 adds `NEXT_PUBLIC_MINIO_PUBLIC_URL=http://localhost:9000/english-learning` (local dev) and `NEXT_PUBLIC_R2_PUBLIC_URL=` (prod placeholder) to `.env.example`. Browser audio player constructs full URL as `${NEXT_PUBLIC_MINIO_PUBLIC_URL}/${audioStorageKey}` in dev and `${NEXT_PUBLIC_R2_PUBLIC_URL}/${audioStorageKey}` in prod, with fallback to `window.speechSynthesis` when both are empty.
 
 ---
 

@@ -112,7 +112,29 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Due vocabulary reviews appear in a dedicated review queue; completing a session with Again/Hard/Good/Easy ratings reschedules each card using the FSRS algorithm at the correct next interval
   5. User can view their full personal vocabulary list filtered by status (new / learning / reviewing / mastered)
 
-**Plans**: TBD
+**Plans**: 6 plans in 5 waves
+
+**Wave 1** *(no dependencies)*
+
+- [ ] 03-01-PLAN.md — Foundation: install ts-fsrs/framer-motion/react-query, shared DTOs, 200-word seed + demo user, QueryProvider, middleware, Wave 0 RED scaffolds [has checkpoint]
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 03-02-PLAN.md — VocabularyModule API: categories, paginated word list, word detail, my-words (VOCAB-01, VOCAB-02, VOCAB-03, VOCAB-07) [TDD]
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 03-03-PLAN.md — SrsModule API: enroll, due queue, FSRS review, session-complete (VOCAB-04, VOCAB-05, VOCAB-06) [TDD]
+
+**Wave 4** *(blocked on Wave 3 — parallel)*
+
+- [ ] 03-04-PLAN.md — Vocabulary browse/detail/enroll UI slice (VOCAB-01, VOCAB-02, VOCAB-04)
+- [ ] 03-05-PLAN.md — Practice session slice: 6 exercise types + results + add-to-SRS (VOCAB-03, VOCAB-04)
+
+**Wave 5** *(blocked on Wave 4)*
+
+- [ ] 03-06-PLAN.md — Review queue + my-words slice + phase end-to-end verification (VOCAB-06, VOCAB-07) [has checkpoint]
+
 **UI hint**: yes
 
 ### Phase 4: Grammar Module
@@ -209,7 +231,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
-| 3. Vocabulary Module + SRS Core | 0/TBD | Not started | - |
+| 3. Vocabulary Module + SRS Core | 0/6 | Planned | - |
 | 4. Grammar Module | 0/TBD | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
