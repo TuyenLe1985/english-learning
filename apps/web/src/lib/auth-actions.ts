@@ -343,47 +343,68 @@ export async function resetPassword(
     };
   }
 
-  // Look up the reset token
-  const record = await prisma.verificationToken.findFirst({
-    where: { token },
+  // CR-08: Reject email-verification tokens submitted to the reset endpoint.
+  // Email-verification identifiers are plain email addresses (no prefix).
+  // CR-03: Wrap the lookup + delete + update in a transaction to eliminate the
+  // TOCTOU race where two concurrent requests both pass findFirst before either
+  // delete executes. The atomic delete acts as a compare-and-delete; if a
+  // concurrent request already consumed the token, the delete throws and we
+  // return an error rather than resetting the password twice.
+  return prisma.$transaction(async (tx) => {
+    const record = await tx.verificationToken.findFirst({
+      where: { token },
+    });
+
+    if (!record) {
+      return { success: false, error: 'Invalid or unknown reset token.' };
+    }
+
+    // CR-08: Guard — password-reset tokens must have the expected identifier prefix.
+    if (!record.identifier.startsWith('password-reset:')) {
+      return { success: false, error: 'Invalid reset token.' };
+    }
+
+    // Check expiry (D-03, T-02-12)
+    if (record.expires < new Date()) {
+      return {
+        success: false,
+        expired: true,
+        error: 'Your reset link has expired. Request a new one.',
+      };
+    }
+
+    // CR-03: Delete token atomically BEFORE updating password.
+    // If a concurrent request already deleted it this throws, preventing double-reset.
+    try {
+      await tx.verificationToken.delete({
+        where: {
+          identifier_token: {
+            identifier: record.identifier,
+            token: record.token,
+          },
+        },
+      });
+    } catch {
+      return { success: false, error: 'Invalid or unknown reset token.' };
+    }
+
+    // Extract userId from identifier pattern "password-reset:{userId}"
+    const userId = record.identifier.replace('password-reset:', '');
+
+    // Hash the new password — 12 rounds (T-02-04)
+    // Note: bcrypt.hash is CPU-bound and cannot be run inside a Prisma interactive
+    // transaction without blocking the DB connection pool. We hash after the delete
+    // so the token is invalidated regardless of hash timing.
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+
+    // Update user's password
+    await tx.user.update({
+      where: { id: userId },
+      data: { passwordHash },
+    });
+
+    return { success: true };
   });
-
-  if (!record) {
-    return { success: false, error: 'Invalid or unknown reset token.' };
-  }
-
-  // Check expiry (D-03, T-02-12)
-  if (record.expires < new Date()) {
-    return {
-      success: false,
-      expired: true,
-      error: 'Your reset link has expired. Request a new one.',
-    };
-  }
-
-  // Extract userId from identifier pattern "password-reset:{userId}"
-  const userId = record.identifier.replace('password-reset:', '');
-
-  // Hash the new password — 12 rounds (T-02-04)
-  const passwordHash = await bcrypt.hash(newPassword, 12);
-
-  // Update user's password
-  await prisma.user.update({
-    where: { id: userId },
-    data: { passwordHash },
-  });
-
-  // Delete the token — single-use only (T-02-12)
-  await prisma.verificationToken.delete({
-    where: {
-      identifier_token: {
-        identifier: record.identifier,
-        token: record.token,
-      },
-    },
-  });
-
-  return { success: true };
 }
 
 // ─── verifyEmailToken ─────────────────────────────────────────────────────────
@@ -395,42 +416,60 @@ export async function resetPassword(
  * T-02-05: unknown tokens are rejected.
  */
 export async function verifyEmailToken(token: string): Promise<VerifyEmailResult> {
-  // Find the token record
-  const record = await prisma.verificationToken.findFirst({
-    where: { token },
+  // CR-03: Wrap the entire lookup + delete + update in a transaction to eliminate
+  // the TOCTOU race where two concurrent requests both pass findFirst before either
+  // delete executes. The atomic delete acts as a compare-and-delete; if a concurrent
+  // request already consumed the token, the delete throws P2025 and we return error.
+  // CR-08: Reject password-reset tokens submitted to the email-verify endpoint.
+  return prisma.$transaction(async (tx) => {
+    const record = await tx.verificationToken.findFirst({
+      where: { token },
+    });
+
+    if (!record) {
+      return { success: false, error: 'Invalid or unknown verification token.' };
+    }
+
+    // CR-08: Guard — email-verification tokens must NOT have the password-reset prefix.
+    if (record.identifier.startsWith('password-reset:')) {
+      return { success: false, error: 'Invalid verification token.' };
+    }
+
+    // Check expiry (D-03, T-02-05)
+    if (record.expires < new Date()) {
+      return {
+        success: false,
+        expired: true,
+        error: 'Your verification link has expired. Request a new one below.',
+      };
+    }
+
+    // CR-03: Delete token atomically BEFORE updating the user.
+    // If a concurrent request already deleted it this throws P2025, preventing
+    // the emailVerified update from running a second time.
+    try {
+      await tx.verificationToken.delete({
+        where: { identifier_token: { identifier: record.identifier, token: record.token } },
+      });
+    } catch {
+      return { success: false, error: 'Invalid or unknown verification token.' };
+    }
+
+    // Find the user by identifier (email)
+    const user = await tx.user.findUnique({
+      where: { email: record.identifier },
+    });
+
+    if (!user) {
+      return { success: false, error: 'User not found.' };
+    }
+
+    // Set emailVerified (T-02-05)
+    await tx.user.update({
+      where: { id: user.id },
+      data: { emailVerified: new Date() },
+    });
+
+    return { success: true };
   });
-
-  if (!record) {
-    return { success: false, error: 'Invalid or unknown verification token.' };
-  }
-
-  // Check expiry (D-03, T-02-05)
-  if (record.expires < new Date()) {
-    return {
-      success: false,
-      expired: true,
-      error: 'Your verification link has expired. Request a new one below.',
-    };
-  }
-
-  // Find the user by identifier (email)
-  const user = await prisma.user.findUnique({
-    where: { email: record.identifier },
-  });
-
-  if (!user) {
-    return { success: false, error: 'User not found.' };
-  }
-
-  // Set emailVerified and delete token (T-02-05: delete on use, no reuse)
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { emailVerified: new Date() },
-  });
-
-  await prisma.verificationToken.delete({
-    where: { identifier_token: { identifier: record.identifier, token: record.token } },
-  });
-
-  return { success: true };
 }
