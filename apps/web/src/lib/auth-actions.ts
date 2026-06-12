@@ -16,24 +16,18 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { prisma } from '@repo/database';
 import { Resend } from 'resend';
-import Redis from 'ioredis';
 import {
   verificationEmailHtml,
   verificationEmailText,
   passwordResetEmailHtml,
   passwordResetEmailText,
 } from './email-templates';
-
-// ─── Redis client (cache instance, Pitfall 5) ─────────────────────────────────
-// Lazily instantiated to avoid connection on import in test environments.
-let _redis: Redis | null = null;
-
-function getRedis(): Redis {
-  if (!_redis) {
-    _redis = new Redis(process.env.REDIS_URL_CACHE ?? 'redis://localhost:6380');
-  }
-  return _redis;
-}
+// CR-04 fix: removed duplicate Redis client — import the shared singleton from
+// rate-limit.ts to avoid two connections to the same Redis instance.
+import {
+  checkEmailResendRateLimit,
+  checkPasswordResetRateLimit,
+} from './rate-limit';
 
 // ─── Resend client (D-04) ─────────────────────────────────────────────────────
 // Lazily instantiated — RESEND_API_KEY may not be set in test environments.
@@ -55,10 +49,6 @@ export type RegisterResult =
 export type VerifyEmailResult =
   | { success: true }
   | { success: false; expired?: boolean; error: string };
-
-export type RateLimitResult =
-  | { allowed: true }
-  | { allowed: false; retryAfter?: number; maxReached?: boolean };
 
 export type PasswordResetRequestResult = { success: true } | { success: false; error: string };
 
@@ -186,7 +176,8 @@ export async function resendVerificationEmail(
   userId: string,
   email: string
 ): Promise<{ success: boolean; error?: string; retryAfter?: number; maxReached?: boolean }> {
-  const rateLimitResult = await checkResendRateLimit(userId);
+  // CR-04 fix: use the atomic rate-limit check from rate-limit.ts
+  const rateLimitResult = await checkEmailResendRateLimit(userId);
 
   if (!rateLimitResult.allowed) {
     return {
@@ -211,49 +202,6 @@ export async function resendVerificationEmail(
   }
 }
 
-// ─── checkResendRateLimit ─────────────────────────────────────────────────────
-
-/**
- * Check and update rate-limit state for email resend requests.
- * D-02: 1 resend per 60 seconds, max 3 resends per hour.
- * Pitfall 5: counters stored in Redis so they survive restarts.
- *
- * Key patterns (Pitfall 5):
- * - email-resend:rate:{userId}   TTL=60s  — per-call 60s cooldown
- * - email-resend:hourly:{userId} TTL=3600s — hourly counter (max 3)
- */
-export async function checkResendRateLimit(userId: string): Promise<RateLimitResult> {
-  const redis = getRedis();
-
-  const cooldownKey = `email-resend:rate:${userId}`;
-  const hourlyKey = `email-resend:hourly:${userId}`;
-
-  // 1. Check 60s cooldown
-  const cooldownTtl = await redis.ttl(cooldownKey);
-  if (cooldownTtl > 0) {
-    return { allowed: false, retryAfter: cooldownTtl };
-  }
-
-  // 2. Check hourly limit (max 3)
-  const hourlyCount = await redis.get(hourlyKey);
-  if (hourlyCount !== null && parseInt(hourlyCount, 10) >= 3) {
-    return { allowed: false, maxReached: true };
-  }
-
-  // 3. Increment counters — allow this request
-  // Set cooldown key with 60s TTL
-  await redis.incr(cooldownKey);
-  await redis.expire(cooldownKey, 60);
-
-  // Increment hourly counter with 3600s TTL (only set expiry on first increment)
-  const newHourlyCount = await redis.incr(hourlyKey);
-  if (newHourlyCount === 1) {
-    await redis.expire(hourlyKey, 3600);
-  }
-
-  return { allowed: true };
-}
-
 // ─── createPasswordResetToken ─────────────────────────────────────────────────
 
 /**
@@ -272,6 +220,15 @@ export async function checkResendRateLimit(userId: string): Promise<RateLimitRes
 export async function createPasswordResetToken(
   email: string
 ): Promise<PasswordResetRequestResult> {
+  // CR-05: Apply rate limit BEFORE the DB lookup to prevent email flooding and
+  // to avoid leaking account-existence timing differences.
+  // Always return success shape (T-02-11) even when rate-limited — prevents
+  // an attacker from inferring account existence via 429 vs 200 response.
+  const rateLimitResult = await checkPasswordResetRateLimit(email.toLowerCase());
+  if (!rateLimitResult.allowed) {
+    return { success: true };
+  }
+
   const user = await prisma.user.findUnique({ where: { email } });
 
   // T-02-11: Return the same response shape regardless of whether user exists.
