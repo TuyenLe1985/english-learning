@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: context exhaustion at 75% (2026-06-12)
-last_updated: "2026-06-12T02:52:44.369Z"
+stopped_at: "02-05 checkpoint:human-verify — Google OAuth + password reset email delivery verification"
+last_updated: "2026-06-12T12:12:00.000Z"
 last_activity: 2026-06-12
 progress:
   total_phases: 8
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-06-11)
 ## Current Position
 
 Phase: 02 (authentication-user-profile) — EXECUTING
-Plan: 4 of 6
-Status: Ready to execute
+Plan: 5 of 6
+Status: Checkpoint — awaiting human verification (Google OAuth + password reset email delivery)
 Last activity: 2026-06-12
 
 Progress: [████████░░] 75%
@@ -53,8 +53,9 @@ Progress: [████████░░] 75%
 
 *Updated after each plan completion*
 | Phase 02-authentication-user-profile P02 | 22m | 2 tasks | 13 files |
-| Phase 02-authentication-user-profile P01 | 23 | 3 tasks | 16 files |
+| Phase 02-authentication-user-profile P01 | 23m | 3 tasks | 16 files |
 | Phase 02-authentication-user-profile P03 | 8m | 3 tasks | 11 files |
+| Phase 02-authentication-user-profile P05 | 20m | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -63,6 +64,9 @@ Progress: [████████░░] 75%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
+- [02-05]: Upsert pattern for reset tokens replaces stale pending reset atomically
+- [02-05]: POST /api/reset-password returns HTTP 410 Gone for expired tokens (semantic)
+- [02-05]: Resend email send errors logged server-side only for password reset — caller always sees success (T-02-11)
 - [Roadmap]: Two Redis instances required from Phase 1 — BullMQ (noeviction + AOF) and HTTP cache must be separate to prevent SRS job eviction
 - [Roadmap]: FSRS algorithm selected over SM-2 to eliminate ease-floor trap; must be decided finally in Phase 3 planning before any SRS code is written
 - [Roadmap]: VOCAB-08 (vocab-in-context tap-to-SRS) deferred to Phase 5 so it is built after both reading and SRS are stable
@@ -87,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T02:52:44.356Z
-Stopped at: context exhaustion at 75% (2026-06-12)
-Resume file: None
+Last session: 2026-06-12T12:12:00.000Z
+Stopped at: 02-05 checkpoint — Google OAuth + password reset email delivery verification required
+Resume file: .planning/phases/02-authentication-user-profile/02-05-SUMMARY.md
