@@ -117,8 +117,10 @@ describe('registerUser()', () => {
       password: 'short',
     });
 
-    expect(result).toMatchObject({ success: false });
-    expect(result.error).toMatch(/8 char/i);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toMatch(/8 char/i);
+    }
     expect(mockPrismaUserCreate).not.toHaveBeenCalled();
   });
 
@@ -133,8 +135,10 @@ describe('registerUser()', () => {
       password: 'ValidPass1!',
     });
 
-    expect(result).toMatchObject({ success: false });
-    expect(result.error).toMatch(/account.*already exists/i);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toMatch(/account.*already exists/i);
+    }
     expect(mockPrismaUserCreate).not.toHaveBeenCalled();
   });
 
@@ -155,7 +159,7 @@ describe('registerUser()', () => {
     expect(result.success).toBe(true);
 
     // Verify the stored hash is NOT the plaintext
-    const storedHash: string = mockPrismaUserCreate.mock.calls[0][0].data.passwordHash;
+    const storedHash = mockPrismaUserCreate.mock.calls[0]?.[0].data.passwordHash as string;
     expect(storedHash).not.toBe(plainPassword);
     expect(storedHash).toMatch(/^\$2[aby]\$\d{2}\$/); // bcrypt prefix
   });
@@ -166,7 +170,7 @@ describe('registerUser()', () => {
 
     mockPrismaUserCreate.mockImplementation(({ data }: { data: { passwordHash: string } }) => {
       capturedHash = data.passwordHash;
-      return Promise.resolve(makeUser({ passwordHash: data.passwordHash }));
+      return Promise.resolve(makeUser({ passwordHash: data.passwordHash as string }));
     });
 
     const { registerUser } = await import('./auth-actions');
@@ -190,7 +194,7 @@ describe('registerUser()', () => {
       password: 'ValidPass1!',
     });
 
-    const createCall = mockPrismaUserCreate.mock.calls[0][0];
+    const createCall = mockPrismaUserCreate.mock.calls[0]?.[0] as { data: { emailVerified: unknown } };
     expect(createCall.data.emailVerified).toBeNull();
   });
 
@@ -203,7 +207,9 @@ describe('registerUser()', () => {
     });
 
     expect(result.success).toBe(true);
-    expect(result.userId).toBe('user-1');
+    if (result.success) {
+      expect(result.userId).toBe('user-1');
+    }
   });
 });
 
@@ -227,7 +233,7 @@ describe('createVerificationToken()', () => {
     await createVerificationToken('user-1', 'alice@example.com');
     const after = Date.now();
 
-    const createCall = mockPrismaVerificationTokenCreate.mock.calls[0][0];
+    const createCall = mockPrismaVerificationTokenCreate.mock.calls[0]?.[0] as { data: { expires: Date } };
     const expiresMs = createCall.data.expires.getTime();
     const expectedMs = before + 24 * 60 * 60 * 1000;
 
@@ -238,7 +244,7 @@ describe('createVerificationToken()', () => {
 
   it('generates a hex token using crypto.randomBytes (not static/predictable)', async () => {
     // Call twice — tokens must be different
-    let tokens: string[] = [];
+    const tokens: string[] = [];
     mockPrismaVerificationTokenCreate.mockImplementation(
       ({ data }: { data: { token: string } }) => {
         tokens.push(data.token);
@@ -250,9 +256,10 @@ describe('createVerificationToken()', () => {
     await createVerificationToken('user-1', 'alice@example.com');
     await createVerificationToken('user-1', 'alice@example.com');
 
-    expect(tokens[0]).not.toBe(tokens[1]);
+    const [token0, token1] = tokens;
+    expect(token0).not.toBe(token1);
     // Should be hex string
-    expect(tokens[0]).toMatch(/^[0-9a-f]+$/);
+    expect(token0).toMatch(/^[0-9a-f]+$/);
   });
 });
 
@@ -347,8 +354,10 @@ describe('checkResendRateLimit()', () => {
     const { checkResendRateLimit } = await import('./auth-actions');
     const result = await checkResendRateLimit('user-1');
 
-    expect(result).toMatchObject({ allowed: false });
-    expect(result.retryAfter).toBe(45);
+    expect(result.allowed).toBe(false);
+    if (!result.allowed) {
+      expect(result.retryAfter).toBe(45);
+    }
   });
 
   it('denies a 4th call within the same hour (max 3/hour, D-02)', async () => {

@@ -1,0 +1,321 @@
+'use server';
+
+/**
+ * Auth server actions — registration, email verification, rate-limited resend.
+ *
+ * Implements: AUTH-01 (email/password registration with bcrypt), AUTH-02 (email verification gate)
+ * Security: T-02-04 (bcrypt 12 rounds), T-02-05 (token expiry+delete), T-02-06 (Redis rate-limit)
+ *
+ * D-15 responsibility split: NextAuth (Next.js) owns signup/email-verification; NestJS owns /api/users/me.
+ * D-04: Email sent via Resend SDK (RESEND_API_KEY in apps/web env).
+ * Pitfall 5: Rate-limit counters stored in Redis (REDIS_URL_CACHE), not in-memory.
+ * Pitfall 6: Resend SDK never throws — always check { error } destructure.
+ */
+
+import crypto from 'crypto';
+import bcrypt from 'bcrypt';
+import { prisma } from '@repo/database';
+import { Resend } from 'resend';
+import Redis from 'ioredis';
+
+// ─── Redis client (cache instance, Pitfall 5) ─────────────────────────────────
+// Lazily instantiated to avoid connection on import in test environments.
+let _redis: Redis | null = null;
+
+function getRedis(): Redis {
+  if (!_redis) {
+    _redis = new Redis(process.env.REDIS_URL_CACHE ?? 'redis://localhost:6380');
+  }
+  return _redis;
+}
+
+// ─── Resend client (D-04) ─────────────────────────────────────────────────────
+// Lazily instantiated — RESEND_API_KEY may not be set in test environments.
+let _resend: Resend | null = null;
+
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export type RegisterResult =
+  | { success: true; userId: string }
+  | { success: false; error: string };
+
+export type VerifyEmailResult =
+  | { success: true }
+  | { success: false; expired?: boolean; error: string };
+
+export type RateLimitResult =
+  | { allowed: true }
+  | { allowed: false; retryAfter?: number; maxReached?: boolean };
+
+// ─── registerUser ─────────────────────────────────────────────────────────────
+
+/**
+ * Register a new user with email and password.
+ *
+ * Validates:
+ * - password >= 8 characters (T-02-04)
+ * - email not already registered
+ *
+ * Creates the user with:
+ * - passwordHash = bcrypt.hash(password, 12) — never stores plaintext (T-02-04)
+ * - emailVerified = null — Credentials users must verify (D-01)
+ */
+export async function registerUser(input: {
+  name: string;
+  email: string;
+  password: string;
+}): Promise<RegisterResult> {
+  const { name, email, password } = input;
+
+  // Input validation
+  if (!password || password.length < 8) {
+    return {
+      success: false,
+      error: 'Password must be at least 8 characters.',
+    };
+  }
+
+  // Duplicate email check
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) {
+    return {
+      success: false,
+      error: 'An account with this email already exists. Sign in instead.',
+    };
+  }
+
+  // Hash password — 12 rounds per CLAUDE.md security spec (T-02-04)
+  const passwordHash = await bcrypt.hash(password, 12);
+
+  // Create user — emailVerified null (Credentials users must verify, D-01)
+  const user = await prisma.user.create({
+    data: {
+      name,
+      email,
+      passwordHash,
+      emailVerified: null,
+    },
+  });
+
+  return { success: true, userId: user.id };
+}
+
+// ─── createVerificationToken ──────────────────────────────────────────────────
+
+/**
+ * Create a cryptographically random verification token for the user.
+ * Expires in 24 hours (D-03).
+ * Token is stored in the VerificationToken table (reuses NextAuth-compatible table).
+ * Pattern: RESEARCH.md Pattern 5 (crypto.randomBytes hex token).
+ */
+export async function createVerificationToken(
+  userId: string,
+  email: string
+): Promise<string> {
+  // Generate a 32-byte random hex token (256-bit entropy)
+  const token = crypto.randomBytes(32).toString('hex');
+  const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h (D-03)
+
+  await prisma.verificationToken.create({
+    data: {
+      identifier: email,
+      token,
+      expires,
+    },
+  });
+
+  return token;
+}
+
+// ─── sendVerificationEmail ────────────────────────────────────────────────────
+
+/**
+ * Send a verification email with the given token via Resend SDK.
+ * Pitfall 6: SDK never throws — always check the error field.
+ */
+export async function sendVerificationEmail(
+  email: string,
+  token: string
+): Promise<void> {
+  const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
+  const verifyUrl = `${baseUrl}/api/verify-email?token=${token}`;
+
+  const resend = getResend();
+  const { error } = await resend.emails.send({
+    from: process.env.EMAIL_FROM ?? 'noreply@yourdomain.com',
+    to: email,
+    subject: 'Verify your email address — English Learning',
+    html: buildVerificationEmailHtml(verifyUrl),
+  });
+
+  // Pitfall 6: Resend SDK never throws; check error explicitly
+  if (error) {
+    throw new Error(
+      `Failed to send verification email: ${(error as { message?: string }).message ?? String(error)}`
+    );
+  }
+}
+
+// ─── resendVerificationEmail ──────────────────────────────────────────────────
+
+/**
+ * Resend verification email with rate-limit enforcement (D-02).
+ * Rate limits checked before creating a new token.
+ */
+export async function resendVerificationEmail(
+  userId: string,
+  email: string
+): Promise<{ success: boolean; error?: string; retryAfter?: number; maxReached?: boolean }> {
+  const rateLimitResult = await checkResendRateLimit(userId);
+
+  if (!rateLimitResult.allowed) {
+    return {
+      success: false,
+      error: rateLimitResult.maxReached
+        ? 'Maximum resends reached. Wait 1 hour or contact support.'
+        : `Please wait before requesting another email.`,
+      retryAfter: (rateLimitResult as { retryAfter?: number }).retryAfter,
+      maxReached: rateLimitResult.maxReached,
+    };
+  }
+
+  try {
+    const token = await createVerificationToken(userId, email);
+    await sendVerificationEmail(email, token);
+    return { success: true };
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'Failed to send email.',
+    };
+  }
+}
+
+// ─── checkResendRateLimit ─────────────────────────────────────────────────────
+
+/**
+ * Check and update rate-limit state for email resend requests.
+ * D-02: 1 resend per 60 seconds, max 3 resends per hour.
+ * Pitfall 5: counters stored in Redis so they survive restarts.
+ *
+ * Key patterns (Pitfall 5):
+ * - email-resend:rate:{userId}   TTL=60s  — per-call 60s cooldown
+ * - email-resend:hourly:{userId} TTL=3600s — hourly counter (max 3)
+ */
+export async function checkResendRateLimit(userId: string): Promise<RateLimitResult> {
+  const redis = getRedis();
+
+  const cooldownKey = `email-resend:rate:${userId}`;
+  const hourlyKey = `email-resend:hourly:${userId}`;
+
+  // 1. Check 60s cooldown
+  const cooldownTtl = await redis.ttl(cooldownKey);
+  if (cooldownTtl > 0) {
+    return { allowed: false, retryAfter: cooldownTtl };
+  }
+
+  // 2. Check hourly limit (max 3)
+  const hourlyCount = await redis.get(hourlyKey);
+  if (hourlyCount !== null && parseInt(hourlyCount, 10) >= 3) {
+    return { allowed: false, maxReached: true };
+  }
+
+  // 3. Increment counters — allow this request
+  // Set cooldown key with 60s TTL
+  await redis.incr(cooldownKey);
+  await redis.expire(cooldownKey, 60);
+
+  // Increment hourly counter with 3600s TTL (only set expiry on first increment)
+  const newHourlyCount = await redis.incr(hourlyKey);
+  if (newHourlyCount === 1) {
+    await redis.expire(hourlyKey, 3600);
+  }
+
+  return { allowed: true };
+}
+
+// ─── verifyEmailToken ─────────────────────────────────────────────────────────
+
+/**
+ * Validate an email verification token and set emailVerified on the user.
+ * T-02-05: expired token returns error with request-new-link option.
+ * T-02-05: token is deleted after use to prevent reuse.
+ * T-02-05: unknown tokens are rejected.
+ */
+export async function verifyEmailToken(token: string): Promise<VerifyEmailResult> {
+  // Find the token record
+  const record = await prisma.verificationToken.findFirst({
+    where: { token },
+  });
+
+  if (!record) {
+    return { success: false, error: 'Invalid or unknown verification token.' };
+  }
+
+  // Check expiry (D-03, T-02-05)
+  if (record.expires < new Date()) {
+    return {
+      success: false,
+      expired: true,
+      error: 'Your verification link has expired. Request a new one below.',
+    };
+  }
+
+  // Find the user by identifier (email)
+  const user = await prisma.user.findUnique({
+    where: { email: record.identifier },
+  });
+
+  if (!user) {
+    return { success: false, error: 'User not found.' };
+  }
+
+  // Set emailVerified and delete token (T-02-05: delete on use, no reuse)
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { emailVerified: new Date() },
+  });
+
+  await prisma.verificationToken.delete({
+    where: { identifier_token: { identifier: record.identifier, token: record.token } },
+  });
+
+  return { success: true };
+}
+
+// ─── Email template ───────────────────────────────────────────────────────────
+
+function buildVerificationEmailHtml(verifyUrl: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify your email address</title>
+</head>
+<body style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #18181b;">
+  <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 16px;">Verify your email address</h1>
+  <p style="font-size: 16px; line-height: 1.5; margin-bottom: 24px;">
+    Welcome to English Learning! Click the button below to verify your email address and activate your account.
+  </p>
+  <a href="${verifyUrl}"
+     style="display: inline-block; background-color: #18181b; color: #ffffff; text-decoration: none;
+            padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;">
+    Verify email address
+  </a>
+  <p style="font-size: 14px; color: #71717a; margin-top: 24px;">
+    This link expires in 24 hours. If you did not create an account, you can safely ignore this email.
+  </p>
+  <p style="font-size: 12px; color: #a1a1aa; margin-top: 16px;">
+    If the button does not work, copy this link: ${verifyUrl}
+  </p>
+</body>
+</html>`;
+}
