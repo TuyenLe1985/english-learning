@@ -14,7 +14,9 @@
 export { auth as middleware } from "@/auth";
 
 export const config = {
-  // Matcher: protect all routes under /dashboard and /profile (AUTH-06)
+  // Matcher: protect /dashboard and /profile root paths AND all nested routes (AUTH-06).
+  // WR-06 fix: /:path* matches one-or-more segments, so /dashboard (no trailing path)
+  // was unprotected. Added exact-path entries to cover the root dashboard/profile pages.
   // Excludes API routes, static files, and public auth pages automatically (Next.js default).
-  matcher: ["/dashboard/:path*", "/profile/:path*"],
+  matcher: ["/dashboard", "/dashboard/:path*", "/profile", "/profile/:path*"],
 };
