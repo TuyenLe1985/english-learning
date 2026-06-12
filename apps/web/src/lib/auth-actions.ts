@@ -125,6 +125,15 @@ export async function createVerificationToken(
   const token = crypto.randomBytes(32).toString('hex');
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h (D-03)
 
+  // WR-07: Invalidate any existing email-verification tokens for this address
+  // before creating a new one. Without this, every resend (up to 3/hour) adds
+  // an additional row — old tokens remain valid for up to 24h and the table
+  // grows unbounded. deleteMany is safe: email is the identifier, so we only
+  // touch this user's tokens.
+  await prisma.verificationToken.deleteMany({
+    where: { identifier: email },
+  });
+
   await prisma.verificationToken.create({
     data: {
       identifier: email,
