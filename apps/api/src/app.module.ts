@@ -12,6 +12,7 @@ import { SrsModule } from './srs/srs.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: ['../../.env', '.env'],
     }),
     PrismaModule,
     HealthModule,
