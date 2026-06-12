@@ -53,21 +53,6 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
   const [toast, setToast] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Auth.js v5 JWT — extract the raw token for Bearer auth header.
-  // In Next.js server actions / client components, we can use the session token
-  // via the session object which is passed from the server component.
-  // The actual JWE token is obtained via fetch to /api/auth/session, but for
-  // simplicity we'll use the getToken() approach via a server action.
-  // For now: client-side fetch uses /api/profile/token relay or direct NestJS.
-  // Practical approach: use a relay endpoint in Next.js that forwards with token.
-  const getAuthHeaders = useCallback(async () => {
-    // Fetch the raw session token from NextAuth's token endpoint
-    // This approach works in client components without exposing the JWT secret
-    const res = await fetch("/api/auth/session");
-    if (!res.ok) return {};
-    return { Authorization: `Bearer ${session.user.userId}` };
-  }, [session.user.userId]);
-
   // Fetch profile from NestJS via a relay approach
   // We use a Next.js API route to forward the request with the session token
   const fetchProfile = useCallback(async () => {
@@ -109,7 +94,10 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
       setToast("Profile updated");
       setTimeout(() => setToast(""), 4000);
     } catch {
-      setToast("");
+      // WR-09: Show an error toast so the user knows the save failed.
+      // Previously setToast('') cleared any existing toast without giving feedback.
+      setToast("Failed to save profile. Please try again.");
+      setTimeout(() => setToast(""), 4000);
     } finally {
       setSaving(false);
     }
