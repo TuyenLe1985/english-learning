@@ -62,8 +62,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // D-13: Embed userId, role, cefrLevel in JWT on first sign-in.
         // Enables NestJS to authorize requests without a DB lookup on every request.
         token.userId = user.id;
-        token.role = (user as { role?: string }).role;
-        token.cefrLevel = (user as { cefrLevel?: string }).cefrLevel;
+        token.role = (user as { role?: string }).role ?? "STUDENT";
+        token.cefrLevel = (user as { cefrLevel?: string }).cefrLevel ?? "B1";
       }
       if (account?.provider === "google" && user) {
         // D-10: Set emailVerified for Google OAuth users at account creation time.
@@ -72,6 +72,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: { id: user.id },
           data: { emailVerified: new Date() },
         });
+      }
+      // CR-07: Refresh role and cefrLevel from the database periodically so that
+      // privilege changes (e.g. ADMIN revoke, CEFR level update) propagate within
+      // ~1 hour instead of persisting for up to 30 days.
+      // roleRefreshedAt tracks the last DB refresh; token.userId is set on first sign-in.
+      const REFRESH_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+      const lastRefresh = token.roleRefreshedAt as number | undefined;
+      if (
+        token.userId &&
+        (!lastRefresh || Date.now() - lastRefresh > REFRESH_INTERVAL_MS)
+      ) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.userId as string },
+          select: { role: true, cefrLevel: true },
+        });
+        if (dbUser) {
+          token.role = dbUser.role;
+          token.cefrLevel = dbUser.cefrLevel;
+          token.roleRefreshedAt = Date.now();
+        }
       }
       return token;
     },
