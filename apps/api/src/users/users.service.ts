@@ -13,7 +13,8 @@
  *   Both fields are returned; the client applies `avatarUrl ?? image` precedence.
  */
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '@repo/database';
 import { PrismaService } from '../prisma/prisma.service';
 import type { UpdateProfileDto } from '@repo/shared';
 
@@ -82,16 +83,34 @@ export class UsersService {
       data['name'] = dto.name;
     }
     if (dto.avatarKey !== undefined) {
+      // CR-06: Validate that the avatarKey belongs to the requesting user.
+      // An authenticated user must not be able to point their profile at another
+      // user's storage key or at an arbitrary path.
+      if (!dto.avatarKey.startsWith(`avatars/${userId}/`)) {
+        throw new BadRequestException('Avatar key does not belong to this user.');
+      }
       // T-02-16: Store only the storage key (RESEARCH Anti-Pattern)
       data['avatarUrl'] = dto.avatarKey;
     }
 
-    const user = await this.prisma.user.update({
-      where: { id: userId },
-      data,
-      select: PROFILE_SELECT,
-    });
-
-    return user as UserProfile;
+    // WR-02: Catch P2025 (record not found) and surface it as a proper 404.
+    // prisma.user.update throws PrismaClientKnownRequestError(P2025) when the
+    // userId from the JWT no longer exists (e.g. account was deleted).
+    try {
+      const user = await this.prisma.user.update({
+        where: { id: userId },
+        data,
+        select: PROFILE_SELECT,
+      });
+      return user as UserProfile;
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2025'
+      ) {
+        throw new NotFoundException(`User ${userId} not found`);
+      }
+      throw err;
+    }
   }
 }
