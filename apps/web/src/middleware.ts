@@ -11,7 +11,12 @@
  * T-02-08: Elevation of Privilege threat mitigated — unauthenticated users cannot access
  * protected routes; they are always redirected to /login.
  */
-export { auth as middleware } from "@/auth";
+// Use Edge-safe auth config (no Prisma/native modules) for middleware.
+// Full Prisma-backed auth lives in auth.ts (Node.js server only).
+import NextAuth from "next-auth";
+import { authConfig } from "@/auth.config";
+
+export const { auth: middleware } = NextAuth(authConfig);
 
 export const config = {
   // Matcher: protect /dashboard and /profile root paths AND all nested routes (AUTH-06).
