@@ -9,18 +9,21 @@ const nextConfig = {
   },
   webpack(config, { isServer }) {
     if (isServer) {
-      // Prisma's generated client imports node: built-ins via relative paths
-      // that bypass serverComponentsExternalPackages. Externalize any module
-      // containing the generated client path or @prisma runtime directly.
+      // serverComponentsExternalPackages doesn't always fire before webpack
+      // resolves the pnpm symlink into TypeScript source. Catch @repo/database
+      // and @prisma/client by name in the externals callback so webpack emits
+      // require('@repo/database') / require('@prisma/client'), which Node.js
+      // resolves via the workspace symlink to the CJS dist — where the relative
+      // ../generated/client path is valid relative to that dist file's location.
       const originalExternals = config.externals ?? [];
       config.externals = [
         ...(Array.isArray(originalExternals) ? originalExternals : [originalExternals]),
         ({ request }, callback) => {
           if (
             request &&
-            (request.includes('/generated/client') ||
-              request.includes('@prisma/client') ||
-              request.includes('prisma/runtime'))
+            (request === '@repo/database' ||
+              request === '@prisma/client' ||
+              request.startsWith('@prisma/'))
           ) {
             return callback(null, 'commonjs ' + request);
           }
