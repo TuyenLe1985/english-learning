@@ -3,25 +3,35 @@
  *
  * PROF-02 (avatar upload constraints — 2MB max, JPEG/PNG/WebP only): implemented in Plan 06
  *
- * These tests mock the S3Client so no real MinIO/R2 connection is required.
+ * Tests use direct instantiation with mocked S3Client (no NestJS DI).
+ * This matches the existing test pattern (jwt.guard.spec.ts) and avoids
+ * emitDecoratorMetadata issues with Vitest's default transformer.
+ *
+ * S3Client and getSignedUrl are mocked so no real MinIO/R2 connection is needed.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { ProfileService } from './profile.service';
+import type { ConfigService } from '@nestjs/config';
 
-// ─── Mock @aws-sdk/client-s3 and presigner ───────────────────────────────────
+// ─── Mock @aws-sdk before imports ─────────────────────────────────────────────
+// NOTE: vi.mock is hoisted to top of file; factory must not reference variables
+// declared with const/let that haven't been initialized at hoist time.
 vi.mock('@aws-sdk/client-s3', () => ({
   S3Client: vi.fn().mockImplementation(() => ({})),
-  PutObjectCommand: vi.fn().mockImplementation((args) => ({ input: args })),
+  PutObjectCommand: vi.fn().mockImplementation((args: unknown) => ({ ...(args as object) })),
 }));
 
 vi.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: vi.fn().mockResolvedValue('https://minio.local/avatars/signed-url'),
 }));
 
+import { ProfileService } from './profile.service';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+const mockGetSignedUrl = vi.mocked(getSignedUrl);
+
+// ─── Mock ConfigService ───────────────────────────────────────────────────────
 const mockConfig = {
   get: vi.fn((key: string) => {
     const config: Record<string, string> = {
@@ -32,22 +42,16 @@ const mockConfig = {
     };
     return config[key];
   }),
-};
+} as unknown as ConfigService;
 
 describe('ProfileService', () => {
   let service: ProfileService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.clearAllMocks();
-
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ProfileService,
-        { provide: ConfigService, useValue: mockConfig },
-      ],
-    }).compile();
-
-    service = module.get<ProfileService>(ProfileService);
+    // Restore implementation after clearAllMocks resets it
+    mockGetSignedUrl.mockResolvedValue('https://minio.local/avatars/signed-url');
+    service = new ProfileService(mockConfig);
   });
 
   // ---------------------------------------------------------------------------
@@ -106,12 +110,6 @@ describe('ProfileService', () => {
       ).rejects.toThrow(BadRequestException);
     });
 
-    it('rejects a file at exactly 0 bytes as 0 < allowed but rejects image/gif MIME type', async () => {
-      await expect(
-        service.generateAvatarUploadUrl('user-001', 'anim.gif', 'image/gif' as never, 0),
-      ).rejects.toThrow(BadRequestException);
-    });
-
     it('rejects a file with an unsupported MIME type (e.g. image/gif)', async () => {
       await expect(
         service.generateAvatarUploadUrl(
@@ -160,8 +158,8 @@ describe('ProfileService', () => {
 
       // Extract the timestamp part from the key
       const keyParts = result.key.split('/');
-      const filenamePart = keyParts[keyParts.length - 1]; // e.g. "1234567890-myfile.jpg"
-      const ts = parseInt(filenamePart.split('-')[0], 10);
+      const filenamePart = keyParts[keyParts.length - 1] ?? ''; // e.g. "1234567890-myfile.jpg"
+      const ts = parseInt(filenamePart.split('-')[0] ?? '0', 10);
       expect(ts).toBeGreaterThanOrEqual(before);
       expect(ts).toBeLessThanOrEqual(after);
     });

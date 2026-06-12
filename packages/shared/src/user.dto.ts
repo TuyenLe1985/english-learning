@@ -9,6 +9,10 @@ export const UserProfileDtoSchema = z.object({
   email: z.string().email(),
   name: z.string().nullable(),
   avatarUrl: z.string().nullable(),
+  // RESEARCH Open Questions RESOLVED Q1: image is the Google OAuth avatar URL
+  // set by PrismaAdapter on first Google sign-in. Both avatarUrl and image are
+  // returned so the client can apply `avatarUrl ?? image` display precedence.
+  image: z.string().nullable().optional(),
   cefrLevel: z.enum(["B1", "B2", "C1"]),
   xpTotal: z.number(),
   level: z.number(),

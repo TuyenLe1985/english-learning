@@ -4,21 +4,26 @@
  * PROF-01 (GET /me returns profile fields): implemented in Plan 06
  * PROF-02 (PATCH /me updates name + avatarKey): implemented in Plan 06
  *
- * These tests use a mocked PrismaService so no DB connection is required.
+ * Tests use direct instantiation with a mocked PrismaService (no NestJS DI).
+ * This matches the existing test pattern (jwt.guard.spec.ts) and avoids
+ * emitDecoratorMetadata issues with Vitest's default transformer.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
+import type { PrismaService } from '../prisma/prisma.service';
 
 // ─── Mock PrismaService ───────────────────────────────────────────────────────
+const mockFindUnique = vi.fn();
+const mockUpdate = vi.fn();
+
 const mockPrisma = {
   user: {
-    findUnique: vi.fn(),
-    update: vi.fn(),
+    findUnique: mockFindUnique,
+    update: mockUpdate,
   },
-};
+} as unknown as PrismaService;
 
 // ─── Sample data ──────────────────────────────────────────────────────────────
 const now = new Date('2026-06-01T00:00:00.000Z');
@@ -40,17 +45,9 @@ const baseUser = {
 describe('UsersService', () => {
   let service: UsersService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.clearAllMocks();
-
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService,
-        { provide: 'PrismaService', useValue: mockPrisma },
-      ],
-    }).compile();
-
-    service = module.get<UsersService>(UsersService);
+    service = new UsersService(mockPrisma);
   });
 
   // ---------------------------------------------------------------------------
@@ -58,7 +55,7 @@ describe('UsersService', () => {
   // ---------------------------------------------------------------------------
   describe('getMe()', () => {
     it('returns all UserProfileDto fields for a valid userId', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue(baseUser);
+      mockFindUnique.mockResolvedValue(baseUser);
 
       const result = await service.getMe('user-001');
 
@@ -71,7 +68,7 @@ describe('UsersService', () => {
         xpTotal: 0,
         level: 1,
       });
-      expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({
+      expect(mockFindUnique).toHaveBeenCalledWith({
         where: { id: 'user-001' },
         select: expect.objectContaining({
           id: true,
@@ -90,7 +87,7 @@ describe('UsersService', () => {
     });
 
     it('throws NotFoundException when userId does not exist', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue(null);
+      mockFindUnique.mockResolvedValue(null);
 
       await expect(service.getMe('nonexistent-id')).rejects.toThrow(
         NotFoundException,
@@ -98,7 +95,7 @@ describe('UsersService', () => {
     });
 
     it('returns null for avatarUrl when no avatar has been uploaded', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
+      mockFindUnique.mockResolvedValue({
         ...baseUser,
         avatarUrl: null,
       });
@@ -113,7 +110,7 @@ describe('UsersService', () => {
         avatarUrl: 'avatars/user-001/123-photo.jpg',
         image: 'https://lh3.googleusercontent.com/a/photo.jpg',
       };
-      mockPrisma.user.findUnique.mockResolvedValue(googleUser);
+      mockFindUnique.mockResolvedValue(googleUser);
 
       const result = await service.getMe('user-001');
       expect(result.avatarUrl).toBe('avatars/user-001/123-photo.jpg');
@@ -129,12 +126,12 @@ describe('UsersService', () => {
   describe('updateMe()', () => {
     it('updates display name when a valid name is provided', async () => {
       const updated = { ...baseUser, name: 'Alice Updated' };
-      mockPrisma.user.update.mockResolvedValue(updated);
+      mockUpdate.mockResolvedValue(updated);
 
       const result = await service.updateMe('user-001', { name: 'Alice Updated' });
 
       expect(result.name).toBe('Alice Updated');
-      expect(mockPrisma.user.update).toHaveBeenCalledWith({
+      expect(mockUpdate).toHaveBeenCalledWith({
         where: { id: 'user-001' },
         data: { name: 'Alice Updated' },
         select: expect.objectContaining({ id: true, email: true }),
@@ -144,12 +141,12 @@ describe('UsersService', () => {
     it('updates avatarUrl when avatarKey is provided', async () => {
       const storageKey = 'avatars/user-001/1234567890-photo.jpg';
       const updated = { ...baseUser, avatarUrl: storageKey };
-      mockPrisma.user.update.mockResolvedValue(updated);
+      mockUpdate.mockResolvedValue(updated);
 
       const result = await service.updateMe('user-001', { avatarKey: storageKey });
 
       expect(result.avatarUrl).toBe(storageKey);
-      expect(mockPrisma.user.update).toHaveBeenCalledWith({
+      expect(mockUpdate).toHaveBeenCalledWith({
         where: { id: 'user-001' },
         data: { avatarUrl: storageKey },
         select: expect.objectContaining({ id: true }),
@@ -157,22 +154,17 @@ describe('UsersService', () => {
     });
 
     it('does not allow updating email via updateMe (email not in UpdateProfileDto)', async () => {
-      // UpdateProfileDtoSchema only allows name and avatarKey — email is excluded.
-      // The service only passes through name/avatarKey to prisma.user.update.
       const updated = { ...baseUser };
-      mockPrisma.user.update.mockResolvedValue(updated);
+      mockUpdate.mockResolvedValue(updated);
 
-      // Call with extra email field (mimicking bad actor who bypasses DTO validation)
-      const result = await service.updateMe('user-001', {
+      await service.updateMe('user-001', {
         name: 'Alice',
-        // email is not a valid key in UpdateProfileDto — TS would reject it,
-        // but service must also not pass it through
+        // avatarKey is not set — only name
       });
 
-      const updateCall = mockPrisma.user.update.mock.calls[0];
+      const updateCall = mockUpdate.mock.calls[0] as [{ data: Record<string, unknown> }];
       const dataArg = updateCall[0].data;
       expect(dataArg).not.toHaveProperty('email');
-      expect(result).toBeDefined();
     });
 
     it('updates both name and avatarKey in a single call', async () => {
@@ -182,7 +174,7 @@ describe('UsersService', () => {
         name: 'Bob',
         avatarUrl: storageKey,
       };
-      mockPrisma.user.update.mockResolvedValue(updated);
+      mockUpdate.mockResolvedValue(updated);
 
       const result = await service.updateMe('user-001', {
         name: 'Bob',
