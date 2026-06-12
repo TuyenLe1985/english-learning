@@ -69,3 +69,69 @@ ${verifyUrl}
 
 If you did not create an account, you can safely ignore this email.`;
 }
+
+// ─── Password reset email ──────────────────────────────────────────────────────
+
+export interface PasswordResetEmailProps {
+  resetUrl: string;
+}
+
+/**
+ * Returns HTML string for the password reset email.
+ * Used in auth-actions.ts createPasswordResetToken().
+ * AUTH-04: Sent after a user requests a password reset.
+ */
+export function passwordResetEmailHtml({ resetUrl }: PasswordResetEmailProps): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset your password</title>
+</head>
+<body style="font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #18181b; background-color: #ffffff;">
+  <div style="text-align: center; margin-bottom: 32px;">
+    <span style="font-size: 20px; font-weight: 600; color: #18181b;">English Learning</span>
+  </div>
+
+  <div style="background-color: #f4f4f5; border-radius: 12px; padding: 32px;">
+    <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 16px 0; color: #18181b;">
+      Reset your password
+    </h1>
+    <p style="font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; color: #52525b;">
+      We received a request to reset your password. Click the button below to set a new
+      password. This link expires in <strong>24 hours</strong>.
+    </p>
+    <div style="text-align: center; margin-bottom: 24px;">
+      <a href="${resetUrl}"
+         style="display: inline-block; background-color: #18181b; color: #ffffff; text-decoration: none;
+                padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600;">
+        Reset password
+      </a>
+    </div>
+    <p style="font-size: 13px; color: #71717a; margin: 0; text-align: center;">
+      If the button does not work, paste this link in your browser:
+    </p>
+    <p style="font-size: 12px; color: #a1a1aa; margin: 8px 0 0 0; text-align: center; word-break: break-all;">
+      ${resetUrl}
+    </p>
+  </div>
+
+  <p style="font-size: 13px; color: #a1a1aa; text-align: center; margin-top: 24px;">
+    If you did not request a password reset, you can safely ignore this email. Your password
+    will not be changed.
+  </p>
+</body>
+</html>`;
+}
+
+export function passwordResetEmailText({ resetUrl }: PasswordResetEmailProps): string {
+  return `English Learning — Reset your password
+
+We received a request to reset your password. Click the link below to set a new password.
+This link expires in 24 hours.
+
+${resetUrl}
+
+If you did not request a password reset, you can safely ignore this email.`;
+}

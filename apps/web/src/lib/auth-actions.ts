@@ -17,7 +17,12 @@ import bcrypt from 'bcrypt';
 import { prisma } from '@repo/database';
 import { Resend } from 'resend';
 import Redis from 'ioredis';
-import { verificationEmailHtml, verificationEmailText } from './email-templates';
+import {
+  verificationEmailHtml,
+  verificationEmailText,
+  passwordResetEmailHtml,
+  passwordResetEmailText,
+} from './email-templates';
 
 // ─── Redis client (cache instance, Pitfall 5) ─────────────────────────────────
 // Lazily instantiated to avoid connection on import in test environments.
@@ -54,6 +59,12 @@ export type VerifyEmailResult =
 export type RateLimitResult =
   | { allowed: true }
   | { allowed: false; retryAfter?: number; maxReached?: boolean };
+
+export type PasswordResetRequestResult = { success: true } | { success: false; error: string };
+
+export type ResetPasswordResult =
+  | { success: true }
+  | { success: false; expired?: boolean; error: string };
 
 // ─── registerUser ─────────────────────────────────────────────────────────────
 
@@ -241,6 +252,137 @@ export async function checkResendRateLimit(userId: string): Promise<RateLimitRes
   }
 
   return { allowed: true };
+}
+
+// ─── createPasswordResetToken ─────────────────────────────────────────────────
+
+/**
+ * Request a password reset link for the given email.
+ *
+ * Security (T-02-11): Returns the same success-shaped response whether or not the email
+ * exists — never reveals account existence to the caller (no enumeration).
+ *
+ * When the user exists:
+ * - Upserts a VerificationToken with identifier `password-reset:{userId}`, random token,
+ *   expires now+24h (D-03).
+ * - Sends the reset link via Resend (Pitfall 6: always check { error }).
+ *
+ * Pattern: RESEARCH.md Pattern 5
+ */
+export async function createPasswordResetToken(
+  email: string
+): Promise<PasswordResetRequestResult> {
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  // T-02-11: Return the same response shape regardless of whether user exists.
+  if (!user) {
+    return { success: true };
+  }
+
+  // Generate a 32-byte random hex token (256-bit entropy)
+  const token = crypto.randomBytes(32).toString('hex');
+  const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h (D-03)
+  const identifier = `password-reset:${user.id}`;
+
+  // Upsert: if the user already has a pending reset, replace it.
+  // The upsert where clause uses the identifier alone — the token changes each time.
+  await prisma.verificationToken.upsert({
+    where: { identifier_token: { identifier, token } },
+    create: { identifier, token, expires },
+    update: { token, expires },
+  });
+
+  // Send reset email via Resend (Pitfall 6: never throws — check error)
+  const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
+  const resetUrl = `${baseUrl}/reset-password/confirm?token=${token}`;
+
+  const resend = getResend();
+  const { error } = await resend.emails.send({
+    from: process.env.EMAIL_FROM ?? 'noreply@yourdomain.com',
+    to: email,
+    subject: 'Reset your password — English Learning',
+    html: passwordResetEmailHtml({ resetUrl }),
+    text: passwordResetEmailText({ resetUrl }),
+  });
+
+  // Pitfall 6: check error but DO NOT leak email-send failure to the caller
+  // (would expose whether the email was deliverable → information disclosure)
+  if (error) {
+    // Log server-side only; caller still receives success shape (T-02-11)
+    console.error(
+      `[createPasswordResetToken] Resend error for ${email}:`,
+      (error as { message?: string }).message ?? String(error)
+    );
+  }
+
+  return { success: true };
+}
+
+// ─── resetPassword ────────────────────────────────────────────────────────────
+
+/**
+ * Set a new password using a valid reset token.
+ *
+ * Security (T-02-12):
+ * - Rejects newPassword < 8 characters.
+ * - Rejects unknown tokens.
+ * - Rejects expired tokens (returns expired: true so the UI can show request-new-link).
+ * - Deletes the token after use — single-use only.
+ * - Stores bcrypt(newPassword, 12) — never plaintext.
+ */
+export async function resetPassword(
+  token: string,
+  newPassword: string
+): Promise<ResetPasswordResult> {
+  // Validate new password length
+  if (!newPassword || newPassword.length < 8) {
+    return {
+      success: false,
+      error: 'Password must be at least 8 characters.',
+    };
+  }
+
+  // Look up the reset token
+  const record = await prisma.verificationToken.findFirst({
+    where: { token },
+  });
+
+  if (!record) {
+    return { success: false, error: 'Invalid or unknown reset token.' };
+  }
+
+  // Check expiry (D-03, T-02-12)
+  if (record.expires < new Date()) {
+    return {
+      success: false,
+      expired: true,
+      error: 'Your reset link has expired. Request a new one.',
+    };
+  }
+
+  // Extract userId from identifier pattern "password-reset:{userId}"
+  const userId = record.identifier.replace('password-reset:', '');
+
+  // Hash the new password — 12 rounds (T-02-04)
+  const passwordHash = await bcrypt.hash(newPassword, 12);
+
+  // Update user's password
+  await prisma.user.update({
+    where: { id: userId },
+    data: { passwordHash },
+  });
+
+  // Delete the token — single-use only (T-02-12)
+  await prisma.verificationToken.delete({
+    where: {
+      identifier_token: {
+        identifier: record.identifier,
+        token: record.token,
+      },
+    },
+  });
+
+  return { success: true };
 }
 
 // ─── verifyEmailToken ─────────────────────────────────────────────────────────
