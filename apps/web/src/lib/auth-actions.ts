@@ -17,6 +17,7 @@ import bcrypt from 'bcrypt';
 import { prisma } from '@repo/database';
 import { Resend } from 'resend';
 import Redis from 'ioredis';
+import { verificationEmailHtml, verificationEmailText } from './email-templates';
 
 // ─── Redis client (cache instance, Pitfall 5) ─────────────────────────────────
 // Lazily instantiated to avoid connection on import in test environments.
@@ -152,7 +153,8 @@ export async function sendVerificationEmail(
     from: process.env.EMAIL_FROM ?? 'noreply@yourdomain.com',
     to: email,
     subject: 'Verify your email address — English Learning',
-    html: buildVerificationEmailHtml(verifyUrl),
+    html: verificationEmailHtml({ verifyUrl }),
+    text: verificationEmailText({ verifyUrl }),
   });
 
   // Pitfall 6: Resend SDK never throws; check error explicitly
@@ -288,34 +290,4 @@ export async function verifyEmailToken(token: string): Promise<VerifyEmailResult
   });
 
   return { success: true };
-}
-
-// ─── Email template ───────────────────────────────────────────────────────────
-
-function buildVerificationEmailHtml(verifyUrl: string): string {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify your email address</title>
-</head>
-<body style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #18181b;">
-  <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 16px;">Verify your email address</h1>
-  <p style="font-size: 16px; line-height: 1.5; margin-bottom: 24px;">
-    Welcome to English Learning! Click the button below to verify your email address and activate your account.
-  </p>
-  <a href="${verifyUrl}"
-     style="display: inline-block; background-color: #18181b; color: #ffffff; text-decoration: none;
-            padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;">
-    Verify email address
-  </a>
-  <p style="font-size: 14px; color: #71717a; margin-top: 24px;">
-    This link expires in 24 hours. If you did not create an account, you can safely ignore this email.
-  </p>
-  <p style="font-size: 12px; color: #a1a1aa; margin-top: 16px;">
-    If the button does not work, copy this link: ${verifyUrl}
-  </p>
-</body>
-</html>`;
 }
