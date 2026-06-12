@@ -11,7 +11,7 @@
 - [x] **AUTH-02**: User receives email verification link after signup and must verify before accessing content
 - [ ] **AUTH-03**: User can sign in with Google OAuth
 - [x] **AUTH-04**: User can request a password reset link sent to their email
-- [ ] **AUTH-05**: User session persists across browser refresh and tab close/reopen (NextAuth JWT)
+- [x] **AUTH-05**: User session persists across browser refresh and tab close/reopen (NextAuth JWT)
 - [ ] **AUTH-06**: User is redirected to login when accessing protected routes while unauthenticated
 
 ### User Profile
@@ -172,7 +172,7 @@
 | AUTH-02 | Phase 2 | Complete |
 | AUTH-03 | Phase 2 | Pending |
 | AUTH-04 | Phase 2 | Complete |
-| AUTH-05 | Phase 2 | Pending |
+| AUTH-05 | Phase 2 | Complete |
 | AUTH-06 | Phase 2 | Pending |
 | PROF-01 | Phase 2 | Complete |
 | PROF-02 | Phase 2 | Complete |
