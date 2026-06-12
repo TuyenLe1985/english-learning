@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { ProfileModule } from './profile/profile.module';
+import { VocabularyModule } from './vocabulary/vocabulary.module';
+import { SrsModule } from './srs/srs.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ProfileModule } from './profile/profile.module';
     AuthModule,
     UsersModule,
     ProfileModule,
+    VocabularyModule,
+    SrsModule,
   ],
   controllers: [],
   providers: [],
