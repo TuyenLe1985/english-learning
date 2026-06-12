@@ -53,7 +53,7 @@ async function main() {
         name: "Demo User",
         cefrLevel: "B1",
       },
-      update: {},
+      update: { emailVerified: new Date(), passwordHash: hash },
     });
 
     console.log(`Demo user upserted: ${demo.email}`);
