@@ -78,7 +78,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. User can sign in with a Google account via OAuth and land on the dashboard without a separate registration step
   3. User can request a password-reset link, click it, and set a new password
   4. Authenticated session persists across browser refresh and new tab open; unauthenticated users visiting protected routes are redirected to the login page
-  5. User profile page shows name, email, avatar, CEFR level, XP total, and registration date; user can update display name and avatar
+  5. User profile page shows name, email, avatar (Google avatar or uploaded), CEFR level badge, and XP total; display name and avatar are editable; CEFR level auto-update from XP thresholds is deferred to Phase 7 (Gamification)
 
 **Plans**: 6 plans in 3 waves
 

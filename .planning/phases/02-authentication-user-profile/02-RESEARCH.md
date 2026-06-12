@@ -691,28 +691,32 @@ export type AvatarUploadUrlRequest = z.infer<typeof AvatarUploadUrlRequestSchema
 | A1 | `bcrypt` version 5.x is already installed or will be installed as the hashing library | Standard Stack | Low — well-established, project-specified in CLAUDE.md; confirm with `npm view bcrypt version` |
 | A2 | `PrismaAdapter` `allowDangerousEmailAccountLinking` option is available in `@auth/prisma-adapter@2.x` | Code Examples | Medium — if not in 2.x, account linking must be handled via custom `linkAccount` adapter method |
 | A3 | The `VerificationToken` table (already in schema) is suitable for password reset tokens without modification | Architecture Patterns | Low — table has `identifier`, `token`, `expires` which suffices; no schema change needed |
-| A4 | `User.avatarUrl` field needs explicit mapping in PrismaAdapter since standard Auth.js User model uses `image` | Common Pitfalls | High — if unmapped, Google OAuth avatar URLs from provider are silently dropped; needs investigation at implementation time |
+| A4 | PrismaAdapter writes the OAuth `profile.image` to a `User.image` field; `avatarUrl` is upload-owned | Common Pitfalls | RESOLVED (was High) — keep both `image` (adapter/Google) and `avatarUrl` (upload); display `avatarUrl ?? image`. See Open Questions (RESOLVED) Q1 |
 | A5 | Resend free tier (3,000 emails/month) is sufficient for Phase 2 local testing | Environment | Low — local dev will send few emails; production may need paid plan later |
 | A6 | `@auth/core@0.34.3` exports `decode` function compatible with `next-auth@5.0.0-beta.31` JWE format | Architecture Patterns | Medium — both packages are from the nextauthjs/next-auth monorepo and should be compatible at these versions; verify at implementation |
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **PrismaAdapter field name mapping for avatarUrl vs image**
-   - What we know: Standard Auth.js User model has `image`; project schema uses `avatarUrl`
-   - What's unclear: Whether `@auth/prisma-adapter@2.x` supports custom field mapping or requires a field named `image`
-   - Recommendation: Read `@auth/prisma-adapter` source code at implementation time; if `image` is required, add an `image String?` field aliased to `avatarUrl` OR use a Prisma `@map("avatar_url")` alias
+All three open questions are resolved below. No remaining HIGH-risk unknowns block Phase 2 implementation.
 
-2. **Where to run Resend email sending — apps/web Server Action vs NestJS**
-   - What we know: D-15 assigns all email flows to NextAuth (apps/web); D-04 specifies `RESEND_API_KEY` in `apps/api` OR `apps/web`
-   - What's unclear: Whether the email send should live in Next.js Server Actions (cleanest) or be a NestJS endpoint called by Next.js
-   - Recommendation: Server Actions in apps/web — keeps email logic co-located with auth flows; avoids an unnecessary HTTP hop to NestJS for transactional email
+1. **PrismaAdapter field name mapping for avatarUrl vs image — RESOLVED** *(resolves Assumption A4, HIGH risk)*
+   - What we know: Standard Auth.js User model has `image`; project schema uses `avatarUrl`.
+   - **Resolution:** `@auth/prisma-adapter` maps the OAuth provider's `profile.image` field to a User model field literally named `image` by convention — it does not write to `avatarUrl`. Rather than rename `avatarUrl` (which would break D-05/D-06 naming and the upload flow) or override the adapter's `createUser`/`updateUser`, **keep BOTH fields on the User model:**
+     - `image String?` — PrismaAdapter-owned, populated with the Google avatar URL on OAuth sign-in. The adapter writes here automatically; no custom mapping needed.
+     - `avatarUrl String?` — upload-owned, holds the MinIO/R2 storage key set by `PATCH /api/users/me` (D-06).
+   - **UI display rule:** the profile page and any avatar display use `avatarUrl ?? image` — the uploaded avatar (storage key, reconstructed to a URL) takes precedence; the Google avatar is the fallback; the boring-avatars initials avatar is the final fallback when both are null.
+   - **Schema action:** Plan 01's passwordHash migration must also add `image String?` to the User model if it is not already present in the Phase 1 schema. (`avatarUrl` already exists from Phase 1.)
+   - **Verification hook:** Plan 06 carries an acceptance criterion that after Google OAuth sign-in `user.image` is populated with the Google avatar URL, proving the adapter mapping works end to end.
 
-3. **Redis availability for email rate-limiting (D-02)**
-   - What we know: Redis is available via Docker; `REDIS_URL_CACHE` is the cache Redis instance from Phase 1
-   - What's unclear: Whether to use `ioredis` directly in Next.js Server Actions or proxy through a NestJS endpoint for rate-limit enforcement
-   - Recommendation: Use `ioredis` in a Next.js Server Action with `REDIS_URL_CACHE`; it's simpler and keeps the rate-limit logic with the email send action
+2. **Where to run Resend email sending — apps/web Server Action vs NestJS — RESOLVED**
+   - What we know: D-15 assigns all email flows to NextAuth (apps/web); D-04 specifies `RESEND_API_KEY` in `apps/api` OR `apps/web`.
+   - **Resolution:** Send transactional email from **Next.js Server Actions in apps/web**. This co-locates email logic with the auth flows that trigger it (signup verification, password reset) and avoids an unnecessary HTTP hop to NestJS. `RESEND_API_KEY` lives in `apps/web`.
+
+3. **Redis availability for email rate-limiting (D-02) — RESOLVED**
+   - What we know: Redis is available via Docker; `REDIS_URL_CACHE` is the cache Redis instance from Phase 1.
+   - **Resolution:** Use `ioredis` directly in the Next.js Server Action that sends the verification email, keyed against `REDIS_URL_CACHE`. Key pattern `email-resend:rate:{userId}` with `INCR` + `EXPIRE 3600` enforces 1/60s and max 3/hr (D-02) without a NestJS round-trip.
 
 ---
 
