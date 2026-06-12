@@ -10,26 +10,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { getToken } from "next-auth/jwt";
 import { headers } from "next/headers";
-
-const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
+import { fetchWithAuth, API_URL } from "@/lib/api-client";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const session = await auth();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const reqHeaders = await headers();
-  const cookieHeader = reqHeaders.get("cookie") ?? "";
-  const token = await getToken({
-    req: { headers: { cookie: cookieHeader } } as Parameters<typeof getToken>[0]["req"],
-    secret: process.env["NEXTAUTH_SECRET"] ?? "",
-  });
-
-  if (!token) {
-    return NextResponse.json({ error: "No token" }, { status: 401 });
   }
 
   let body: unknown;
@@ -39,30 +26,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  try {
-    const res = await fetch(`${API_URL}/api/profile/avatar/upload-url`, {
+  const reqHeaders = await headers();
+  const cookieHeader = reqHeaders.get("cookie") ?? "";
+
+  const res = await fetchWithAuth(
+    cookieHeader,
+    `${API_URL}/api/profile/avatar/upload-url`,
+    {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${JSON.stringify(token)}`,
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(body),
-    });
+    },
+  );
 
-    if (!res.ok) {
-      const err = await res.text();
-      return NextResponse.json(
-        { error: err || "Upload URL generation failed" },
-        { status: res.status },
-      );
-    }
-
-    const data = await res.json();
-    return NextResponse.json(data);
-  } catch {
+  if (!res.ok) {
+    const err = await res.text();
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
+      { error: err || "Upload URL generation failed" },
+      { status: res.status },
     );
   }
+
+  const data = await res.json();
+  return NextResponse.json(data);
 }
