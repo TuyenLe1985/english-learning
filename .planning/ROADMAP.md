@@ -84,8 +84,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 1** *(no dependencies — run in parallel)*
 
-- [ ] 02-01-PLAN.md — Foundation: passwordHash migration, shared DTOs/JwtPayload, NextAuth v5 config (30-day JWT), NestJS JwtAuthGuard
-- [ ] 02-02-PLAN.md — shadcn init (New York/zinc) + Inter + (auth) shell + Wave 0 RED test scaffolds
+- [x] 02-01-PLAN.md — Foundation: passwordHash migration, shared DTOs/JwtPayload, NextAuth v5 config (30-day JWT), NestJS JwtAuthGuard
+- [x] 02-02-PLAN.md — shadcn init (New York/zinc) + Inter + (auth) shell + Wave 0 RED test scaffolds
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -208,7 +208,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
-| 2. Authentication + User Profile | 0/6 | Planned | - |
+| 2. Authentication + User Profile | 2/6 | In Progress|  |
 | 3. Vocabulary Module + SRS Core | 0/TBD | Not started | - |
 | 4. Grammar Module | 0/TBD | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |

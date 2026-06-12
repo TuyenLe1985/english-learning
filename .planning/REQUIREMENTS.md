@@ -7,17 +7,17 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can register with email and password
-- [ ] **AUTH-02**: User receives email verification link after signup and must verify before accessing content
+- [x] **AUTH-01**: User can register with email and password
+- [x] **AUTH-02**: User receives email verification link after signup and must verify before accessing content
 - [ ] **AUTH-03**: User can sign in with Google OAuth
-- [ ] **AUTH-04**: User can request a password reset link sent to their email
+- [x] **AUTH-04**: User can request a password reset link sent to their email
 - [ ] **AUTH-05**: User session persists across browser refresh and tab close/reopen (NextAuth JWT)
 - [ ] **AUTH-06**: User is redirected to login when accessing protected routes while unauthenticated
 
 ### User Profile
 
-- [ ] **PROF-01**: User has a profile storing name, email, avatar URL, CEFR level, XP total, registration date, and last activity timestamp
-- [ ] **PROF-02**: User can update display name and avatar
+- [x] **PROF-01**: User has a profile storing name, email, avatar URL, CEFR level, XP total, registration date, and last activity timestamp
+- [x] **PROF-02**: User can update display name and avatar
 - [ ] **PROF-03**: User's current CEFR level (B1/B2/C1) is displayed throughout the app and updates based on XP thresholds
 
 ### Dashboard
@@ -168,14 +168,14 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 2 | Pending |
-| AUTH-02 | Phase 2 | Pending |
+| AUTH-01 | Phase 2 | Complete |
+| AUTH-02 | Phase 2 | Complete |
 | AUTH-03 | Phase 2 | Pending |
-| AUTH-04 | Phase 2 | Pending |
+| AUTH-04 | Phase 2 | Complete |
 | AUTH-05 | Phase 2 | Pending |
 | AUTH-06 | Phase 2 | Pending |
-| PROF-01 | Phase 2 | Pending |
-| PROF-02 | Phase 2 | Pending |
+| PROF-01 | Phase 2 | Complete |
+| PROF-02 | Phase 2 | Complete |
 | PROF-03 | Phase 2 | Pending |
 | VOCAB-01 | Phase 3 | Pending |
 | VOCAB-02 | Phase 3 | Pending |
