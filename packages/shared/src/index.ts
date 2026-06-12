@@ -14,3 +14,6 @@ export type HealthResponse = z.infer<typeof HealthResponseSchema>;
 // Phase 2: Auth + User Profile
 export * from "./auth.types";
 export * from "./user.dto";
+
+// Phase 3: Vocabulary + SRS DTOs
+export * from "./vocabulary.dto";

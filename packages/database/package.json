@@ -11,8 +11,12 @@
     "db:migrate": "prisma migrate dev --schema ./prisma/schema.prisma",
     "db:migrate:deploy": "prisma migrate deploy --schema ./prisma/schema.prisma",
     "db:push": "prisma db push --schema ./prisma/schema.prisma",
+    "db:seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
     "test": "vitest run",
     "type-check": "tsc --noEmit"
+  },
+  "prisma": {
+    "seed": "ts-node --project tsconfig.seed.json prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3"
@@ -21,6 +25,9 @@
     "prisma": "^6.19.3",
     "vitest": "^2.0.0",
     "@repo/tsconfig": "workspace:*",
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "bcryptjs": "^2.4.3",
+    "@types/bcryptjs": "^2.4.6",
+    "ts-node": "^10.9.2"
   }
 }

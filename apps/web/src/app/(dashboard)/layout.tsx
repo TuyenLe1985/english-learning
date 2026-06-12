@@ -12,6 +12,7 @@
 
 import { redirect } from 'next/navigation';
 import { auth, signOut } from '@/auth';
+import { QueryProvider } from '@/components/query-provider';
 
 export default async function DashboardLayout({
   children,
@@ -54,9 +55,11 @@ export default async function DashboardLayout({
         </div>
       </header>
 
-      {/* Page content */}
+      {/* Page content — wrapped with QueryProvider so all dashboard client components can use useQuery */}
       <main className="mx-auto max-w-screen-xl px-4 py-8">
-        {children}
+        <QueryProvider>
+          {children}
+        </QueryProvider>
       </main>
     </div>
   );

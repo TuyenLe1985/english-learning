@@ -18,5 +18,14 @@ export const config = {
   // WR-06 fix: /:path* matches one-or-more segments, so /dashboard (no trailing path)
   // was unprotected. Added exact-path entries to cover the root dashboard/profile pages.
   // Excludes API routes, static files, and public auth pages automatically (Next.js default).
-  matcher: ["/dashboard", "/dashboard/:path*", "/profile", "/profile/:path*"],
+  matcher: [
+    "/dashboard",
+    "/dashboard/:path*",
+    "/profile",
+    "/profile/:path*",
+    "/vocabulary",
+    "/vocabulary/:path*",
+    "/review",
+    "/review/:path*",
+  ],
 };
