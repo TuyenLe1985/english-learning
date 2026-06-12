@@ -129,8 +129,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on Wave 3 — parallel)*
 
-- [ ] 03-04-PLAN.md — Vocabulary browse/detail/enroll UI slice (VOCAB-01, VOCAB-02, VOCAB-04)
-- [ ] 03-05-PLAN.md — Practice session slice: 6 exercise types + results + add-to-SRS (VOCAB-03, VOCAB-04)
+- [x] 03-04-PLAN.md — Vocabulary browse/detail/enroll UI slice (VOCAB-01, VOCAB-02, VOCAB-04)
+- [x] 03-05-PLAN.md — Practice session slice: 6 exercise types + results + add-to-SRS (VOCAB-03, VOCAB-04)
 
 **Wave 5** *(blocked on Wave 4)*
 
