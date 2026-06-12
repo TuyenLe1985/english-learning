@@ -9,6 +9,10 @@
     },
     "allowJs": true,
     "incremental": true,
+    // Next.js App Router apps set noEmit:true; disable declaration output to suppress
+    // TS2742 "inferred type cannot be named" errors from NextAuth v5 complex return types.
+    "declaration": false,
+    "declarationMap": false,
     "plugins": [
       {
         "name": "next"
