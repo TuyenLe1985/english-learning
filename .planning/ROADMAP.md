@@ -116,7 +116,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 1** *(no dependencies)*
 
-- [ ] 03-01-PLAN.md — Foundation: install ts-fsrs/framer-motion/react-query, shared DTOs, 200-word seed + demo user, QueryProvider, middleware, Wave 0 RED scaffolds [has checkpoint]
+- [x] 03-01-PLAN.md — Foundation: install ts-fsrs/framer-motion/react-query, shared DTOs, 200-word seed + demo user, QueryProvider, middleware, Wave 0 RED scaffolds [has checkpoint]
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -231,7 +231,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
-| 3. Vocabulary Module + SRS Core | 0/6 | Planned | - |
+| 3. Vocabulary Module + SRS Core | 1/6 | In Progress|  |
 | 4. Grammar Module | 0/TBD | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |

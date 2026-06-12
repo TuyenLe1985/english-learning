@@ -38,13 +38,13 @@
 
 ### Vocabulary Module
 
-- [ ] **VOCAB-01**: User can browse vocabulary sets organized into 8 categories: business, travel, technology, education, health, daily life, social topics, academic English
-- [ ] **VOCAB-02**: Each vocabulary entry shows word, meaning, pronunciation guide, example sentences, synonyms, and common usage patterns
-- [ ] **VOCAB-03**: Vocabulary practice includes: flashcard (front/back flip), matching, context selection, cloze tests, synonym identification, and recall exercises
-- [ ] **VOCAB-04**: User can mark a vocabulary item as "learned" which enters it into the SRS review schedule
-- [ ] **VOCAB-05**: SRS schedules vocabulary reviews using the FSRS algorithm at intervals: Day 1 / 3 / 7 / 14 / 30 / 90
-- [ ] **VOCAB-06**: Pending SRS reviews appear on the dashboard and in a dedicated review queue; each session shows card, prompts recall, then reveals answer with rating buttons (Again / Hard / Good / Easy)
-- [ ] **VOCAB-07**: User can see their full vocabulary list with status (new / learning / reviewing / mastered) and next review date
+- [x] **VOCAB-01**: User can browse vocabulary sets organized into 8 categories: business, travel, technology, education, health, daily life, social topics, academic English
+- [x] **VOCAB-02**: Each vocabulary entry shows word, meaning, pronunciation guide, example sentences, synonyms, and common usage patterns
+- [x] **VOCAB-03**: Vocabulary practice includes: flashcard (front/back flip), matching, context selection, cloze tests, synonym identification, and recall exercises
+- [x] **VOCAB-04**: User can mark a vocabulary item as "learned" which enters it into the SRS review schedule
+- [x] **VOCAB-05**: SRS schedules vocabulary reviews using the FSRS algorithm at intervals: Day 1 / 3 / 7 / 14 / 30 / 90
+- [x] **VOCAB-06**: Pending SRS reviews appear on the dashboard and in a dedicated review queue; each session shows card, prompts recall, then reveals answer with rating buttons (Again / Hard / Good / Easy)
+- [x] **VOCAB-07**: User can see their full vocabulary list with status (new / learning / reviewing / mastered) and next review date
 - [ ] **VOCAB-08**: Vocabulary-in-context: when reading a passage, user can tap an unknown word to add it directly to their SRS queue with that sentence as context
 
 ### Reading Comprehension Module
@@ -177,13 +177,13 @@
 | PROF-01 | Phase 2 | Complete |
 | PROF-02 | Phase 2 | Complete |
 | PROF-03 | Phase 2 | Complete |
-| VOCAB-01 | Phase 3 | Pending |
-| VOCAB-02 | Phase 3 | Pending |
-| VOCAB-03 | Phase 3 | Pending |
-| VOCAB-04 | Phase 3 | Pending |
-| VOCAB-05 | Phase 3 | Pending |
-| VOCAB-06 | Phase 3 | Pending |
-| VOCAB-07 | Phase 3 | Pending |
+| VOCAB-01 | Phase 3 | Complete |
+| VOCAB-02 | Phase 3 | Complete |
+| VOCAB-03 | Phase 3 | Complete |
+| VOCAB-04 | Phase 3 | Complete |
+| VOCAB-05 | Phase 3 | Complete |
+| VOCAB-06 | Phase 3 | Complete |
+| VOCAB-07 | Phase 3 | Complete |
 | VOCAB-08 | Phase 5 | Pending |
 | GRAM-01 | Phase 4 | Pending |
 | GRAM-02 | Phase 4 | Pending |
