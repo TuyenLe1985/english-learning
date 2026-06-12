@@ -284,12 +284,13 @@ export async function createPasswordResetToken(
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h (D-03)
   const identifier = `password-reset:${user.id}`;
 
-  // Upsert: if the user already has a pending reset, replace it.
-  // The upsert where clause uses the identifier alone — the token changes each time.
-  await prisma.verificationToken.upsert({
-    where: { identifier_token: { identifier, token } },
-    create: { identifier, token, expires },
-    update: { token, expires },
+  // CR-02 fix: the original upsert used the new random token in WHERE
+  // (always a miss → always creates duplicates, never updates).
+  // Replace with deleteMany + create: atomically ensures only one active
+  // reset token exists per user — the old one is invalidated on new request.
+  await prisma.verificationToken.deleteMany({ where: { identifier } });
+  await prisma.verificationToken.create({
+    data: { identifier, token, expires },
   });
 
   // Send reset email via Resend (Pitfall 6: never throws — check error)
