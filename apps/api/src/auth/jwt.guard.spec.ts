@@ -1,45 +1,74 @@
 /**
- * Wave 0 RED scaffolds for JwtAuthGuard
- * These tests fail until the owning plans implement the guard.
- *
- * AUTH-05 (JWT session maxAge 30 days): implemented in Plan 01 / Plan 04
- * AUTH-06 (unauthenticated requests return 401): implemented in Plan 01 / Plan 04
+ * GREEN tests for JwtAuthGuard (implemented in Plan 01)
+ * Tests for AUTH-05 (session maxAge) and Plan-04 admission path remain
+ * RED until Plan 04 wires the full protected-route flow.
  *
  * Mock boundary: @auth/core/jwt decode is mocked to isolate guard logic.
  */
 
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 // Mock the JWT decode boundary from @auth/core/jwt.
-// JwtAuthGuard will call this to validate Bearer tokens.
 vi.mock('@auth/core/jwt', () => ({
-  decode: vi.fn().mockResolvedValue(null), // default: invalid/expired token
+  decode: vi.fn(),
 }));
 
+import { decode } from '@auth/core/jwt';
+
+const mockDecode = vi.mocked(decode);
+
+function makeContext(headers: Record<string, string>): ExecutionContext {
+  const req = { headers, user: undefined as unknown };
+  return {
+    switchToHttp: () => ({
+      getRequest: () => req,
+    }),
+  } as unknown as ExecutionContext;
+}
+
 describe('JwtAuthGuard', () => {
+  let guard: JwtAuthGuard;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    const configService = {
+      get: (key: string) => {
+        if (key === 'NEXTAUTH_SECRET') return 'test-secret';
+        if (key === 'NODE_ENV') return 'test';
+        return undefined;
+      },
+    } as unknown as ConfigService;
+    guard = new JwtAuthGuard(configService);
+  });
+
   // ---------------------------------------------------------------------------
   // AUTH-06 — Unauthenticated requests return 401
-  // Owning plan: Plan 01 (guard built) + Plan 04 (protected-route exercise)
+  // Plans 01 tests are now GREEN; Plan 04 test stays RED
   // ---------------------------------------------------------------------------
   describe('canActivate()', () => {
-    it('rejects a request with no Authorization header (returns false / throws UnauthorizedException) [RED: implemented in Plan 01]', () => {
-      // RED: JwtAuthGuard does not exist yet. Plan 01 will create the NestJS
-      // JwtAuthGuard that reads the Authorization header and calls canActivate().
-      // Expected: canActivate() throws UnauthorizedException (HTTP 401) when
-      // no Authorization: Bearer <token> header is present.
-      expect(false).toBe(true); // RED: implemented in Plan 01
+    it('rejects a request with no Authorization header (throws UnauthorizedException)', async () => {
+      const ctx = makeContext({});
+      await expect(guard.canActivate(ctx)).rejects.toThrow(UnauthorizedException);
     });
 
-    it('rejects a request with an invalid Bearer token (throws UnauthorizedException 401) [RED: implemented in Plan 01]', () => {
-      // RED: Plan 01 will implement token validation. An invalid or malformed
-      // JWT (decode returns null) must result in 401 UnauthorizedException.
-      expect(false).toBe(true); // RED: implemented in Plan 01
+    it('rejects a request with a non-Bearer Authorization header (throws UnauthorizedException)', async () => {
+      const ctx = makeContext({ authorization: 'Basic dXNlcjpwYXNz' });
+      await expect(guard.canActivate(ctx)).rejects.toThrow(UnauthorizedException);
     });
 
-    it('rejects a request with an expired Bearer token (throws UnauthorizedException 401) [RED: implemented in Plan 01]', () => {
-      // RED: Plan 01 will implement expiry check. An expired JWT must result
-      // in 401 UnauthorizedException, not a 500 internal error.
-      expect(false).toBe(true); // RED: implemented in Plan 01
+    it('rejects a request when decode returns null (invalid token — throws UnauthorizedException)', async () => {
+      mockDecode.mockResolvedValue(null);
+      const ctx = makeContext({ authorization: 'Bearer some.invalid.token' });
+      await expect(guard.canActivate(ctx)).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('rejects a request when decode throws (expired/malformed — throws UnauthorizedException)', async () => {
+      mockDecode.mockRejectedValue(new Error('JWE decryption failed'));
+      const ctx = makeContext({ authorization: 'Bearer some.expired.token' });
+      await expect(guard.canActivate(ctx)).rejects.toThrow(UnauthorizedException);
     });
 
     it('admits a request whose Bearer token decodes to a valid JwtPayload [RED: implemented in Plan 04]', () => {
