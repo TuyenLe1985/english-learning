@@ -51,7 +51,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           retryAfter: result.retryAfter,
           maxReached: result.maxReached,
         },
-        { status: result.maxReached ? 429 : 429 }
+        { status: 429 }
       );
     }
 
