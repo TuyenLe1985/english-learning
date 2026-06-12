@@ -1,9 +1,11 @@
 /**
- * RED tests for auth-actions server actions (Plan 02-03)
- * Covers: registerUser, createVerificationToken, verifyEmailToken, resend rate-limit
+ * RED tests for auth-actions server actions (Plans 02-03, 02-05)
+ * Covers: registerUser, createVerificationToken, verifyEmailToken, resend rate-limit,
+ *         createPasswordResetToken (AUTH-04, T-02-11), resetPassword (AUTH-04, T-02-12),
+ *         Google OAuth emailVerified + account-link behaviors (AUTH-03, D-10)
  *
- * Requirements: AUTH-01 (registration + bcrypt), AUTH-02 (email verification gate)
- * STRIDE mitigations: T-02-04, T-02-05, T-02-06, T-02-07
+ * Requirements: AUTH-01, AUTH-02, AUTH-03, AUTH-04
+ * STRIDE mitigations: T-02-04, T-02-05, T-02-06, T-02-07, T-02-11, T-02-12
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -17,6 +19,7 @@ const mockPrismaUserFindUnique = vi.fn();
 const mockPrismaVerificationTokenCreate = vi.fn();
 const mockPrismaVerificationTokenFindFirst = vi.fn();
 const mockPrismaVerificationTokenDelete = vi.fn();
+const mockPrismaVerificationTokenUpsert = vi.fn();
 const mockPrismaUserUpdate = vi.fn();
 
 vi.mock('@repo/database', () => ({
@@ -30,6 +33,7 @@ vi.mock('@repo/database', () => ({
       create: mockPrismaVerificationTokenCreate,
       findFirst: mockPrismaVerificationTokenFindFirst,
       delete: mockPrismaVerificationTokenDelete,
+      upsert: mockPrismaVerificationTokenUpsert,
     },
   },
 }));
@@ -432,5 +436,197 @@ describe('sendVerificationEmail()', () => {
     await expect(
       sendVerificationEmail('alice@example.com', 'test-token')
     ).resolves.not.toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// AUTH-04 — createPasswordResetToken: enumeration-safe, 24h token, upsert (T-02-11, T-02-12)
+// ---------------------------------------------------------------------------
+
+describe('createPasswordResetToken()', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockResendEmailsSend.mockResolvedValue({ data: { id: 'email-id' }, error: null });
+  });
+
+  it('returns the same success-shaped response whether or not the email exists (T-02-11 — no enumeration)', async () => {
+    // Non-existent email — user not found
+    mockPrismaUserFindUnique.mockResolvedValue(null);
+
+    const { createPasswordResetToken } = await import('./auth-actions');
+    const result = await createPasswordResetToken('nosuchuser@example.com');
+
+    // Must return the same success shape as when the user exists
+    expect(result).toMatchObject({ success: true });
+    // Must NOT create a token for non-existent user
+    expect(mockPrismaVerificationTokenUpsert).not.toHaveBeenCalled();
+  });
+
+  it('upserts a VerificationToken with identifier pattern "password-reset:{userId}" when user exists', async () => {
+    mockPrismaUserFindUnique.mockResolvedValue(makeUser({ id: 'user-1' }));
+    mockPrismaVerificationTokenUpsert.mockResolvedValue({
+      identifier: 'password-reset:user-1',
+      token: 'some-hex-token',
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    const { createPasswordResetToken } = await import('./auth-actions');
+    await createPasswordResetToken('alice@example.com');
+
+    expect(mockPrismaVerificationTokenUpsert).toHaveBeenCalled();
+    const call = mockPrismaVerificationTokenUpsert.mock.calls[0]?.[0] as {
+      create: { identifier: string; token: string; expires: Date };
+    };
+    expect(call.create.identifier).toBe('password-reset:user-1');
+  });
+
+  it('stores a token that expires ~24h from now (D-03, T-02-12)', async () => {
+    mockPrismaUserFindUnique.mockResolvedValue(makeUser({ id: 'user-1' }));
+    mockPrismaVerificationTokenUpsert.mockResolvedValue({
+      identifier: 'password-reset:user-1',
+      token: 'some-hex-token',
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    const before = Date.now();
+    const { createPasswordResetToken } = await import('./auth-actions');
+    await createPasswordResetToken('alice@example.com');
+    const after = Date.now();
+
+    const call = mockPrismaVerificationTokenUpsert.mock.calls[0]?.[0] as {
+      create: { expires: Date };
+    };
+    const expiresMs = call.create.expires.getTime();
+    const expected24h = 24 * 60 * 60 * 1000;
+
+    expect(expiresMs).toBeGreaterThanOrEqual(before + expected24h - 1000);
+    expect(expiresMs).toBeLessThanOrEqual(after + expected24h + 1000);
+  });
+
+  it('stores a cryptographically random hex token (not static)', async () => {
+    mockPrismaUserFindUnique.mockResolvedValue(makeUser({ id: 'user-1' }));
+    const capturedTokens: string[] = [];
+    mockPrismaVerificationTokenUpsert.mockImplementation(
+      ({ create }: { create: { identifier: string; token: string; expires: Date } }) => {
+        capturedTokens.push(create.token);
+        return Promise.resolve({ identifier: create.identifier, token: create.token, expires: create.expires });
+      }
+    );
+
+    const { createPasswordResetToken } = await import('./auth-actions');
+    await createPasswordResetToken('alice@example.com');
+    await createPasswordResetToken('alice@example.com');
+
+    // Two separate calls must produce different tokens
+    expect(capturedTokens[0]).not.toBe(capturedTokens[1]);
+    // Must be hex string
+    if (capturedTokens[0]) {
+      expect(capturedTokens[0]).toMatch(/^[0-9a-f]+$/);
+    }
+  });
+
+  it('sends reset email via Resend after creating the token (Pitfall 6 applied)', async () => {
+    mockPrismaUserFindUnique.mockResolvedValue(makeUser({ id: 'user-1', email: 'alice@example.com' }));
+    mockPrismaVerificationTokenUpsert.mockResolvedValue({
+      identifier: 'password-reset:user-1',
+      token: 'reset-token-hex',
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    const { createPasswordResetToken } = await import('./auth-actions');
+    await createPasswordResetToken('alice@example.com');
+
+    expect(mockResendEmailsSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'alice@example.com',
+      })
+    );
+  });
+});
+
+// ---------------------------------------------------------------------------
+// AUTH-04 — resetPassword: rejects short password, unknown/expired token, success+delete (T-02-12)
+// ---------------------------------------------------------------------------
+
+describe('resetPassword()', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('rejects a newPassword shorter than 8 characters', async () => {
+    const { resetPassword } = await import('./auth-actions');
+    const result = await resetPassword('valid-token', 'short');
+
+    expect(result).toMatchObject({ success: false });
+    if (!result.success) {
+      expect(result.error).toMatch(/8 char/i);
+    }
+    // Must not touch the DB
+    expect(mockPrismaVerificationTokenFindFirst).not.toHaveBeenCalled();
+    expect(mockPrismaUserUpdate).not.toHaveBeenCalled();
+  });
+
+  it('rejects an unknown token (returns error)', async () => {
+    mockPrismaVerificationTokenFindFirst.mockResolvedValue(null);
+
+    const { resetPassword } = await import('./auth-actions');
+    const result = await resetPassword('unknown-token', 'ValidNewPass1!');
+
+    expect(result).toMatchObject({ success: false });
+    expect(mockPrismaUserUpdate).not.toHaveBeenCalled();
+  });
+
+  it('rejects an expired token with an expired:true signal (D-03, T-02-12)', async () => {
+    mockPrismaVerificationTokenFindFirst.mockResolvedValue({
+      identifier: 'password-reset:user-1',
+      token: 'expired-reset-token',
+      expires: new Date(Date.now() - 1000), // in the past
+    });
+
+    const { resetPassword } = await import('./auth-actions');
+    const result = await resetPassword('expired-reset-token', 'ValidNewPass1!');
+
+    expect(result).toMatchObject({ success: false, expired: true });
+    expect(mockPrismaUserUpdate).not.toHaveBeenCalled();
+  });
+
+  it('updates User.passwordHash with bcrypt hash on success', async () => {
+    mockPrismaVerificationTokenFindFirst.mockResolvedValue({
+      identifier: 'password-reset:user-1',
+      token: 'valid-reset-token',
+      expires: new Date(Date.now() + 60_000), // still valid
+    });
+    mockPrismaUserUpdate.mockResolvedValue(makeUser());
+    mockPrismaVerificationTokenDelete.mockResolvedValue({});
+
+    const { resetPassword } = await import('./auth-actions');
+    const result = await resetPassword('valid-reset-token', 'NewValidPass1!');
+
+    expect(result).toMatchObject({ success: true });
+    expect(mockPrismaUserUpdate).toHaveBeenCalled();
+
+    const updateCall = mockPrismaUserUpdate.mock.calls[0]?.[0] as {
+      where: { id: string };
+      data: { passwordHash: string };
+    };
+    // Stored value must be a bcrypt hash, not plaintext
+    expect(updateCall.data.passwordHash).toMatch(/^\$2[aby]\$\d{2}\$/);
+    // userId must be extracted from the identifier pattern "password-reset:{userId}"
+    expect(updateCall.where.id).toBe('user-1');
+  });
+
+  it('deletes the token after successful reset (T-02-12 — single-use, no reuse)', async () => {
+    mockPrismaVerificationTokenFindFirst.mockResolvedValue({
+      identifier: 'password-reset:user-1',
+      token: 'valid-reset-token',
+      expires: new Date(Date.now() + 60_000),
+    });
+    mockPrismaUserUpdate.mockResolvedValue(makeUser());
+    mockPrismaVerificationTokenDelete.mockResolvedValue({});
+
+    const { resetPassword } = await import('./auth-actions');
+    await resetPassword('valid-reset-token', 'NewValidPass1!');
+
+    expect(mockPrismaVerificationTokenDelete).toHaveBeenCalled();
   });
 });
