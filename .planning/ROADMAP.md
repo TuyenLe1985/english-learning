@@ -96,6 +96,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] 02-05-PLAN.md — Google OAuth sign-in + password reset (AUTH-03, AUTH-04) [TDD]
 - [x] 02-06-PLAN.md — Profile endpoints, avatar presigned upload, CEFR badge (PROF-01, PROF-02, PROF-03) [TDD]
+
 **UI hint**: yes
 
 ### Phase 3: Vocabulary Module + SRS Core
@@ -120,7 +121,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 03-02-PLAN.md — VocabularyModule API: categories, paginated word list, word detail, my-words (VOCAB-01, VOCAB-02, VOCAB-03, VOCAB-07) [TDD]
+- [x] 03-02-PLAN.md — VocabularyModule API: categories, paginated word list, word detail, my-words (VOCAB-01, VOCAB-02, VOCAB-03, VOCAB-07) [TDD]
 
 **Wave 3** *(blocked on Wave 2)*
 
@@ -231,7 +232,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
-| 3. Vocabulary Module + SRS Core | 1/6 | In Progress|  |
+| 3. Vocabulary Module + SRS Core | 2/6 | In Progress|  |
 | 4. Grammar Module | 0/TBD | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
