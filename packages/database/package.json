@@ -3,10 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
   },
-  "_exportNote": "Exporting TypeScript source directly is intentional. Both consumer apps (Next.js with bundler resolution, NestJS with SWC) transpile on the fly. This package is internal to the Turborepo monorepo and will never be published to npm.",
+  "_exportNote": "Dual exports: CJS consumers (NestJS runtime) get compiled dist/index.js; bundler/ESM consumers (Next.js webpack) get TypeScript source. Node.js 22 ESM-via-require uses 'require' condition first.",
   "scripts": {
+    "build": "node scripts/build-cjs.js",
     "db:generate": "prisma generate --schema ./prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema ./prisma/schema.prisma",
     "db:migrate:deploy": "prisma migrate deploy --schema ./prisma/schema.prisma",
