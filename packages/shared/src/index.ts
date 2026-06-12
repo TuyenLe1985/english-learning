@@ -10,3 +10,7 @@ export const HealthResponseSchema = z.object({
 });
 
 export type HealthResponse = z.infer<typeof HealthResponseSchema>;
+
+// Phase 2: Auth + User Profile
+export * from "./auth.types";
+export * from "./user.dto";
