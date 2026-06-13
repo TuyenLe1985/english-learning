@@ -55,8 +55,7 @@ Exceptions:
 
 | Role | Size | Weight | Line Height | Tailwind | Used For |
 |------|------|--------|-------------|----------|----------|
-| Display | 28px | 600 (semibold) | 1.2 | `text-[28px] font-semibold leading-tight` | Score display on results screen; flashcard word |
-| Heading | 30px (text-3xl) | 600 (semibold) | 1.2 | `text-3xl font-semibold` | Page titles (/grammar, /grammar/[area], /grammar/[area]/[topic], lesson page) |
+| Heading/Display | 28px | 600 (semibold) | 1.2 | `text-[28px] font-semibold leading-tight` | Page titles (/grammar, /grammar/[area], /grammar/[area]/[topic], lesson page); score display on results screen; flashcard word |
 | Body | 16px | 400 (regular) | 1.5 | `text-base leading-relaxed` | Lesson explanation text, exercise prompts, sentence transformation sentences |
 | Label | 14px | 400 (regular) | 1.4 | `text-sm` | Subtitles, word counts, CEFR badge text, progress counter "n of total" |
 | Micro | 12px | 400 (regular) | 1.4 | `text-xs` | Topic count on area cards, muted secondary metadata |
@@ -104,7 +103,7 @@ Accent reserved for: primary CTA buttons only ("Start Practice", "Review weak ex
 
 | Element | Spec |
 |---------|------|
-| Page heading | `text-3xl font-semibold text-foreground` — "Grammar" |
+| Page heading | `text-[28px] font-semibold leading-tight text-foreground` — "Grammar" |
 | Subtitle | `text-base text-muted-foreground mt-1` — "Browse by area" |
 | Grid container | `grid grid-cols-2 gap-4 sm:grid-cols-4` (2-col mobile / 4-col desktop — but 10 areas not 8, so last row has 2 items; use `sm:grid-cols-5` for desktop to get 2 rows of 5, **or** keep `sm:grid-cols-4` for 3 rows matching vocabulary visual weight). Decision: use `sm:grid-cols-4` to match vocabulary — 3 rows with 2 orphan cards is acceptable, they left-align naturally |
 | Heading bottom margin | `mb-8` |
@@ -142,7 +141,7 @@ Accent reserved for: primary CTA buttons only ("Start Practice", "Review weak ex
 
 | Element | Spec |
 |---------|------|
-| Page heading | `text-3xl font-semibold text-foreground` — area name |
+| Page heading | `text-[28px] font-semibold leading-tight text-foreground` — area name |
 | Subtitle | `text-sm text-muted-foreground mt-1` — "{N} topics" |
 | Back link | `text-sm text-muted-foreground hover:text-foreground` with `←` arrow — "Grammar" |
 | Topic list container | `flex flex-col divide-y divide-border` inside a `rounded-xl border border-border bg-card` |
@@ -174,7 +173,7 @@ Hover state: `hover:bg-muted/50 transition-colors cursor-pointer`
 
 | Element | Spec |
 |---------|------|
-| Page heading | `text-3xl font-semibold text-foreground` — topic title |
+| Page heading | `text-[28px] font-semibold leading-tight text-foreground` — topic title |
 | CEFR badge | `<CefrBadge level={topic.cefrLevel} />` — inline next to heading |
 | Back link | `text-sm text-muted-foreground` — area name |
 | Mastery section | Shown when user has prior attempts |
@@ -192,7 +191,7 @@ Hover state: `hover:bg-muted/50 transition-colors cursor-pointer`
 
 Left side:
 - Lesson title: `text-sm font-semibold text-foreground`
-- Question count: `text-xs text-muted-foreground mt-0.5` — "{N} questions"
+- Question count: `text-xs text-muted-foreground mt-1` — "{N} questions"
 
 Right side:
 - Chevron: `ChevronRight` Lucide icon, `h-4 w-4 text-muted-foreground`
@@ -214,7 +213,7 @@ Layout: max-width `max-w-2xl mx-auto`, vertical flex column with `gap-6`
 
 | Element | Spec |
 |---------|------|
-| Lesson title | `text-3xl font-semibold text-foreground` |
+| Lesson title | `text-[28px] font-semibold leading-tight text-foreground` |
 | Back link | `text-sm text-muted-foreground` — topic name |
 | Explanation section heading | `text-base font-semibold text-foreground mb-3` — "Grammar Rule" |
 | Rule card | `rounded-xl bg-zinc-100 dark:bg-zinc-800 px-4 py-4` |
@@ -255,7 +254,7 @@ Pattern: mirrors SessionResults from vocabulary. Max-width `max-w-lg mx-auto`.
 |---------|------|
 | Entry animation | `motion.div` — `initial={{ opacity: 0, scale: 0.95 }}`, `animate={{ opacity: 1, scale: 1 }}`, `transition={{ duration: 0.3, ease: "easeOut" }}` |
 | "Session complete!" label | `text-sm text-muted-foreground` |
-| Score display | `text-[28px] font-semibold text-foreground` — "{score}/{total} correct" |
+| Score display | `text-[28px] font-semibold leading-tight text-foreground` — "{score}/{total} correct" |
 | Accuracy + time | `text-sm text-muted-foreground mt-1` — "{N}% · {Xs}" |
 | "Back to topic" button | `<Button variant="outline" className="w-full min-h-[44px]">Back to topic</Button>` |
 | "Practice again" button | `<Button variant="outline" className="w-full min-h-[44px]">Practice again</Button>` |
@@ -347,7 +346,7 @@ Layout: `flex flex-col gap-8`
 | DroppableBlank (active/hover during drag) | `border-primary bg-primary/5` |
 | Word bank label | `text-xs text-muted-foreground uppercase tracking-wide mt-4 mb-2` — "Word Bank" |
 | Word bank container | `flex flex-wrap gap-2` |
-| DraggableWord chip | `inline-flex items-center px-3 py-1.5 rounded-lg border border-border bg-secondary text-sm font-medium text-foreground cursor-grab active:cursor-grabbing hover:bg-secondary/70 transition-colors` |
+| DraggableWord chip | `inline-flex items-center px-3 py-2 rounded-lg border border-border bg-secondary text-sm font-medium text-foreground cursor-grab active:cursor-grabbing hover:bg-secondary/70 transition-colors` |
 | DraggableWord (being dragged) | `ring-2 ring-primary opacity-80` |
 | DraggableWord (placed in blank) | Hidden from word bank — moved to slot |
 | Re-placement behavior | Dropping on an occupied blank returns the current occupant to the word bank |
