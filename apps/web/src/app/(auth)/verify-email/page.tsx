@@ -17,7 +17,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { resendVerificationEmail } from '@/lib/auth-actions';
 import { cn } from '@/lib/utils';
 
 const COOLDOWN_SECONDS = 60;
