@@ -43,8 +43,7 @@ interface Props {
  */
 function sampleWords(words: VocabularyWordDto[], size: number): VocabularyWordDto[] {
   if (words.length <= size) return [...words];
-  const shuffled = [...words].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, size);
+  return shuffle([...words]).slice(0, size);
 }
 
 /**
