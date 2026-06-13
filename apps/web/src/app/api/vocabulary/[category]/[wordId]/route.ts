@@ -14,7 +14,7 @@ import { headers } from "next/headers";
 import { fetchWithAuth, API_URL } from "@/lib/api-client";
 
 interface RouteParams {
-  params: { category: string; wordId: string };
+  params: Promise<{ category: string; wordId: string }>;
 }
 
 export async function GET(
@@ -26,12 +26,13 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const { category, wordId } = await params;
   const reqHeaders = await headers();
   const cookieHeader = reqHeaders.get("cookie") ?? "";
 
   const res = await fetchWithAuth(
     cookieHeader,
-    `${API_URL}/api/vocabulary/${params.category}/${params.wordId}`,
+    `${API_URL}/api/vocabulary/${category}/${wordId}`,
   );
 
   if (!res.ok) {

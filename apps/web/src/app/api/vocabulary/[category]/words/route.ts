@@ -14,7 +14,7 @@ import { headers } from "next/headers";
 import { fetchWithAuth, API_URL } from "@/lib/api-client";
 
 interface RouteParams {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }
 
 export async function GET(
@@ -26,12 +26,13 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const { category } = await params;
   const { searchParams } = req.nextUrl;
   const reqHeaders = await headers();
   const cookieHeader = reqHeaders.get("cookie") ?? "";
 
   // Forward page and limit query params to NestJS (D-12: 20 words per page)
-  const url = new URL(`${API_URL}/api/vocabulary/${params.category}/words`);
+  const url = new URL(`${API_URL}/api/vocabulary/${category}/words`);
   url.searchParams.set("page", searchParams.get("page") ?? "1");
   url.searchParams.set("limit", "20");
 
