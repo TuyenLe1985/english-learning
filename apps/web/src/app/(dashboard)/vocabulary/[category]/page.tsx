@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { WordListItem } from "@/components/vocabulary/word-list-item";
 import {
@@ -12,6 +13,15 @@ import {
 import type { PaginatedWordsDto } from "@repo/shared";
 
 const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
+
+function getSessionToken(): string | null {
+  const store = cookies();
+  const name =
+    process.env.NODE_ENV === "production"
+      ? "__Secure-authjs.session-token"
+      : "authjs.session-token";
+  return store.get(name)?.value ?? null;
+}
 
 const CATEGORY_NAMES: Record<string, string> = {
   business: "Business",
@@ -29,9 +39,13 @@ async function fetchWords(
   page: number,
 ): Promise<PaginatedWordsDto> {
   try {
+    const token = getSessionToken();
     const res = await fetch(
       `${API_URL}/api/vocabulary/${category}/words?page=${page}&limit=20`,
-      { cache: "no-store" },
+      {
+        cache: "no-store",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      },
     );
     if (!res.ok) return { words: [], total: 0, page: 1, limit: 20, totalPages: 1 };
     return res.json() as Promise<PaginatedWordsDto>;

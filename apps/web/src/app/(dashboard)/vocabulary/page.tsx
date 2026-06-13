@@ -13,16 +13,27 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 import { CategoryCard } from "@/components/vocabulary/category-card";
 import type { CategoryDto } from "@repo/shared";
 
 const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
 
+function getSessionToken(): string | null {
+  const store = cookies();
+  const name =
+    process.env.NODE_ENV === "production"
+      ? "__Secure-authjs.session-token"
+      : "authjs.session-token";
+  return store.get(name)?.value ?? null;
+}
+
 async function fetchCategories(): Promise<CategoryDto[]> {
   try {
-    // Fetch directly from NestJS for server-side rendering (no relay needed server-side)
+    const token = getSessionToken();
     const res = await fetch(`${API_URL}/api/vocabulary/categories`, {
       cache: "no-store",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
     if (!res.ok) return [];
     return res.json() as Promise<CategoryDto[]>;

@@ -1,18 +1,32 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 import { WordDetail } from "@/components/vocabulary/word-detail";
 import type { VocabularyWordDto } from "@repo/shared";
 
 const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
+
+function getSessionToken(): string | null {
+  const store = cookies();
+  const name =
+    process.env.NODE_ENV === "production"
+      ? "__Secure-authjs.session-token"
+      : "authjs.session-token";
+  return store.get(name)?.value ?? null;
+}
 
 async function fetchWordDetail(
   category: string,
   wordId: string,
 ): Promise<VocabularyWordDto | null> {
   try {
+    const token = getSessionToken();
     const res = await fetch(
       `${API_URL}/api/vocabulary/${category}/${wordId}`,
-      { cache: "no-store" },
+      {
+        cache: "no-store",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      },
     );
     if (!res.ok) return null;
     return res.json() as Promise<VocabularyWordDto>;
