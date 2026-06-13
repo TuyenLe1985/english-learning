@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { ProfileModule } from './profile/profile.module';
 import { VocabularyModule } from './vocabulary/vocabulary.module';
 import { SrsModule } from './srs/srs.module';
+import { GrammarModule } from './grammar/grammar.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SrsModule } from './srs/srs.module';
     ProfileModule,
     VocabularyModule,
     SrsModule,
+    GrammarModule,
   ],
   controllers: [],
   providers: [],
