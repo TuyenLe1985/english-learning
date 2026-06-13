@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { WordListItem } from "@/components/vocabulary/word-list-item";
 import {
@@ -10,18 +9,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { getSessionToken } from "@/lib/get-session-token";
 import type { PaginatedWordsDto } from "@repo/shared";
 
 const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
-
-function getSessionToken(): string | null {
-  const store = cookies();
-  const name =
-    process.env.NODE_ENV === "production"
-      ? "__Secure-authjs.session-token"
-      : "authjs.session-token";
-  return store.get(name)?.value ?? null;
-}
 
 const CATEGORY_NAMES: Record<string, string> = {
   business: "Business",

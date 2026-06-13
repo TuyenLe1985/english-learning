@@ -13,20 +13,11 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { cookies } from "next/headers";
 import { CategoryCard } from "@/components/vocabulary/category-card";
+import { getSessionToken } from "@/lib/get-session-token";
 import type { CategoryDto } from "@repo/shared";
 
 const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
-
-function getSessionToken(): string | null {
-  const store = cookies();
-  const name =
-    process.env.NODE_ENV === "production"
-      ? "__Secure-authjs.session-token"
-      : "authjs.session-token";
-  return store.get(name)?.value ?? null;
-}
 
 async function fetchCategories(): Promise<CategoryDto[]> {
   try {

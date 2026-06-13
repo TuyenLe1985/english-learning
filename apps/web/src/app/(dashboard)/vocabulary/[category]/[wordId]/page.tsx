@@ -1,19 +1,10 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { cookies } from "next/headers";
 import { WordDetail } from "@/components/vocabulary/word-detail";
+import { getSessionToken } from "@/lib/get-session-token";
 import type { VocabularyWordDto } from "@repo/shared";
 
 const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
-
-function getSessionToken(): string | null {
-  const store = cookies();
-  const name =
-    process.env.NODE_ENV === "production"
-      ? "__Secure-authjs.session-token"
-      : "authjs.session-token";
-  return store.get(name)?.value ?? null;
-}
 
 async function fetchWordDetail(
   category: string,
