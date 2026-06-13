@@ -160,8 +160,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 2** *(blocked on 04-01 — parallel)*
 
-- [ ] 04-02-PLAN.md — NestJS GrammarModule API: areas/topics/lessons, session-complete, weak-questions (GRAM-01, GRAM-02, GRAM-04, GRAM-06) [TDD]
-- [ ] 04-03-PLAN.md — 5 grammar exercise components + ExplanationView (GRAM-02, GRAM-03) [TDD]
+- [x] 04-02-PLAN.md — NestJS GrammarModule API: areas/topics/lessons, session-complete, weak-questions (GRAM-01, GRAM-02, GRAM-04, GRAM-06) [TDD]
+- [x] 04-03-PLAN.md — 5 grammar exercise components + ExplanationView (GRAM-02, GRAM-03) [TDD]
 
 **Wave 3** *(blocked on 04-02)*
 
@@ -251,7 +251,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
-| 4. Grammar Module | 1/5 | In Progress|  |
+| 4. Grammar Module | 3/5 | In Progress|  |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
