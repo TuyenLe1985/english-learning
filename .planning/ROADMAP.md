@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Infrastructure** - Monorepo scaffold, Docker services, full Prisma schema, deployable skeleton (completed 2026-06-11)
 - [x] **Phase 2: Authentication + User Profile** - Secure account creation, login, OAuth, session management, user profile (completed 2026-06-12)
-- [ ] **Phase 3: Vocabulary Module + SRS Core** - Vocabulary browsing, 6 exercise types, FSRS scheduling, review queue
+- [x] **Phase 3: Vocabulary Module + SRS Core** - Vocabulary browsing, 6 exercise types, FSRS scheduling, review queue (completed 2026-06-13)
 - [ ] **Phase 4: Grammar Module** - Grammar topic browsing, lesson explanations, 5 exercise types, mastery tracking
 - [ ] **Phase 5: Reading Comprehension + Content Pipeline** - Reading passages with highlights/notes/bookmarks, crawler, CEFR classifier, seed scripts, vocab-in-context
 - [ ] **Phase 6: Listening Comprehension** - Audio player, karaoke transcript, 6 exercise types, tap-to-SRS
@@ -134,7 +134,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 5** *(blocked on Wave 4)*
 
-- [ ] 03-06-PLAN.md — Review queue + my-words slice + phase end-to-end verification (VOCAB-06, VOCAB-07) [has checkpoint]
+- [x] 03-06-PLAN.md — Review queue + my-words slice + phase end-to-end verification (VOCAB-06, VOCAB-07) [has checkpoint]
 
 **UI hint**: yes
 
@@ -232,7 +232,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
-| 3. Vocabulary Module + SRS Core | 3/6 | In Progress|  |
+| 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 0/TBD | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |

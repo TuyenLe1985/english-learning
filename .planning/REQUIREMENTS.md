@@ -238,6 +238,7 @@
 | ANLT-02 | Phase 8 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 68 total (file header stated 66; actual count by ID is 68 — AUTH×6, PROF×3, DASH×4, GRAM×6, VOCAB×8, READ×7, LIST×7, QUIZ×5, GAME×5, PIPE×6, ADPT×5, SRCH×4, ANLT×2)
 - Mapped to phases: 68 ✓
 - Unmapped: 0 ✓
