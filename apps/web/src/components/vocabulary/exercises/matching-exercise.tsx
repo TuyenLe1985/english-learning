@@ -39,10 +39,14 @@ export function MatchingExercise({ pairs, onComplete, onPairResult }: Props) {
   const [shakeIds, setShakeIds] = useState<Set<string>>(new Set());
   const [shuffledDefs, setShuffledDefs] = useState<MatchPair[]>([]);
 
-  // Shuffle definitions on mount
+  // Shuffle definitions on mount using Fisher-Yates for uniform distribution
   useEffect(() => {
-    const shuffled = [...pairs].sort(() => Math.random() - 0.5);
-    setShuffledDefs(shuffled);
+    const arr = [...pairs];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j]!, arr[i]!];
+    }
+    setShuffledDefs(arr);
   }, [pairs]);
 
   const handleWordTap = (wordId: string) => {
