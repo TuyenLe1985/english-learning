@@ -1,0 +1,2626 @@
+{
+  "areas": [
+    {
+      "slug": "verb-tenses",
+      "name": "Verb Tenses",
+      "description": "Master present, past, and future tense forms and their uses",
+      "sortOrder": 1,
+      "topics": [
+        {
+          "slug": "present-perfect",
+          "title": "Present Perfect",
+          "cefrLevel": "B1",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "present-perfect-formation",
+              "title": "Present Perfect: Formation",
+              "sortOrder": 1,
+              "explanation": "The present perfect is formed with have/has + past participle. Use it to describe past actions with a connection to the present, experiences in your life, or actions that just happened.",
+              "examples": [
+                "I have visited London three times.",
+                "She has never eaten sushi.",
+                "They have just arrived."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Choose the correct form: She ___ to Paris before.",
+                  "answer": "has been",
+                  "distractors": ["is been", "was been", "have been"],
+                  "explanation": "Use 'has been' for third-person singular in present perfect.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Which sentence is in the present perfect?",
+                  "answer": "I have already eaten lunch.",
+                  "distractors": ["I eat lunch.", "I ate lunch.", "I will eat lunch."],
+                  "explanation": "The present perfect uses 'have/has + past participle'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "He ___ (work) at this company for ten years.",
+                  "answer": "has worked",
+                  "distractors": [],
+                  "explanation": "Third-person singular uses 'has' + past participle.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "We ___ (not see) that film yet.",
+                  "answer": "have not seen",
+                  "distractors": [],
+                  "explanation": "Negative present perfect: have/has + not + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She have been to Japan twice.",
+                  "answer": "She has been to Japan twice.",
+                  "distractors": [],
+                  "explanation": "Third-person singular requires 'has', not 'have'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "I have went to the supermarket already.",
+                  "answer": "I have gone to the supermarket already.",
+                  "distractors": [],
+                  "explanation": "The past participle of 'go' is 'gone', not 'went'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "She ___ the report but ___ it yet.",
+                  "answer": "has written|has not submitted",
+                  "distractors": ["wrote", "did not send", "is writing", "have finished"],
+                  "explanation": "Two blanks: 'has written' and 'has not submitted' complete the present perfect structure.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                }
+              ]
+            },
+            {
+              "slug": "present-perfect-vs-past-simple",
+              "title": "Present Perfect vs Past Simple",
+              "sortOrder": 2,
+              "explanation": "Use the present perfect for events with present relevance or no specified time, and the past simple for completed events at a specific time in the past.",
+              "examples": [
+                "I have lost my keys. (present relevance — I still can't find them)",
+                "I lost my keys yesterday. (specific past time)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "In 1969, Neil Armstrong ___ on the moon.",
+                  "answer": "walked",
+                  "distractors": ["has walked", "has been walking", "had walked"],
+                  "explanation": "A specific past time (1969) requires the past simple.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I ___ never ___ a live concert.",
+                  "answer": "have ... attended",
+                  "distractors": ["did ... attend", "was ... attending", "had ... attended"],
+                  "explanation": "'Never' with present relevance = present perfect.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "When ___ you last ___ (visit) your grandmother?",
+                  "answer": "did ... visit",
+                  "distractors": [],
+                  "explanation": "'When' + past simple for a specific time question.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "Did you ever try authentic Thai food?",
+                  "answer": "Have you ever tried authentic Thai food?",
+                  "distractors": [],
+                  "explanation": "'Ever' in life experience questions uses present perfect.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Change to past simple: I have lived in Berlin for two years (moved there in 2022).",
+                  "answer": "I lived in Berlin for two years.",
+                  "distractors": [],
+                  "explanation": "Past simple for a completed period with a specific start.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "She ___ the project last Friday and now she ___ some rest.",
+                  "answer": "finished|is taking",
+                  "distractors": ["has finished", "have finished", "took", "has been taking"],
+                  "explanation": "'Last Friday' signals past simple; 'now' signals present continuous.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "We ___ three movies this week so far.",
+                  "answer": "have watched",
+                  "distractors": ["watched", "were watching", "had watched"],
+                  "explanation": "'This week so far' = unfinished time period → present perfect.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "present-perfect-continuous",
+              "title": "Present Perfect Continuous",
+              "sortOrder": 3,
+              "explanation": "The present perfect continuous (have/has + been + -ing) emphasises the duration or ongoing nature of an activity that started in the past and continues now, or has recently stopped.",
+              "examples": [
+                "I have been studying English for three years.",
+                "She has been waiting for an hour.",
+                "They have been renovating their house."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "You look tired. ___ all night?",
+                  "answer": "Have you been working",
+                  "distractors": ["Did you work", "Have you worked", "Were you working"],
+                  "explanation": "Present perfect continuous stresses the ongoing duration.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The children ___ (play) in the garden since noon.",
+                  "answer": "have been playing",
+                  "distractors": [],
+                  "explanation": "'Since' + duration → present perfect continuous.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "I have been ate at this restaurant for years.",
+                  "answer": "I have been eating at this restaurant for years.",
+                  "distractors": [],
+                  "explanation": "After 'have been', use the -ing form, not past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "He ___ (study) ___ 7 a.m. and is exhausted now.",
+                  "answer": "has been studying|since",
+                  "distractors": ["studied", "has studied", "for", "until", "been studying"],
+                  "explanation": "Present perfect continuous + 'since' for a specific start time.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Transform using present perfect continuous: She started reading at 2 p.m. It is now 5 p.m.",
+                  "answer": "She has been reading for three hours.",
+                  "distractors": [],
+                  "explanation": "Use present perfect continuous + 'for' to express duration.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "How long ___ you ___ in this city?",
+                  "answer": "have ... been living",
+                  "distractors": ["did ... live", "are ... living", "do ... live"],
+                  "explanation": "Duration question from past to present = present perfect continuous.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "It ___ (rain) all morning. The streets are flooded.",
+                  "answer": "has been raining",
+                  "distractors": [],
+                  "explanation": "The evidence (flooded streets) and ongoing past activity = present perfect continuous.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "modal-verbs",
+      "name": "Modal Verbs",
+      "description": "Express ability, possibility, obligation, and permission with modal verbs",
+      "sortOrder": 2,
+      "topics": [
+        {
+          "slug": "modal-verbs-obligation",
+          "title": "Modals: Obligation and Necessity",
+          "cefrLevel": "B1",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "must-have-to-should",
+              "title": "Must, Have to, Should",
+              "sortOrder": 1,
+              "explanation": "Use 'must' for strong personal obligation or strong recommendation. Use 'have to' for external obligation (rules, laws). Use 'should' for advice or weak obligation.",
+              "examples": [
+                "You must stop at a red light. (strong obligation)",
+                "I have to submit the report by Friday. (external deadline)",
+                "You should exercise regularly. (advice)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Employees ___ wear safety helmets on the construction site. It's the law.",
+                  "answer": "must",
+                  "distractors": ["should", "might", "could"],
+                  "explanation": "A legal requirement = 'must' (strong external obligation).",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "You look pale. You ___ see a doctor.",
+                  "answer": "should",
+                  "distractors": ["must", "need", "have to"],
+                  "explanation": "Advice = 'should' (not as strong as 'must').",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Students ___ (strong obligation from the school rules) carry their ID cards at all times.",
+                  "answer": "must",
+                  "distractors": [],
+                  "explanation": "School rules = external strong obligation = 'must'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "You should to finish your homework before going out.",
+                  "answer": "You should finish your homework before going out.",
+                  "distractors": [],
+                  "explanation": "Modals are followed by the bare infinitive (no 'to').",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "It is obligatory for visitors to sign in at reception. (Use 'have to')",
+                  "answer": "Visitors have to sign in at reception.",
+                  "distractors": [],
+                  "explanation": "External obligation rewritten with 'have to'.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "You ___ to rest — you ___ been pushing yourself too hard lately.",
+                  "answer": "need|have",
+                  "distractors": ["should", "must", "will", "had"],
+                  "explanation": "'Need to rest' = necessity; 'have been pushing' = present perfect continuous.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I didn't ___ go to work yesterday because it was a public holiday.",
+                  "answer": "have to",
+                  "distractors": ["must", "should", "ought to"],
+                  "explanation": "Absence of obligation in the past = 'didn't have to'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "modal-verbs-possibility",
+              "title": "Modals: Possibility and Deduction",
+              "sortOrder": 2,
+              "explanation": "Use 'might/may' for possibility, 'must' for strong logical deduction (positive), and 'can't/couldn't' for strong logical deduction (negative).",
+              "examples": [
+                "She might be at the library. (possibility)",
+                "He must be the new teacher. (strong deduction — almost certain)",
+                "That can't be John — he is in New York."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The light is on. Someone ___ be at home.",
+                  "answer": "must",
+                  "distractors": ["should", "might", "can"],
+                  "explanation": "'Must' expresses strong logical deduction from evidence.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I'm not sure where Mark is. He ___ be in the meeting.",
+                  "answer": "might",
+                  "distractors": ["must", "will", "should"],
+                  "explanation": "'Might' = uncertain possibility.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "That ___ be Maria calling — she said she would ring at 6.",
+                  "answer": "must",
+                  "distractors": [],
+                  "explanation": "Strong deduction based on prior information = 'must'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She can't has eaten all the cake herself — it was huge!",
+                  "answer": "She can't have eaten all the cake herself — it was huge!",
+                  "distractors": [],
+                  "explanation": "Past modal deduction = 'can't have + past participle'.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "He ___ be tired — he ___ been working since dawn.",
+                  "answer": "must|has",
+                  "distractors": ["might", "should", "have", "was"],
+                  "explanation": "'Must be tired' = deduction; 'has been working' = present perfect continuous.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "It is almost certain that she is waiting outside. (Use 'must')",
+                  "answer": "She must be waiting outside.",
+                  "distractors": [],
+                  "explanation": "Strong deduction expressed with 'must be + -ing'.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "You ___ be joking! That story is completely unbelievable.",
+                  "answer": "must",
+                  "distractors": ["can't", "might", "should"],
+                  "explanation": "Informal strong deduction that something is true = 'must'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "modal-verbs-permission",
+              "title": "Modals: Permission and Ability",
+              "sortOrder": 3,
+              "explanation": "Use 'can' for present ability or informal permission. Use 'could' for past ability or polite permission requests. Use 'be allowed to' for formal permission.",
+              "examples": [
+                "I can speak three languages. (ability)",
+                "Could I leave early today? (polite request)",
+                "Students are not allowed to use phones during exams."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "___ I borrow your pen, please?",
+                  "answer": "Could",
+                  "distractors": ["Must", "Should", "Will"],
+                  "explanation": "'Could' is the polite form for permission requests.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She ___ swim very well when she was a child.",
+                  "answer": "could",
+                  "distractors": ["can", "should", "must"],
+                  "explanation": "Past ability = 'could'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Visitors ___ (not allowed) take photos inside the gallery.",
+                  "answer": "are not allowed to",
+                  "distractors": [],
+                  "explanation": "Formal prohibition = 'not allowed to'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "Can I to use your laptop for a moment?",
+                  "answer": "Can I use your laptop for a moment?",
+                  "distractors": [],
+                  "explanation": "Modal verbs are followed by the bare infinitive (no 'to').",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "You ___ park here after 6 p.m., but you ___ park here during the day.",
+                  "answer": "can|cannot",
+                  "distractors": ["could", "must", "should", "should not"],
+                  "explanation": "'Can' for permission; 'cannot' for prohibition based on rules.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "It was possible for him to play the piano at age 5. (Use 'could')",
+                  "answer": "He could play the piano at age 5.",
+                  "distractors": [],
+                  "explanation": "Past ability expressed with 'could'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Only staff members ___ use the executive elevator.",
+                  "answer": "are allowed to",
+                  "distractors": ["can to", "should to", "might to"],
+                  "explanation": "Formal permission for specific group = 'are allowed to'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "conditionals",
+      "name": "Conditionals",
+      "description": "Master zero, first, second, and third conditional structures",
+      "sortOrder": 3,
+      "topics": [
+        {
+          "slug": "real-conditionals",
+          "title": "Zero and First Conditionals",
+          "cefrLevel": "B1",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "zero-conditional",
+              "title": "Zero Conditional: Facts and General Truths",
+              "sortOrder": 1,
+              "explanation": "The zero conditional (If + present simple, present simple) expresses universal truths, scientific facts, or situations that are always true.",
+              "examples": [
+                "If you heat water to 100°C, it boils.",
+                "If people don't eat, they get hungry."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "If you ___ metal, it ___.",
+                  "answer": "heat / expands",
+                  "distractors": ["heated / expanded", "heat / will expand", "heat / would expand"],
+                  "explanation": "Zero conditional: both clauses in present simple for universal truths.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "If you ___ (mix) blue and yellow, you ___ (get) green.",
+                  "answer": "mix / get",
+                  "distractors": [],
+                  "explanation": "Scientific fact = zero conditional with present simple in both clauses.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "If water will freeze, it becomes ice.",
+                  "answer": "If water freezes, it becomes ice.",
+                  "distractors": [],
+                  "explanation": "Zero conditional if-clause uses present simple, not 'will'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "If plants ___ enough sunlight, they ___ properly.",
+                  "answer": "don't get|don't grow",
+                  "distractors": ["won't get", "won't grow", "didn't get", "didn't grow"],
+                  "explanation": "Zero conditional: both present simple for general truth.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite as a zero conditional: Dogs always bark when strangers approach.",
+                  "answer": "If strangers approach, dogs bark.",
+                  "distractors": [],
+                  "explanation": "Universal behaviour = zero conditional with present simple.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "first-conditional",
+              "title": "First Conditional: Real Future Possibilities",
+              "sortOrder": 2,
+              "explanation": "The first conditional (If + present simple, will + infinitive) expresses real and likely future conditions and their probable results.",
+              "examples": [
+                "If it rains tomorrow, we will cancel the picnic.",
+                "If you study hard, you will pass the exam."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "If she ___ the interview, she ___ the job.",
+                  "answer": "passes / will get",
+                  "distractors": ["will pass / gets", "passed / would get", "passes / would get"],
+                  "explanation": "First conditional: present simple in if-clause, will + infinitive in main clause.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "If you ___ (not hurry), you ___ (miss) the last train.",
+                  "answer": "don't hurry / will miss",
+                  "distractors": [],
+                  "explanation": "Negative first conditional for a likely future warning.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "If it will rain, I will stay at home.",
+                  "answer": "If it rains, I will stay at home.",
+                  "distractors": [],
+                  "explanation": "First conditional if-clause uses present simple, not 'will'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "If you ___ your boss on time, she ___ understand the situation.",
+                  "answer": "tell|will",
+                  "distractors": ["told", "would", "tells", "is telling"],
+                  "explanation": "First conditional: present simple + will.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using the first conditional: Maybe you'll win if you practise more.",
+                  "answer": "If you practise more, you will win.",
+                  "distractors": [],
+                  "explanation": "First conditional: present simple + will for likely outcome.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Unless you ___ the form, your application ___ be processed.",
+                  "answer": "sign / won't",
+                  "distractors": ["sign / will", "will sign / won't", "signed / wouldn't"],
+                  "explanation": "'Unless' = 'if not'; present simple in the unless-clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "What ___ you do if you ___ the lottery?",
+                  "answer": "will / win",
+                  "distractors": ["would / won", "will / would win", "do / win"],
+                  "explanation": "Likely hypothetical question still uses first conditional: will + present simple.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "If the weather ___ (be) nice, we ___ (go) for a walk.",
+                  "answer": "is / will go",
+                  "distractors": [],
+                  "explanation": "Future possibility with present simple in if-clause.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She will call you if she will have time.",
+                  "answer": "She will call you if she has time.",
+                  "distractors": [],
+                  "explanation": "If-clause in first conditional uses present simple.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite: Perhaps she will agree, but she needs to see the proposal first.",
+                  "answer": "If she sees the proposal, she will agree.",
+                  "distractors": [],
+                  "explanation": "First conditional linking condition to probable result.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "I ___ help you with that ___ you ask me nicely.",
+                  "answer": "will|if",
+                  "distractors": ["would", "unless", "won't", "maybe"],
+                  "explanation": "First conditional: will + if + present simple.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "If the project ___ on schedule, we ___ a bonus.",
+                  "answer": "finishes / will receive",
+                  "distractors": ["will finish / receive", "finishes / would receive", "finish / will receive"],
+                  "explanation": "First conditional: present simple in if-clause + will in main clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "As long as you ___ (practise) every day, your English ___ (improve) quickly.",
+                  "answer": "practise / will improve",
+                  "distractors": [],
+                  "explanation": "'As long as' = first conditional; present simple + will.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "If you will leave now, you will catch the bus.",
+                  "answer": "If you leave now, you will catch the bus.",
+                  "distractors": [],
+                  "explanation": "The if-clause in first conditional requires present simple, not 'will'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using 'unless': You must hurry, or you will be late.",
+                  "answer": "Unless you hurry, you will be late.",
+                  "distractors": [],
+                  "explanation": "'Unless' = 'if not' — replaces a negative first conditional clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "unreal-conditionals",
+          "title": "Second and Third Conditionals",
+          "cefrLevel": "B2",
+          "sortOrder": 2,
+          "lessons": [
+            {
+              "slug": "second-conditional",
+              "title": "Second Conditional: Unreal Present",
+              "sortOrder": 1,
+              "explanation": "The second conditional (If + past simple, would + infinitive) talks about imaginary or unlikely situations in the present or future.",
+              "examples": [
+                "If I won the lottery, I would buy a house.",
+                "If she lived closer, we would meet more often."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "If I ___ a doctor, I ___ work in a hospital.",
+                  "answer": "were / would",
+                  "distractors": ["am / will", "was / will", "am / would"],
+                  "explanation": "Second conditional: past simple (were for 'be') + would.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "If he ___ (speak) Chinese, he ___ (get) that promotion.",
+                  "answer": "spoke / would get",
+                  "distractors": [],
+                  "explanation": "Imaginary present condition = second conditional.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "If I have more time, I would travel more.",
+                  "answer": "If I had more time, I would travel more.",
+                  "distractors": [],
+                  "explanation": "Second conditional uses past simple in the if-clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "If she ___ the truth, everyone ___ shocked.",
+                  "answer": "told|would be",
+                  "distractors": ["tells", "will be", "told to", "would told"],
+                  "explanation": "Second conditional: past simple + would + infinitive.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "In reality, I don't have a car. But imagine you did — use second conditional.",
+                  "answer": "If I had a car, I would drive to work.",
+                  "distractors": [],
+                  "explanation": "Imaginary possession expressed with second conditional.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I ___ help you if I ___ how.",
+                  "answer": "would / knew",
+                  "distractors": ["will / know", "would / know", "will / knew"],
+                  "explanation": "Second conditional: would + past simple (knew).",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "What ___ you do if you ___ (be) in my situation?",
+                  "answer": "would / were",
+                  "distractors": [],
+                  "explanation": "'Were' is the formal/correct past simple for 'be' in all persons.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "If she ___ more experience, she ___ apply for that management role.",
+                  "answer": "had / could",
+                  "distractors": ["has / can", "had / can", "has / could"],
+                  "explanation": "Second conditional: past simple + could (modal past) in main clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "If I was richer, I will buy a yacht.",
+                  "answer": "If I were richer, I would buy a yacht.",
+                  "distractors": [],
+                  "explanation": "Second conditional: 'were' for 'be'; 'would' not 'will'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "If the government ___ more in education, society ___ much better outcomes.",
+                  "answer": "invested|would see",
+                  "distractors": ["invests", "will see", "invest", "sees"],
+                  "explanation": "Second conditional: past simple + would + infinitive.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "third-conditional",
+              "title": "Third Conditional: Unreal Past",
+              "sortOrder": 2,
+              "explanation": "The third conditional (If + past perfect, would have + past participle) talks about imaginary situations in the past — things that did not happen.",
+              "examples": [
+                "If I had studied harder, I would have passed the exam.",
+                "She would have called you if she had found your number."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "If they ___ earlier, they ___ the beginning of the film.",
+                  "answer": "had arrived / would have seen",
+                  "distractors": ["arrived / would see", "had arrived / would see", "arrived / would have seen"],
+                  "explanation": "Third conditional: past perfect + would have + past participle.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "If you ___ (tell) me, I ___ (help) you.",
+                  "answer": "had told / would have helped",
+                  "distractors": [],
+                  "explanation": "Unreal past: past perfect in if-clause, would have + pp in main clause.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "If she would have known, she would have come.",
+                  "answer": "If she had known, she would have come.",
+                  "distractors": [],
+                  "explanation": "'Would have' cannot appear in the if-clause of a third conditional.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "He ___ the deadline if he ___ started earlier.",
+                  "answer": "would have met|had",
+                  "distractors": ["would meet", "has", "would have started", "met"],
+                  "explanation": "Third conditional: would have + pp / had + past participle.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "In reality, the company went bankrupt because they didn't innovate. Use third conditional.",
+                  "answer": "If they had innovated, they would not have gone bankrupt.",
+                  "distractors": [],
+                  "explanation": "Third conditional for an unreal past with different outcome.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I ___ the job if I ___ more confident in the interview.",
+                  "answer": "would have got / had been",
+                  "distractors": ["would get / was", "would have got / was", "would get / had been"],
+                  "explanation": "Third conditional: would have + pp / had + past simple.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "She ___ (not be) so upset if you ___ (apologise) immediately.",
+                  "answer": "would not have been / had apologised",
+                  "distractors": [],
+                  "explanation": "Negative third conditional with 'would not have been'.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "If the alarm ___ gone off, the fire ___ much more damage.",
+                  "answer": "hadn't / would have caused",
+                  "distractors": ["didn't / would cause", "hadn't / would cause", "didn't / would have caused"],
+                  "explanation": "Third conditional: past perfect negative + would have + past participle.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "If they had listened, they would have avoid the problem.",
+                  "answer": "If they had listened, they would have avoided the problem.",
+                  "distractors": [],
+                  "explanation": "'Would have avoided' — must use past participle after 'have'.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "We ___ have arrived sooner if the traffic ___ been so bad.",
+                  "answer": "would|hadn't",
+                  "distractors": ["could", "had", "has", "wasn't"],
+                  "explanation": "Third conditional: would have + pp / hadn't + been.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "passive-voice",
+      "name": "Passive Voice",
+      "description": "Transform active sentences and use passive constructions effectively",
+      "sortOrder": 4,
+      "topics": [
+        {
+          "slug": "passive-formation",
+          "title": "Passive Voice Formation",
+          "cefrLevel": "B1",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "passive-present-past",
+              "title": "Passive: Present and Past Simple",
+              "sortOrder": 1,
+              "explanation": "Form the passive with be + past participle. Change the tense of 'be' to change the tense. Use 'by' to mention the agent when relevant.",
+              "examples": [
+                "The report is written every Monday. (present simple passive)",
+                "The castle was built in 1450. (past simple passive)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The letter ___ by the secretary every morning.",
+                  "answer": "is typed",
+                  "distractors": ["types", "typing", "was typed"],
+                  "explanation": "Present simple passive: is + past participle.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Change to passive: Shakespeare wrote Hamlet.",
+                  "answer": "Hamlet was written by Shakespeare.",
+                  "distractors": [],
+                  "explanation": "Past simple passive: was + past participle + by + agent.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "This car ___ (manufacture) in Germany.",
+                  "answer": "is manufactured",
+                  "distractors": [],
+                  "explanation": "Present simple passive for ongoing facts.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "The windows are clean every Friday.",
+                  "answer": "The windows are cleaned every Friday.",
+                  "distractors": [],
+                  "explanation": "Passive requires past participle 'cleaned', not base form.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "The bridge ___ ___ in 1890 by local engineers.",
+                  "answer": "was|built",
+                  "distractors": ["is", "build", "were", "building"],
+                  "explanation": "Past simple passive: was + past participle.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "A new hospital ___ in the city centre last year.",
+                  "answer": "was built",
+                  "distractors": ["is built", "has built", "built"],
+                  "explanation": "Specific past time (last year) = past simple passive.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Change to passive: The company employs 500 people.",
+                  "answer": "500 people are employed by the company.",
+                  "distractors": [],
+                  "explanation": "Present simple passive with agent.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "passive-perfect-continuous",
+              "title": "Passive: Perfect and Continuous Forms",
+              "sortOrder": 2,
+              "explanation": "The present perfect passive (has/have been + pp) and past continuous passive (was/were being + pp) extend the passive to other tenses.",
+              "examples": [
+                "The report has been submitted. (present perfect passive)",
+                "The road was being repaired when we arrived. (past continuous passive)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The new bridge ___ for two years.",
+                  "answer": "has been under construction",
+                  "distractors": ["has constructed", "is constructing", "had been constructing"],
+                  "explanation": "Present perfect passive for an action from past to present.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The documents ___ (examine) by the committee when we arrived.",
+                  "answer": "were being examined",
+                  "distractors": [],
+                  "explanation": "Past continuous passive: were being + past participle.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "The project has been completed by the team last week.",
+                  "answer": "The project was completed by the team last week.",
+                  "distractors": [],
+                  "explanation": "Specific past time 'last week' requires past simple passive, not present perfect.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "By 2020, the vaccine ___ ___ by thousands of scientists worldwide.",
+                  "answer": "had been|tested",
+                  "distractors": ["was", "test", "has been", "testing"],
+                  "explanation": "Past perfect passive: had been + past participle.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Change to present perfect passive: They have repaired all the roads.",
+                  "answer": "All the roads have been repaired.",
+                  "distractors": [],
+                  "explanation": "Present perfect passive: have/has been + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The patient ___ when the doctor arrived.",
+                  "answer": "was being treated",
+                  "distractors": ["treated", "has been treated", "was treated"],
+                  "explanation": "Action in progress in the past when another event happened = past continuous passive.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The results ___ (not announce) yet.",
+                  "answer": "have not been announced",
+                  "distractors": [],
+                  "explanation": "Negative present perfect passive: have not been + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "passive-with-modals",
+              "title": "Passive with Modal Verbs",
+              "sortOrder": 3,
+              "explanation": "Combine passive with modals: modal + be + past participle (e.g., must be done, should be sent, can be found).",
+              "examples": [
+                "This medicine must be kept refrigerated.",
+                "The report should be submitted by Friday.",
+                "The problem can be solved quickly."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "All luggage ___ at the security checkpoint.",
+                  "answer": "must be screened",
+                  "distractors": ["must screen", "must being screened", "must be screening"],
+                  "explanation": "Modal passive: must + be + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The contracts ___ (should/sign) before the deadline.",
+                  "answer": "should be signed",
+                  "distractors": [],
+                  "explanation": "Modal passive with 'should': should + be + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "The package can delivered within 24 hours.",
+                  "answer": "The package can be delivered within 24 hours.",
+                  "distractors": [],
+                  "explanation": "Modal passive requires 'be' between the modal and past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Change to passive: They might cancel the event.",
+                  "answer": "The event might be cancelled.",
+                  "distractors": [],
+                  "explanation": "Modal passive: modal + be + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "This document ___ ___ by the director before publication.",
+                  "answer": "must|be approved",
+                  "distractors": ["should", "approved", "be approving", "can"],
+                  "explanation": "Modal passive: must + be + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Children under 12 ___ be left unattended.",
+                  "answer": "should not",
+                  "distractors": ["must", "can", "will"],
+                  "explanation": "Recommendation/warning expressed with 'should not be' passive.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The problem ___ (might/resolve) if we change our approach.",
+                  "answer": "might be resolved",
+                  "distractors": [],
+                  "explanation": "Modal passive with 'might': might + be + past participle.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "relative-clauses",
+      "name": "Relative Clauses",
+      "description": "Define and add information with defining and non-defining relative clauses",
+      "sortOrder": 5,
+      "topics": [
+        {
+          "slug": "defining-relative-clauses",
+          "title": "Defining Relative Clauses",
+          "cefrLevel": "B1",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "relative-pronouns-who-which-that",
+              "title": "Relative Pronouns: who, which, that",
+              "sortOrder": 1,
+              "explanation": "Defining relative clauses identify which person or thing we are talking about. Use 'who' for people, 'which' for things, and 'that' for both (in informal style). No commas around defining clauses.",
+              "examples": [
+                "The woman who lives next door is a doctor.",
+                "The book that/which I bought was excellent.",
+                "I need a phone that has a good camera."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The student ___ won the prize is from our school.",
+                  "answer": "who",
+                  "distractors": ["which", "whom", "whose"],
+                  "explanation": "'Who' is used for people as the subject of the relative clause.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The laptop ___ I bought last year has already broken down.",
+                  "answer": "that",
+                  "distractors": ["who", "whom", "whose"],
+                  "explanation": "'That' or 'which' for things; 'who' is for people only.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The restaurant ___ we visited last night was wonderful.",
+                  "answer": "that",
+                  "distractors": [],
+                  "explanation": "Defining relative clause for a place/thing = 'that' or 'which'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "The man which called this morning left a message.",
+                  "answer": "The man who called this morning left a message.",
+                  "distractors": [],
+                  "explanation": "Use 'who' (not 'which') for people.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "The company ___ makes this product has been in business ___ 50 years.",
+                  "answer": "that|for",
+                  "distractors": ["who", "which", "since", "during"],
+                  "explanation": "'That' for a company (thing); 'for' with duration.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Combine: I met a girl. She speaks five languages.",
+                  "answer": "I met a girl who speaks five languages.",
+                  "distractors": [],
+                  "explanation": "Defining relative clause with 'who' for a person.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Have you seen the keys ___ were on the table?",
+                  "answer": "that",
+                  "distractors": ["who", "whose", "whom"],
+                  "explanation": "'That' or 'which' for things (keys).",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "relative-pronouns-whose-where-when",
+              "title": "Relative Pronouns: whose, where, when",
+              "sortOrder": 2,
+              "explanation": "Use 'whose' for possession (replacing his/her/their), 'where' for places, and 'when' for times in defining relative clauses.",
+              "examples": [
+                "The author whose book I read is coming to speak.",
+                "That is the city where I was born.",
+                "I remember the day when we first met."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The scientist ___ research changed medicine was awarded the Nobel Prize.",
+                  "answer": "whose",
+                  "distractors": ["who", "that", "which"],
+                  "explanation": "'Whose' shows possession in a relative clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "This is the park ___ we used to play as children.",
+                  "answer": "where",
+                  "distractors": [],
+                  "explanation": "'Where' in a defining relative clause for a place.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "The student which essay was the best received a prize.",
+                  "answer": "The student whose essay was the best received a prize.",
+                  "distractors": [],
+                  "explanation": "'Whose' is correct for possession, not 'which'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Combine: I visited the museum. My grandfather worked there.",
+                  "answer": "I visited the museum where my grandfather worked.",
+                  "distractors": [],
+                  "explanation": "Use 'where' to refer to a place in a relative clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "Do you remember the summer ___ we went on that road trip ___ lasted three weeks?",
+                  "answer": "when|that",
+                  "distractors": ["where", "which", "whose", "who"],
+                  "explanation": "'When' for time; 'that' for the road trip (thing).",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The company ___ I work for is expanding rapidly.",
+                  "answer": "that",
+                  "distractors": ["whose", "who", "where"],
+                  "explanation": "Company = thing; 'that' for a defining relative clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "She is the colleague ___ car we borrowed last weekend.",
+                  "answer": "whose",
+                  "distractors": [],
+                  "explanation": "'Whose' shows that the car belongs to the colleague.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "non-defining-relative-clauses",
+              "title": "Non-defining Relative Clauses",
+              "sortOrder": 3,
+              "explanation": "Non-defining relative clauses add extra information about a noun already identified. They are separated by commas and cannot use 'that'. They can be removed without changing the core meaning.",
+              "examples": [
+                "My brother, who lives in Tokyo, is visiting next month.",
+                "The Eiffel Tower, which was built in 1889, attracts millions of tourists."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "My car, ___ I bought three years ago, needs a service.",
+                  "answer": "which",
+                  "distractors": ["that", "who", "whose"],
+                  "explanation": "Non-defining clauses use 'which' (not 'that') for things.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "My mother, that is a nurse, works long hours.",
+                  "answer": "My mother, who is a nurse, works long hours.",
+                  "distractors": [],
+                  "explanation": "Non-defining clauses use 'who' for people, never 'that'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Paris, ___ is the capital of France, is famous for its cuisine.",
+                  "answer": "which",
+                  "distractors": [],
+                  "explanation": "Non-defining relative clause for a place = 'which'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Add a non-defining clause: Professor Harris teaches biology. He won a Nobel Prize.",
+                  "answer": "Professor Harris, who won a Nobel Prize, teaches biology.",
+                  "distractors": [],
+                  "explanation": "Extra information about an already-identified person uses a non-defining clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "The Great Wall of China, ___ stretches over 13,000 miles, ___ visited by millions every year.",
+                  "answer": "which|is",
+                  "distractors": ["that", "are", "who", "was"],
+                  "explanation": "'Which' in non-defining; 'is' for present simple passive complement.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "My colleague Sarah, ___ speaks fluent Japanese, will lead the Tokyo meeting.",
+                  "answer": "who",
+                  "distractors": ["which", "that", "whose"],
+                  "explanation": "Non-defining relative clause for a named person = 'who'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "The report which, took three months to complete, has finally been published.",
+                  "answer": "The report, which took three months to complete, has finally been published.",
+                  "distractors": [],
+                  "explanation": "Commas in non-defining clause go before the relative pronoun and after the clause.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "reported-speech",
+      "name": "Reported Speech",
+      "description": "Report what people said with correct tense shifts and reporting verbs",
+      "sortOrder": 6,
+      "topics": [
+        {
+          "slug": "reported-statements",
+          "title": "Reported Statements and Questions",
+          "cefrLevel": "B2",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "reported-statements-tense-shift",
+              "title": "Reported Statements: Tense Backshift",
+              "sortOrder": 1,
+              "explanation": "In reported speech, tenses usually shift back: present → past, past → past perfect, will → would. Pronouns and time expressions also change.",
+              "examples": [
+                "Direct: 'I am tired.' → Reported: She said she was tired.",
+                "Direct: 'I will call you.' → Reported: He said he would call me."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Direct: 'I live in London.' — Reported: She said she ___ in London.",
+                  "answer": "lived",
+                  "distractors": ["lives", "will live", "has lived"],
+                  "explanation": "Tense backshift: present simple → past simple in reported speech.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Direct: 'I will finish the project tomorrow.' — He told me he ___ the project the next day.",
+                  "answer": "would finish",
+                  "distractors": [],
+                  "explanation": "Will → would in reported speech; tomorrow → the next day.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She said that she is not feeling well today.",
+                  "answer": "She said that she was not feeling well.",
+                  "distractors": [],
+                  "explanation": "Tense backshift and time word change: today is omitted or replaced.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "He said he ___ already ___ the documents before the meeting.",
+                  "answer": "had|sent",
+                  "distractors": ["has", "send", "have", "sent to"],
+                  "explanation": "Past simple → past perfect in reported speech: had + sent.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Change to reported speech: 'I can't come to the party,' Anna said.",
+                  "answer": "Anna said she couldn't come to the party.",
+                  "distractors": [],
+                  "explanation": "Can → could in reported speech.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Direct: 'We have visited the museum.' — They told us they ___ the museum.",
+                  "answer": "had visited",
+                  "distractors": ["visited", "have visited", "would visit"],
+                  "explanation": "Present perfect → past perfect in reported speech.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Direct: 'I saw the film last night.' — He said he ___ the film the night before.",
+                  "answer": "had seen",
+                  "distractors": [],
+                  "explanation": "Past simple → past perfect in reported speech; last night → the night before.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                }
+              ]
+            },
+            {
+              "slug": "reported-questions-commands",
+              "title": "Reported Questions and Commands",
+              "sortOrder": 2,
+              "explanation": "Reported questions use statement word order (no auxiliary inversion) and 'ask'. Reported commands use 'tell/ask + infinitive'.",
+              "examples": [
+                "Direct: 'Where do you live?' → He asked where I lived. (no inversion)",
+                "Direct: 'Open the window.' → She told me to open the window."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Direct: 'What time does the shop close?' — He asked me what time the shop ___.",
+                  "answer": "closed",
+                  "distractors": ["does close", "closes", "would close"],
+                  "explanation": "Reported question: statement word order (no auxiliary) + tense backshift.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Direct: 'Be quiet!' the teacher said. — The teacher told the students ___ quiet.",
+                  "answer": "to be",
+                  "distractors": [],
+                  "explanation": "Reported command: tell + object + to + infinitive.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She asked me where did I work.",
+                  "answer": "She asked me where I worked.",
+                  "distractors": [],
+                  "explanation": "No inversion in reported questions; use statement order.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Change to reported speech: 'Please don't make any noise,' she asked.",
+                  "answer": "She asked them not to make any noise.",
+                  "distractors": [],
+                  "explanation": "Negative reported command: ask + object + not + to + infinitive.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "He asked me ___ I ___ help him move the furniture.",
+                  "answer": "if|could",
+                  "distractors": ["whether", "can", "what", "would"],
+                  "explanation": "Yes/no question reported with 'if/whether' + statement order; can → could.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Direct: 'Have you ever been to Japan?' — She asked me ___ ever been to Japan.",
+                  "answer": "if I had",
+                  "distractors": ["if I have", "have I ever", "whether had I"],
+                  "explanation": "Yes/no question → if + statement order; present perfect → past perfect.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Direct: 'Don't park here!' — The sign said ___ to park there.",
+                  "answer": "not",
+                  "distractors": [],
+                  "explanation": "Negative reported instruction: (told people) not to + infinitive.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "reporting-verbs",
+              "title": "Reporting Verbs Beyond 'Said'",
+              "sortOrder": 3,
+              "explanation": "Use varied reporting verbs to convey the speaker's intention: admit (+ -ing), apologise (for + -ing), suggest (+ -ing), warn (+ not to), promise (+ to), deny (+ -ing), agree (+ to).",
+              "examples": [
+                "She admitted stealing the money.",
+                "He warned us not to touch the fence.",
+                "They agreed to pay for the damages."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Direct: 'I broke the vase.' — He ___ breaking the vase.",
+                  "answer": "admitted",
+                  "distractors": ["said", "told", "warned"],
+                  "explanation": "'Admit' + -ing expresses confession.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "She ___ (warn) us not to walk alone at night.",
+                  "answer": "warned",
+                  "distractors": [],
+                  "explanation": "'Warn + object + not to infinitive' for negative warnings.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "He suggested to take the earlier train.",
+                  "answer": "He suggested taking the earlier train.",
+                  "distractors": [],
+                  "explanation": "'Suggest' is followed by the gerund (-ing), not the infinitive.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "She ___ having met him before, even though they had studied together.",
+                  "answer": "denied",
+                  "distractors": ["refused", "admitted", "suggested", "warned"],
+                  "explanation": "'Deny + -ing' for claiming something did not happen.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using 'apologise': 'I'm sorry for interrupting the meeting,' he said.",
+                  "answer": "He apologised for interrupting the meeting.",
+                  "distractors": [],
+                  "explanation": "'Apologise for + gerund' is the standard reporting pattern.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Direct: 'Yes, I will pay for the repairs.' — She ___ to pay for the repairs.",
+                  "answer": "promised",
+                  "distractors": ["refused", "denied", "admitted"],
+                  "explanation": "'Promise + to infinitive' for a commitment about the future.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "He ___ (refuse) to answer any more questions.",
+                  "answer": "refused",
+                  "distractors": [],
+                  "explanation": "'Refuse + to infinitive' for declining to do something.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "gerunds-infinitives",
+      "name": "Gerunds & Infinitives",
+      "description": "Know when to use gerunds (-ing) or infinitives (to + verb) after verbs and adjectives",
+      "sortOrder": 7,
+      "topics": [
+        {
+          "slug": "gerunds-vs-infinitives",
+          "title": "Gerunds vs Infinitives",
+          "cefrLevel": "B2",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "verbs-followed-by-gerund",
+              "title": "Verbs Followed by Gerund",
+              "sortOrder": 1,
+              "explanation": "Some verbs are always followed by the gerund (-ing form): enjoy, avoid, consider, admit, deny, finish, keep, mind, suggest, recommend, risk.",
+              "examples": [
+                "I enjoy reading historical novels.",
+                "She avoided making eye contact.",
+                "He finished writing the report at midnight."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I enjoy ___ to classical music while I work.",
+                  "answer": "listening",
+                  "distractors": ["to listen", "listen", "listened"],
+                  "explanation": "'Enjoy' is always followed by a gerund (-ing).",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Would you mind ___ (open) the window?",
+                  "answer": "opening",
+                  "distractors": [],
+                  "explanation": "'Mind' is followed by the gerund in requests.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "They suggested to take the highway to avoid traffic.",
+                  "answer": "They suggested taking the highway to avoid traffic.",
+                  "distractors": [],
+                  "explanation": "'Suggest' and 'avoid' both require gerunds.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "She considered ___ the company but eventually decided ___ the offer.",
+                  "answer": "leaving|to accept",
+                  "distractors": ["to leave", "accepting", "to accepting", "leave"],
+                  "explanation": "'Consider' + gerund; 'decide' + infinitive.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "He admitted ___ the confidential documents.",
+                  "answer": "reading",
+                  "distractors": ["to read", "read", "to have read"],
+                  "explanation": "'Admit' is followed by a gerund.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using 'keep': He continued interrupting the meeting.",
+                  "answer": "He kept interrupting the meeting.",
+                  "distractors": [],
+                  "explanation": "'Keep' + gerund = continue doing something repeatedly.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The fire risk was high, so they avoided ___ (light) candles.",
+                  "answer": "lighting",
+                  "distractors": [],
+                  "explanation": "'Avoid' + gerund to express not doing something.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "verbs-followed-by-infinitive",
+              "title": "Verbs Followed by Infinitive",
+              "sortOrder": 2,
+              "explanation": "Some verbs are always followed by the infinitive (to + base): want, hope, decide, agree, promise, refuse, manage, fail, offer, expect.",
+              "examples": [
+                "She decided to study abroad.",
+                "He refused to answer the question.",
+                "They managed to finish on time."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She hopes ___ a promotion by the end of the year.",
+                  "answer": "to get",
+                  "distractors": ["getting", "get", "got"],
+                  "explanation": "'Hope' is followed by an infinitive.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Despite the bad weather, they managed ___ (reach) the summit.",
+                  "answer": "to reach",
+                  "distractors": [],
+                  "explanation": "'Manage' + to infinitive for succeeding against difficulty.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "He offered helping us carry the boxes.",
+                  "answer": "He offered to help us carry the boxes.",
+                  "distractors": [],
+                  "explanation": "'Offer' is followed by the infinitive, not the gerund.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Use 'fail': The system did not start correctly.",
+                  "answer": "The system failed to start correctly.",
+                  "distractors": [],
+                  "explanation": "'Fail + to infinitive' for not succeeding at something.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "We agreed ___ the meeting and promised ___ a revised proposal.",
+                  "answer": "to postpone|to send",
+                  "distractors": ["postponing", "sending", "postpone", "send"],
+                  "explanation": "'Agree' and 'promise' both take the infinitive.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "He expected ___ a reply within 24 hours.",
+                  "answer": "to receive",
+                  "distractors": ["receiving", "receive", "received"],
+                  "explanation": "'Expect' + to infinitive.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The board decided ___ (postpone) the launch until January.",
+                  "answer": "to postpone",
+                  "distractors": [],
+                  "explanation": "'Decide' + to infinitive.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "verbs-meaning-change",
+              "title": "Verbs with Meaning Change: stop, try, remember, forget",
+              "sortOrder": 3,
+              "explanation": "Some verbs change meaning depending on whether they are followed by a gerund or infinitive: stop/try/remember/forget + -ing (about a past/ongoing action) vs stop/try/remember/forget + to infinitive (about a future or intended action).",
+              "examples": [
+                "I stopped smoking. (gave up the habit)",
+                "I stopped to smoke. (stopped doing something else in order to smoke)",
+                "Remember to lock the door. (don't forget to do it)",
+                "I remember locking the door. (I recall doing it)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "Please remember ___ the lights off when you leave.",
+                  "answer": "to turn",
+                  "distractors": ["turning", "turn", "turned"],
+                  "explanation": "'Remember to + infinitive' = don't forget to do something in the future.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I clearly remember ___ the door, so I don't know why it was open.",
+                  "answer": "locking",
+                  "distractors": ["to lock", "lock", "locked"],
+                  "explanation": "'Remember + gerund' = recall a past action.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "She tried ___ (open) the window but it was stuck.",
+                  "answer": "to open",
+                  "distractors": [],
+                  "explanation": "'Try to + infinitive' = make an effort to do something.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The doctor advised her to stop ___ (eat) processed foods.",
+                  "answer": "eating",
+                  "distractors": [],
+                  "explanation": "'Stop + gerund' = give up a habit.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "Don't forget ___ your passport, and try ___ arriving at the airport early.",
+                  "answer": "to bring|to avoid",
+                  "distractors": ["bringing", "avoiding", "bring", "avoid"],
+                  "explanation": "'Forget to' = don't fail to do; 'try to' = make an effort.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "He stopped to eat fast food last year and feels much healthier now.",
+                  "answer": "He stopped eating fast food last year and feels much healthier now.",
+                  "distractors": [],
+                  "explanation": "'Stopped to eat' means he paused to eat; 'stopped eating' means he gave up the habit.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I tried ___ aspirin but it didn't help with my headache.",
+                  "answer": "taking",
+                  "distractors": ["to take", "take", "took"],
+                  "explanation": "'Try + gerund' = experiment with something as a solution.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "articles",
+      "name": "Articles",
+      "description": "Use a, an, the and zero article correctly in all contexts",
+      "sortOrder": 8,
+      "topics": [
+        {
+          "slug": "definite-indefinite-zero-articles",
+          "title": "Definite, Indefinite, and Zero Articles",
+          "cefrLevel": "B1",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "articles-rules",
+              "title": "Article Rules: a/an, the, and Zero Article",
+              "sortOrder": 1,
+              "explanation": "Use 'a/an' for first mention or non-specific items. Use 'the' for specific or previously mentioned items, unique things, and superlatives. Use zero article for generalizations with plural/uncountable nouns.",
+              "examples": [
+                "I saw a dog. The dog was barking. (first mention → specific)",
+                "The sun rises in the east. (unique thing)",
+                "Children love playing. (generalisation — zero article)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She is ___ engineer and works for ___ big firm.",
+                  "answer": "an / a",
+                  "distractors": ["a / an", "the / the", "a / a"],
+                  "explanation": "'Engineer' starts with a vowel sound → 'an'. 'Big firm' first mention → 'a'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "___ Nile is the longest river in Africa.",
+                  "answer": "The",
+                  "distractors": [],
+                  "explanation": "Unique geographical features use 'the'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "I love a music, especially jazz.",
+                  "answer": "I love music, especially jazz.",
+                  "distractors": [],
+                  "explanation": "Generalizations with uncountable nouns use zero article.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "___ Amazon rainforest is home to millions of species.",
+                  "answer": "The",
+                  "distractors": ["A", "An", "—"],
+                  "explanation": "Unique geographical regions require 'the'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "___ life is short, so make ___ most of every day.",
+                  "answer": "—|the",
+                  "distractors": ["A", "An", "a", "The"],
+                  "explanation": "'Life' in generalisation = zero article; 'the most' = fixed expression.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Add the correct article: I have ____ cat. ____ cat is called Luna.",
+                  "answer": "I have a cat. The cat is called Luna.",
+                  "distractors": [],
+                  "explanation": "First mention → 'a'; second mention (specific) → 'the'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "We stayed at a Hilton Hotel. The hotel was fantastic.",
+                  "answer": "We stayed at the Hilton Hotel. The hotel was fantastic.",
+                  "distractors": [],
+                  "explanation": "Named unique establishments use 'the'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "articles-advanced-uses",
+              "title": "Articles: Advanced and Tricky Uses",
+              "sortOrder": 2,
+              "explanation": "Articles with geographical names, institutions, plural nationality words, and fixed expressions require careful attention. Learn the rules for when 'the' is required and when it is omitted.",
+              "examples": [
+                "the United States, the Netherlands (countries with plural/federal in name)",
+                "go to school / go to the school (generic institution vs specific building)",
+                "the French, the British (plural nationality adjectives as nouns)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She studied at ___ Oxford University.",
+                  "answer": "—",
+                  "distractors": ["the", "a", "an"],
+                  "explanation": "Named universities (without 'of') take zero article.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "___ Dutch are known for their tolerance and cycling culture.",
+                  "answer": "The",
+                  "distractors": [],
+                  "explanation": "Nationality adjective used as a noun requires 'the'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "My son goes to the school in our neighbourhood.",
+                  "answer": "My son goes to school in our neighbourhood.",
+                  "distractors": [],
+                  "explanation": "'Go to school' as a generic institution = zero article.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She plays ___ violin in a chamber orchestra.",
+                  "answer": "the",
+                  "distractors": ["a", "an", "—"],
+                  "explanation": "Musical instruments use 'the'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "___ Mediterranean is one of ___ most beautiful seas in ___ world.",
+                  "answer": "The|the|the",
+                  "distractors": ["A", "a", "An", "an", "—"],
+                  "explanation": "Seas and superlatives use 'the'; 'the world' is unique.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "He is in ___ hospital after the accident.",
+                  "answer": "the",
+                  "distractors": [],
+                  "explanation": "In British English, 'in hospital' (zero article) = admitted; 'in the hospital' = at the specific building.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "The Himalayas are the highest mountains in world.",
+                  "answer": "The Himalayas are the highest mountains in the world.",
+                  "distractors": [],
+                  "explanation": "'In the world' always uses 'the' as the world is unique.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "articles-practice",
+              "title": "Articles in Context: Practice",
+              "sortOrder": 3,
+              "explanation": "Consolidate your knowledge of all article rules through mixed-context practice. Pay attention to the specific/general contrast, first vs second mention, and fixed expressions.",
+              "examples": [
+                "Do you have a pen? I need to sign the contract.",
+                "I love dogs. The dog next door is very friendly."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "He is ___ honest man. You can trust ___ advice he gives.",
+                  "answer": "an / the",
+                  "distractors": [],
+                  "explanation": "'Honest' starts with a vowel sound → 'an'; 'the advice' = specific advice from this specific man.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I bought ___ new car last week. ___ car is already a great improvement.",
+                  "answer": "a / The",
+                  "distractors": ["the / A", "a / A", "The / A"],
+                  "explanation": "First mention = 'a'; second mention (already identified) = 'The'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She is a best student in the class.",
+                  "answer": "She is the best student in the class.",
+                  "distractors": [],
+                  "explanation": "Superlatives require 'the'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "This is ___ picture I told you about. Isn't it ___ incredible painting?",
+                  "answer": "the|an",
+                  "distractors": ["a", "the", "An", "A"],
+                  "explanation": "'The picture' = previously mentioned/specific; 'an incredible' = indefinite article before vowel sound.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "We took ___ taxi to ___ airport and arrived on time.",
+                  "answer": "a / the",
+                  "distractors": ["the / a", "a / a", "the / the"],
+                  "explanation": "First mention taxi = 'a'; unique local airport = 'the'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "___ information you gave me was very helpful.",
+                  "answer": "The",
+                  "distractors": [],
+                  "explanation": "Specific information already in context = 'The'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "He has the PhD in chemistry from Cambridge.",
+                  "answer": "He has a PhD in chemistry from Cambridge.",
+                  "distractors": [],
+                  "explanation": "A degree is first mention, not specific → 'a'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "prepositions",
+      "name": "Prepositions",
+      "description": "Master prepositions of time, place, movement, and common collocations",
+      "sortOrder": 9,
+      "topics": [
+        {
+          "slug": "prepositions-time-place",
+          "title": "Prepositions of Time and Place",
+          "cefrLevel": "B1",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "prepositions-at-in-on-time",
+              "title": "At, In, On for Time",
+              "sortOrder": 1,
+              "explanation": "Use 'at' for specific times and fixed expressions (at night, at noon). Use 'in' for months, years, seasons, and longer periods. Use 'on' for days and dates.",
+              "examples": [
+                "The meeting is at 3 p.m. on Monday.",
+                "She was born in March 1990.",
+                "The festival is on Christmas Day."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The exam is ___ Friday ___ 9 a.m.",
+                  "answer": "on / at",
+                  "distractors": ["at / on", "in / at", "at / in"],
+                  "explanation": "Day = 'on'; specific time = 'at'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "He was born ___ summer, ___ July 1985.",
+                  "answer": "in / in",
+                  "distractors": [],
+                  "explanation": "Seasons and months both use 'in'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "I'll see you in the weekend.",
+                  "answer": "I'll see you at the weekend.",
+                  "distractors": [],
+                  "explanation": "British English: 'at the weekend'. American English: 'on the weekend'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "The concert starts ___ 8 p.m. ___ Saturday evening.",
+                  "answer": "at|on",
+                  "distractors": ["in", "for", "during", "at"],
+                  "explanation": "'At' for time; 'on' for days.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She tends to feel lonely ___ night.",
+                  "answer": "at",
+                  "distractors": ["in", "on", "during"],
+                  "explanation": "'At night' is a fixed expression.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The company was founded ___ 2010 and has grown rapidly ___ the years since.",
+                  "answer": "in / over",
+                  "distractors": [],
+                  "explanation": "'In 2010' for year; 'over the years' = during the passage of time.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "I will call you in Tuesday morning.",
+                  "answer": "I will call you on Tuesday morning.",
+                  "distractors": [],
+                  "explanation": "Days require 'on', not 'in'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "prepositions-place-movement",
+              "title": "Prepositions of Place and Movement",
+              "sortOrder": 2,
+              "explanation": "Use 'at' for points, 'in' for enclosed spaces or areas, 'on' for surfaces. Movement prepositions include 'into/out of', 'onto/off', 'through', 'across', 'towards'.",
+              "examples": [
+                "She is at the bus stop. (point)",
+                "We live in a flat. (enclosed space)",
+                "The keys are on the table. (surface)"
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "There is a spider ___ the ceiling.",
+                  "answer": "on",
+                  "distractors": ["in", "at", "above"],
+                  "explanation": "Surfaces (including ceiling) = 'on'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "She walked ___ the park and sat down ___ the bench.",
+                  "answer": "through / on",
+                  "distractors": [],
+                  "explanation": "'Through' for movement entering and exiting; 'on' for surface.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "He came in the room and sat at the sofa.",
+                  "answer": "He came into the room and sat on the sofa.",
+                  "distractors": [],
+                  "explanation": "'Into' for movement entering an enclosed space; 'on' for seated on a surface.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "The children ran ___ the field and jumped ___ the fence.",
+                  "answer": "across|over",
+                  "distractors": ["through", "into", "under", "along"],
+                  "explanation": "'Across' for movement from one side to the other; 'over' for jumping above an obstacle.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "I'll meet you ___ the entrance to the museum.",
+                  "answer": "at",
+                  "distractors": ["on", "in", "by"],
+                  "explanation": "Points/locations (entrance, corner, bus stop) = 'at'.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The cat jumped ___ (onto/off) the table and knocked everything ___.",
+                  "answer": "onto / off",
+                  "distractors": [],
+                  "explanation": "'Onto' = movement to a surface; 'off' = movement away from a surface.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using 'towards': She walked in the direction of the car.",
+                  "answer": "She walked towards the car.",
+                  "distractors": [],
+                  "explanation": "'Towards' = in the direction of.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "preposition-collocations",
+              "title": "Common Prepositional Collocations",
+              "sortOrder": 3,
+              "explanation": "Many adjectives, verbs, and nouns require specific prepositions: interested in, good at, afraid of, depend on, congratulate on, apologise for, insist on, succeed in.",
+              "examples": [
+                "She is very good at languages.",
+                "He apologised for his behaviour.",
+                "The result depends on how hard you work."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She has always been interested ___ marine biology.",
+                  "answer": "in",
+                  "distractors": ["at", "on", "about"],
+                  "explanation": "'Interested in' is the fixed collocation.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "He is very good ___ maths but not so good ___ languages.",
+                  "answer": "at / at",
+                  "distractors": [],
+                  "explanation": "'Good at' = the fixed preposition collocation for skills.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She succeeded to pass all her exams on the first attempt.",
+                  "answer": "She succeeded in passing all her exams on the first attempt.",
+                  "distractors": [],
+                  "explanation": "'Succeed in + gerund', not 'succeed to + infinitive'.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "I congratulated him ___ winning the award and thanked him ___ his hard work.",
+                  "answer": "on|for",
+                  "distractors": ["for", "at", "in", "with"],
+                  "explanation": "'Congratulate on'; 'thank for'.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The outcome depends entirely ___ the weather.",
+                  "answer": "on",
+                  "distractors": ["of", "from", "with"],
+                  "explanation": "'Depend on' is the required collocation.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "Many people are afraid ___ public speaking.",
+                  "answer": "of",
+                  "distractors": [],
+                  "explanation": "'Afraid of' = fixed adjective + preposition collocation.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "She insisted in paying for the whole dinner herself.",
+                  "answer": "She insisted on paying for the whole dinner herself.",
+                  "distractors": [],
+                  "explanation": "'Insist on + gerund' is the correct collocation.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "linking-words",
+      "name": "Linking Words",
+      "description": "Connect ideas coherently using a wide range of linking words and discourse markers",
+      "sortOrder": 10,
+      "topics": [
+        {
+          "slug": "linking-words-cohesion",
+          "title": "Linking Words for Cohesion",
+          "cefrLevel": "B2",
+          "sortOrder": 1,
+          "lessons": [
+            {
+              "slug": "addition-contrast-linking",
+              "title": "Addition and Contrast Linkers",
+              "sortOrder": 1,
+              "explanation": "Use addition linkers (furthermore, moreover, in addition, not only...but also) to build on ideas, and contrast linkers (however, nevertheless, although, despite, whereas) to introduce opposing ideas.",
+              "examples": [
+                "The project was expensive; moreover, it took twice as long as planned.",
+                "Although it was raining, they continued the outdoor event.",
+                "She speaks French fluently, whereas her sister barely knows a few words."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The new policy will save money. ___, it will also improve efficiency.",
+                  "answer": "Furthermore",
+                  "distractors": ["However", "Despite", "Whereas"],
+                  "explanation": "'Furthermore' adds another supporting point.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "___ being very tired, she continued working on the project.",
+                  "answer": "Despite",
+                  "distractors": ["Although", "However", "Nevertheless"],
+                  "explanation": "'Despite' + noun phrase/gerund (not a clause).",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "He passed all his exams; ___, he didn't celebrate.",
+                  "answer": "however",
+                  "distractors": [],
+                  "explanation": "'However' introduces a contrast within a compound sentence.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "Despite she was ill, she came to work.",
+                  "answer": "Although she was ill, she came to work.",
+                  "distractors": [],
+                  "explanation": "'Despite' must be followed by a noun/gerund, not a clause. Use 'although' for clauses.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "___ the high cost, ___ the team decided to proceed with the original plan.",
+                  "answer": "Despite|nevertheless",
+                  "distractors": ["Although", "However", "In addition", "Furthermore"],
+                  "explanation": "'Despite' + noun; 'nevertheless' for the contrasting main clause.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using 'not only...but also': She speaks Spanish fluently. She also writes professionally.",
+                  "answer": "She not only speaks Spanish fluently but also writes professionally.",
+                  "distractors": [],
+                  "explanation": "'Not only...but also' is a strong addition structure in formal writing.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "City life is exciting, ___ rural life offers more peace and space.",
+                  "answer": "whereas",
+                  "distractors": [],
+                  "explanation": "'Whereas' contrasts two parallel situations in one sentence.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "cause-result-linking",
+              "title": "Cause and Result Linkers",
+              "sortOrder": 2,
+              "explanation": "Use cause linkers (because, since, as, owing to, due to) and result linkers (therefore, consequently, as a result, so) to explain reasons and outcomes.",
+              "examples": [
+                "She missed the meeting because she overslept.",
+                "The roads were icy; therefore, many accidents occurred.",
+                "Due to the strike, trains were cancelled."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "___ the heavy rainfall, the event was postponed.",
+                  "answer": "Due to",
+                  "distractors": ["Because", "Since", "Although"],
+                  "explanation": "'Due to' + noun phrase for cause; 'because' needs a full clause.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "The company lost its biggest client; ___, profits fell by 30%.",
+                  "answer": "consequently",
+                  "distractors": [],
+                  "explanation": "'Consequently' introduces a result after a semicolon.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "Due to she arrived late, she missed the opening speech.",
+                  "answer": "Because she arrived late, she missed the opening speech.",
+                  "distractors": [],
+                  "explanation": "'Due to' must be followed by a noun/gerund, not a clause. Use 'because' for clauses.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "___ the lack of funding, the project was delayed; ___, the team decided to seek new investors.",
+                  "answer": "Owing to|therefore",
+                  "distractors": ["Because", "consequently", "Due to", "as a result"],
+                  "explanation": "'Owing to' + noun phrase for cause; 'therefore' for result.",
+                  "difficulty": 2,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using 'as a result': The temperature dropped sharply. The plants died.",
+                  "answer": "The temperature dropped sharply. As a result, the plants died.",
+                  "distractors": [],
+                  "explanation": "'As a result' connects cause and effect across two sentences.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "She didn't sleep well, ___ she was exhausted by midday.",
+                  "answer": "so",
+                  "distractors": ["but", "although", "however"],
+                  "explanation": "'So' as a coordinating conjunction introduces a result clause.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "___ the meeting ran over time, we had to cancel the afternoon session.",
+                  "answer": "Since",
+                  "distractors": [],
+                  "explanation": "'Since' = because (giving a reason); often used for already-known reasons.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                }
+              ]
+            },
+            {
+              "slug": "purpose-condition-linking",
+              "title": "Purpose and Condition Linkers",
+              "sortOrder": 3,
+              "explanation": "Use purpose linkers (in order to, so that, so as to) to express goals, and condition linkers (provided that, as long as, unless, on condition that) for conditional meanings.",
+              "examples": [
+                "She studied hard in order to pass the exam.",
+                "You can borrow my car provided that you fill the tank.",
+                "I will help unless you already have enough people."
+              ],
+              "questions": [
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "He left early ___ avoid the rush-hour traffic.",
+                  "answer": "in order to",
+                  "distractors": ["so that", "in order that", "for"],
+                  "explanation": "'In order to' + infinitive expresses purpose.",
+                  "difficulty": 1,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "You can borrow the car ___ you return it by 6 p.m.",
+                  "answer": "as long as",
+                  "distractors": [],
+                  "explanation": "'As long as' = on the condition that.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "ERROR_CORRECTION",
+                  "prompt": "We moved to a quieter neighbourhood so that the children could concentrate better their studies.",
+                  "answer": "We moved to a quieter neighbourhood so that the children could concentrate better on their studies.",
+                  "distractors": [],
+                  "explanation": "'Concentrate on' is the correct collocation.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "DRAG_AND_DROP",
+                  "prompt": "She took notes ___ ___ forget any important details.",
+                  "answer": "so as|not to",
+                  "distractors": ["in order", "in order to", "so that", "not"],
+                  "explanation": "'So as not to + infinitive' = in order not to; avoidance of a negative outcome.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                },
+                {
+                  "exerciseType": "SENTENCE_TRANSFORMATION",
+                  "prompt": "Rewrite using 'provided that': You can attend the event. You must register in advance.",
+                  "answer": "You can attend the event provided that you register in advance.",
+                  "distractors": [],
+                  "explanation": "'Provided that' = on the condition that (more formal than 'if').",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "MULTIPLE_CHOICE",
+                  "prompt": "The deal will go ahead ___ both parties agree to the revised terms.",
+                  "answer": "as long as",
+                  "distractors": ["unless", "although", "despite"],
+                  "explanation": "'As long as' = only if the condition is met.",
+                  "difficulty": 2,
+                  "xpReward": 10
+                },
+                {
+                  "exerciseType": "FILL_IN_THE_BLANK",
+                  "prompt": "She lowered her voice ___ ___ wake the baby.",
+                  "answer": "so as not to",
+                  "distractors": [],
+                  "explanation": "'So as not to' = in order to avoid doing something.",
+                  "difficulty": 3,
+                  "xpReward": 15
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
