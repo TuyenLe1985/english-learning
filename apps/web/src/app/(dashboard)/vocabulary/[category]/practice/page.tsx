@@ -12,11 +12,21 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { PracticeSession } from "@/components/vocabulary/practice-session";
 import type { PaginatedWordsDto } from "@repo/shared";
 
 const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
+
+function getSessionToken(): string | null {
+  const store = cookies();
+  const name =
+    process.env.NODE_ENV === "production"
+      ? "__Secure-authjs.session-token"
+      : "authjs.session-token";
+  return store.get(name)?.value ?? null;
+}
 
 const CATEGORY_NAMES: Record<string, string> = {
   business: "Business",
@@ -31,10 +41,13 @@ const CATEGORY_NAMES: Record<string, string> = {
 
 async function fetchAllWords(category: string) {
   try {
-    // Fetch first page to get totalPages
+    const token = getSessionToken();
     const firstRes = await fetch(
       `${API_URL}/api/vocabulary/${category}/words?page=1&limit=50`,
-      { cache: "no-store" },
+      {
+        cache: "no-store",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      },
     );
     if (!firstRes.ok) return [];
     const data = (await firstRes.json()) as PaginatedWordsDto;
