@@ -13,7 +13,7 @@
  * Patterns: PATTERNS.md practice-session / profile-form client pattern
  */
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { FlashcardExercise } from "./exercises/flashcard-exercise";
 import { MatchingExercise } from "./exercises/matching-exercise";
@@ -128,6 +128,13 @@ export function PracticeSession({ words, categorySlug }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const startTime = useRef<number>(Date.now());
+  // Stable ref for matching exercise correct IDs — avoids stale closure bug
+  const matchingCorrectIds = useRef(new Set<string>());
+
+  // Reset matching correct IDs when the step changes
+  useEffect(() => {
+    matchingCorrectIds.current = new Set();
+  }, [stepIndex]);
 
   // Flatten assignments into individual question steps
   // Each matching assignment counts as one "step" covering 4 words
@@ -265,6 +272,7 @@ export function PracticeSession({ words, categorySlug }: Props) {
           handleCorrect,
           handleIncorrect,
           handleMatchingComplete,
+          matchingCorrectIds,
         )}
       </div>
 
@@ -282,24 +290,23 @@ function renderStep(
   onCorrect: (wordId: string, type: string) => void,
   onIncorrect: (wordId: string, type: string) => void,
   onMatchingComplete: (wordIds: string[], correctIds: Set<string>) => void,
+  matchingCorrectIds: React.MutableRefObject<Set<string>>,
 ): React.ReactNode {
   if (step.type === "matching") {
     const pairs = step.wordIndices.map((i) => {
       const word = sessionWords[i]!;
       return { wordId: word.id, word: word.word, definition: word.definition };
     });
-    // Track which pairs were correctly matched
-    const correctIds = new Set<string>();
     return (
       <MatchingExercise
         pairs={pairs}
         onPairResult={(wordId, isCorrect) => {
-          if (isCorrect) correctIds.add(wordId);
+          if (isCorrect) matchingCorrectIds.current.add(wordId);
         }}
         onComplete={() => {
           onMatchingComplete(
             pairs.map((p) => p.wordId),
-            correctIds,
+            matchingCorrectIds.current,
           );
         }}
       />
