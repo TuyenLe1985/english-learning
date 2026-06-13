@@ -156,7 +156,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 1** *(no dependencies)*
 
-- [ ] 04-01-PLAN.md — Foundation: GrammarArea/GrammarLesson slug migration [BLOCKING], grammar DTOs, @dnd-kit install (gated), seed dataset + seedGrammar(), Wave 0 RED scaffolds [has checkpoint]
+- [x] 04-01-PLAN.md — Foundation: GrammarArea/GrammarLesson slug migration [BLOCKING], grammar DTOs, @dnd-kit install (gated), seed dataset + seedGrammar(), Wave 0 RED scaffolds [has checkpoint]
 
 **Wave 2** *(blocked on 04-01 — parallel)*
 
@@ -170,6 +170,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Wave 4** *(blocked on 04-02, 04-03, 04-04)*
 
 - [ ] 04-05-PLAN.md — Lesson page slice: explanation→carousel→results, session-complete/weak relays, weak re-attempt + end-to-end verification (GRAM-02, GRAM-03, GRAM-04, GRAM-06) [has checkpoint]
+
 **UI hint**: yes
 
 ### Phase 5: Reading Comprehension + Content Pipeline
@@ -250,7 +251,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
-| 4. Grammar Module | 0/5 | Not started | - |
+| 4. Grammar Module | 1/5 | In Progress|  |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
