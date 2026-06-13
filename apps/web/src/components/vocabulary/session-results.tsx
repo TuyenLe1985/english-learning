@@ -85,15 +85,20 @@ export function SessionResults({
     const wordsToEnroll = wrongWords.filter((w) => selectedWordIds.has(w.id));
 
     try {
-      await Promise.all(
+      const results = await Promise.all(
         wordsToEnroll.map((w) =>
           fetch("/api/vocabulary/enroll", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ wordId: w.id }),
-          }),
+          }).then((r) => ({ wordId: w.id, ok: r.ok })),
         ),
       );
+      const failed = results.filter((r) => !r.ok);
+      if (failed.length > 0) {
+        setEnrollError(`${failed.length} word(s) couldn't be added. Try again.`);
+        return;
+      }
       setEnrolled(true);
       setDialogOpen(false);
       setToast(`${wordsToEnroll.length} word${wordsToEnroll.length !== 1 ? "s" : ""} added to your review schedule`);
