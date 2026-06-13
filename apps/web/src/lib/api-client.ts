@@ -66,12 +66,13 @@ export async function fetchWithAuth(
     });
   }
 
+  const hasBody = init?.body !== undefined && init?.body !== null;
   return fetch(url, {
     ...init,
     headers: {
       ...(init?.headers ?? {}),
       Authorization: `Bearer ${rawToken}`,
-      "Content-Type": "application/json",
+      ...(hasBody ? { "Content-Type": "application/json" } : {}),
     },
     cache: "no-store",
   });
