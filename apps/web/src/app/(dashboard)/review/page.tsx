@@ -64,7 +64,10 @@ export default function ReviewPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cardId, rating }),
-      }).then((r) => r.json()),
+      }).then((r) => {
+        if (!r.ok) throw new Error(`Review failed: ${r.status}`);
+        return r.json();
+      }),
     onSuccess: () => {
       // Invalidate queue — removes rated card from the list
       queryClient.invalidateQueries({ queryKey: ["srs-queue"] });
