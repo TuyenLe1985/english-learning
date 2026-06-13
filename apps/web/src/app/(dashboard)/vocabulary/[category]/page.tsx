@@ -65,7 +65,8 @@ export default async function CategoryWordListPage({ params, searchParams }: Pro
 
   const { category } = await params;
   const { page: pageParam } = await searchParams;
-  const currentPage = parseInt(pageParam ?? "1", 10);
+  const parsedPage = parseInt(pageParam ?? "1", 10);
+  const currentPage = isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
   const data = await fetchWords(category, currentPage);
   const categoryName = CATEGORY_NAMES[category] ?? category;
   const prevPage = currentPage > 1 ? currentPage - 1 : null;
