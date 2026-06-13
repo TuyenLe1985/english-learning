@@ -226,6 +226,7 @@ model SrsCard {
 
 model GrammarArea {
   id          String         @id @default(cuid())
+  slug        String         @unique
   name        String         @unique
   description String?
   sortOrder   Int            @default(0)
@@ -253,6 +254,7 @@ model GrammarTopic {
 model GrammarLesson {
   id          String   @id @default(cuid())
   topicId     String
+  slug        String   @unique
   title       String
   explanation String   @db.Text
   examples    String[]

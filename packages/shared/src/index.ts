@@ -17,3 +17,6 @@ export * from "./user.dto";
 
 // Phase 3: Vocabulary + SRS DTOs
 export * from "./vocabulary.dto";
+
+// Phase 4: Grammar DTOs
+export * from "./grammar.dto";
