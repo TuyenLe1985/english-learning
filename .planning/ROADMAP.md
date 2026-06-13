@@ -152,7 +152,24 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Completing a lesson's assessment quiz stores the score against the user's profile; the grammar topic page shows the user's mastery percentage
   5. User can re-attempt exercises from a topic where their accuracy was weak
 
-**Plans**: TBD
+**Plans**: 5 plans in 4 waves
+
+**Wave 1** *(no dependencies)*
+
+- [ ] 04-01-PLAN.md — Foundation: GrammarArea/GrammarLesson slug migration [BLOCKING], grammar DTOs, @dnd-kit install (gated), seed dataset + seedGrammar(), Wave 0 RED scaffolds [has checkpoint]
+
+**Wave 2** *(blocked on 04-01 — parallel)*
+
+- [ ] 04-02-PLAN.md — NestJS GrammarModule API: areas/topics/lessons, session-complete, weak-questions (GRAM-01, GRAM-02, GRAM-04, GRAM-06) [TDD]
+- [ ] 04-03-PLAN.md — 5 grammar exercise components + ExplanationView (GRAM-02, GRAM-03) [TDD]
+
+**Wave 3** *(blocked on 04-02)*
+
+- [ ] 04-04-PLAN.md — Browse slice: area grid, topic list, lesson-list + mastery bar + relay routes (GRAM-01, GRAM-06)
+
+**Wave 4** *(blocked on 04-02, 04-03, 04-04)*
+
+- [ ] 04-05-PLAN.md — Lesson page slice: explanation→carousel→results, session-complete/weak relays, weak re-attempt + end-to-end verification (GRAM-02, GRAM-03, GRAM-04, GRAM-06) [has checkpoint]
 **UI hint**: yes
 
 ### Phase 5: Reading Comprehension + Content Pipeline
@@ -233,7 +250,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
-| 4. Grammar Module | 0/TBD | Not started | - |
+| 4. Grammar Module | 0/5 | Not started | - |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
