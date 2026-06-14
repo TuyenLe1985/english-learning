@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation + Infrastructure** - Monorepo scaffold, Docker services, full Prisma schema, deployable skeleton (completed 2026-06-11)
 - [x] **Phase 2: Authentication + User Profile** - Secure account creation, login, OAuth, session management, user profile (completed 2026-06-12)
 - [x] **Phase 3: Vocabulary Module + SRS Core** - Vocabulary browsing, 6 exercise types, FSRS scheduling, review queue (completed 2026-06-13)
-- [ ] **Phase 4: Grammar Module** - Grammar topic browsing, lesson explanations, 5 exercise types, mastery tracking
+- [x] **Phase 4: Grammar Module** - Grammar topic browsing, lesson explanations, 5 exercise types, mastery tracking (completed 2026-06-14)
 - [ ] **Phase 5: Reading Comprehension + Content Pipeline** - Reading passages with highlights/notes/bookmarks, crawler, CEFR classifier, seed scripts, vocab-in-context
 - [ ] **Phase 6: Listening Comprehension** - Audio player, karaoke transcript, 6 exercise types, tap-to-SRS
 - [ ] **Phase 7: Quiz Center + Gamification** - Mixed-skill quizzes, topic quizzes, full XP/level/achievement system
@@ -169,7 +169,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on 04-02, 04-03, 04-04)*
 
-- [ ] 04-05-PLAN.md — Lesson page slice: explanation→carousel→results, session-complete/weak relays, weak re-attempt + end-to-end verification (GRAM-02, GRAM-03, GRAM-04, GRAM-06) [has checkpoint]
+- [x] 04-05-PLAN.md — Lesson page slice: explanation→carousel→results, session-complete/weak relays, weak re-attempt + end-to-end verification (GRAM-02, GRAM-03, GRAM-04, GRAM-06) [has checkpoint]
 
 **UI hint**: yes
 
@@ -251,7 +251,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
-| 4. Grammar Module | 4/5 | In Progress|  |
+| 4. Grammar Module | 5/5 | Complete   | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
