@@ -7,14 +7,14 @@
  * UI-SPEC: Reset Password Confirm page — new + confirm password fields, expired-token alert.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { resetPassword } from '@/lib/auth-actions';
 import { cn } from '@/lib/utils';
 
-export default function ResetPasswordConfirmPage() {
+function ResetPasswordConfirmContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token') ?? '';
@@ -386,5 +386,13 @@ export default function ResetPasswordConfirmPage() {
         </Link>
       </p>
     </div>
+  );
+}
+
+export default function ResetPasswordConfirmPage() {
+  return (
+    <Suspense>
+      <ResetPasswordConfirmContent />
+    </Suspense>
   );
 }

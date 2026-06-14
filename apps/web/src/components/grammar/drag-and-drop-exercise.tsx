@@ -8,6 +8,7 @@ import {
   useSensors,
   DragOverlay,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { Button } from "@/components/ui/button";
@@ -139,8 +140,8 @@ export function DragAndDropExercise({ question, onCorrect, onIncorrect }: Props)
 
   const hasUnfilledBlanks = Object.keys(blankFills).length < blankCount;
 
-  const handleDragStart = ({ active }: { active: { id: string } }) => {
-    setActiveId(active.id);
+  const handleDragStart = ({ active }: DragStartEvent) => {
+    setActiveId(active.id as string);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
