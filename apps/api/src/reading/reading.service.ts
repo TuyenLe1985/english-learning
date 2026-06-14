@@ -182,7 +182,7 @@ export class ReadingService {
     }
 
     if (highlight.userId !== userId) {
-      throw new NotFoundException(`Highlight ${id} not found`);
+      throw new ForbiddenException(`Highlight ${id} not found`);
     }
 
     return this.prisma.highlight.delete({ where: { id } });
