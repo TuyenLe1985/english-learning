@@ -1,0 +1,3694 @@
+[
+  {
+    "word": "cat",
+    "level": "A1"
+  },
+  {
+    "word": "dog",
+    "level": "A1"
+  },
+  {
+    "word": "house",
+    "level": "A1"
+  },
+  {
+    "word": "run",
+    "level": "A1"
+  },
+  {
+    "word": "go",
+    "level": "A1"
+  },
+  {
+    "word": "see",
+    "level": "A1"
+  },
+  {
+    "word": "big",
+    "level": "A1"
+  },
+  {
+    "word": "small",
+    "level": "A1"
+  },
+  {
+    "word": "good",
+    "level": "A1"
+  },
+  {
+    "word": "bad",
+    "level": "A1"
+  },
+  {
+    "word": "yes",
+    "level": "A1"
+  },
+  {
+    "word": "no",
+    "level": "A1"
+  },
+  {
+    "word": "the",
+    "level": "A1"
+  },
+  {
+    "word": "a",
+    "level": "A1"
+  },
+  {
+    "word": "and",
+    "level": "A1"
+  },
+  {
+    "word": "is",
+    "level": "A1"
+  },
+  {
+    "word": "in",
+    "level": "A1"
+  },
+  {
+    "word": "on",
+    "level": "A1"
+  },
+  {
+    "word": "at",
+    "level": "A1"
+  },
+  {
+    "word": "to",
+    "level": "A1"
+  },
+  {
+    "word": "have",
+    "level": "A1"
+  },
+  {
+    "word": "be",
+    "level": "A1"
+  },
+  {
+    "word": "do",
+    "level": "A1"
+  },
+  {
+    "word": "say",
+    "level": "A1"
+  },
+  {
+    "word": "get",
+    "level": "A1"
+  },
+  {
+    "word": "make",
+    "level": "A1"
+  },
+  {
+    "word": "know",
+    "level": "A1"
+  },
+  {
+    "word": "take",
+    "level": "A1"
+  },
+  {
+    "word": "come",
+    "level": "A1"
+  },
+  {
+    "word": "think",
+    "level": "A1"
+  },
+  {
+    "word": "look",
+    "level": "A1"
+  },
+  {
+    "word": "want",
+    "level": "A1"
+  },
+  {
+    "word": "give",
+    "level": "A1"
+  },
+  {
+    "word": "use",
+    "level": "A1"
+  },
+  {
+    "word": "find",
+    "level": "A1"
+  },
+  {
+    "word": "tell",
+    "level": "A1"
+  },
+  {
+    "word": "ask",
+    "level": "A1"
+  },
+  {
+    "word": "seem",
+    "level": "A1"
+  },
+  {
+    "word": "feel",
+    "level": "A1"
+  },
+  {
+    "word": "try",
+    "level": "A1"
+  },
+  {
+    "word": "leave",
+    "level": "A1"
+  },
+  {
+    "word": "call",
+    "level": "A1"
+  },
+  {
+    "word": "keep",
+    "level": "A1"
+  },
+  {
+    "word": "let",
+    "level": "A1"
+  },
+  {
+    "word": "begin",
+    "level": "A1"
+  },
+  {
+    "word": "show",
+    "level": "A1"
+  },
+  {
+    "word": "hear",
+    "level": "A1"
+  },
+  {
+    "word": "play",
+    "level": "A1"
+  },
+  {
+    "word": "move",
+    "level": "A1"
+  },
+  {
+    "word": "pay",
+    "level": "A1"
+  },
+  {
+    "word": "turn",
+    "level": "A1"
+  },
+  {
+    "word": "reach",
+    "level": "A1"
+  },
+  {
+    "word": "kill",
+    "level": "A1"
+  },
+  {
+    "word": "remain",
+    "level": "A1"
+  },
+  {
+    "word": "raise",
+    "level": "A1"
+  },
+  {
+    "word": "pass",
+    "level": "A1"
+  },
+  {
+    "word": "sell",
+    "level": "A1"
+  },
+  {
+    "word": "eat",
+    "level": "A1"
+  },
+  {
+    "word": "drink",
+    "level": "A1"
+  },
+  {
+    "word": "sleep",
+    "level": "A1"
+  },
+  {
+    "word": "walk",
+    "level": "A1"
+  },
+  {
+    "word": "talk",
+    "level": "A1"
+  },
+  {
+    "word": "work",
+    "level": "A1"
+  },
+  {
+    "word": "love",
+    "level": "A1"
+  },
+  {
+    "word": "help",
+    "level": "A1"
+  },
+  {
+    "word": "read",
+    "level": "A1"
+  },
+  {
+    "word": "write",
+    "level": "A1"
+  },
+  {
+    "word": "open",
+    "level": "A1"
+  },
+  {
+    "word": "close",
+    "level": "A1"
+  },
+  {
+    "word": "sit",
+    "level": "A1"
+  },
+  {
+    "word": "stand",
+    "level": "A1"
+  },
+  {
+    "word": "stop",
+    "level": "A1"
+  },
+  {
+    "word": "start",
+    "level": "A1"
+  },
+  {
+    "word": "bring",
+    "level": "A1"
+  },
+  {
+    "word": "put",
+    "level": "A1"
+  },
+  {
+    "word": "buy",
+    "level": "A1"
+  },
+  {
+    "word": "meet",
+    "level": "A1"
+  },
+  {
+    "word": "man",
+    "level": "A1"
+  },
+  {
+    "word": "woman",
+    "level": "A1"
+  },
+  {
+    "word": "child",
+    "level": "A1"
+  },
+  {
+    "word": "family",
+    "level": "A1"
+  },
+  {
+    "word": "home",
+    "level": "A1"
+  },
+  {
+    "word": "hand",
+    "level": "A1"
+  },
+  {
+    "word": "eye",
+    "level": "A1"
+  },
+  {
+    "word": "face",
+    "level": "A1"
+  },
+  {
+    "word": "head",
+    "level": "A1"
+  },
+  {
+    "word": "body",
+    "level": "A1"
+  },
+  {
+    "word": "day",
+    "level": "A1"
+  },
+  {
+    "word": "time",
+    "level": "A1"
+  },
+  {
+    "word": "year",
+    "level": "A1"
+  },
+  {
+    "word": "way",
+    "level": "A1"
+  },
+  {
+    "word": "place",
+    "level": "A1"
+  },
+  {
+    "word": "number",
+    "level": "A1"
+  },
+  {
+    "word": "thing",
+    "level": "A1"
+  },
+  {
+    "word": "part",
+    "level": "A1"
+  },
+  {
+    "word": "people",
+    "level": "A1"
+  },
+  {
+    "word": "life",
+    "level": "A1"
+  },
+  {
+    "word": "new",
+    "level": "A1"
+  },
+  {
+    "word": "old",
+    "level": "A1"
+  },
+  {
+    "word": "great",
+    "level": "A1"
+  },
+  {
+    "word": "first",
+    "level": "A1"
+  },
+  {
+    "word": "last",
+    "level": "A1"
+  },
+  {
+    "word": "long",
+    "level": "A1"
+  },
+  {
+    "word": "high",
+    "level": "A1"
+  },
+  {
+    "word": "little",
+    "level": "A1"
+  },
+  {
+    "word": "own",
+    "level": "A1"
+  },
+  {
+    "word": "right",
+    "level": "A1"
+  },
+  {
+    "word": "one",
+    "level": "A1"
+  },
+  {
+    "word": "two",
+    "level": "A1"
+  },
+  {
+    "word": "three",
+    "level": "A1"
+  },
+  {
+    "word": "four",
+    "level": "A1"
+  },
+  {
+    "word": "five",
+    "level": "A1"
+  },
+  {
+    "word": "six",
+    "level": "A1"
+  },
+  {
+    "word": "seven",
+    "level": "A1"
+  },
+  {
+    "word": "eight",
+    "level": "A1"
+  },
+  {
+    "word": "nine",
+    "level": "A1"
+  },
+  {
+    "word": "ten",
+    "level": "A1"
+  },
+  {
+    "word": "red",
+    "level": "A1"
+  },
+  {
+    "word": "blue",
+    "level": "A1"
+  },
+  {
+    "word": "green",
+    "level": "A1"
+  },
+  {
+    "word": "black",
+    "level": "A1"
+  },
+  {
+    "word": "white",
+    "level": "A1"
+  },
+  {
+    "word": "yellow",
+    "level": "A1"
+  },
+  {
+    "word": "water",
+    "level": "A1"
+  },
+  {
+    "word": "food",
+    "level": "A1"
+  },
+  {
+    "word": "money",
+    "level": "A1"
+  },
+  {
+    "word": "book",
+    "level": "A1"
+  },
+  {
+    "word": "school",
+    "level": "A1"
+  },
+  {
+    "word": "room",
+    "level": "A1"
+  },
+  {
+    "word": "night",
+    "level": "A1"
+  },
+  {
+    "word": "city",
+    "level": "A1"
+  },
+  {
+    "word": "tree",
+    "level": "A1"
+  },
+  {
+    "word": "street",
+    "level": "A1"
+  },
+  {
+    "word": "friend",
+    "level": "A1"
+  },
+  {
+    "word": "mother",
+    "level": "A1"
+  },
+  {
+    "word": "father",
+    "level": "A1"
+  },
+  {
+    "word": "sister",
+    "level": "A1"
+  },
+  {
+    "word": "brother",
+    "level": "A1"
+  },
+  {
+    "word": "sun",
+    "level": "A1"
+  },
+  {
+    "word": "moon",
+    "level": "A1"
+  },
+  {
+    "word": "rain",
+    "level": "A1"
+  },
+  {
+    "word": "snow",
+    "level": "A1"
+  },
+  {
+    "word": "car",
+    "level": "A1"
+  },
+  {
+    "word": "bus",
+    "level": "A1"
+  },
+  {
+    "word": "door",
+    "level": "A1"
+  },
+  {
+    "word": "window",
+    "level": "A1"
+  },
+  {
+    "word": "table",
+    "level": "A1"
+  },
+  {
+    "word": "chair",
+    "level": "A1"
+  },
+  {
+    "word": "bed",
+    "level": "A1"
+  },
+  {
+    "word": "phone",
+    "level": "A1"
+  },
+  {
+    "word": "happy",
+    "level": "A1"
+  },
+  {
+    "word": "sad",
+    "level": "A1"
+  },
+  {
+    "word": "hot",
+    "level": "A1"
+  },
+  {
+    "word": "cold",
+    "level": "A1"
+  },
+  {
+    "word": "fast",
+    "level": "A1"
+  },
+  {
+    "word": "slow",
+    "level": "A1"
+  },
+  {
+    "word": "clean",
+    "level": "A1"
+  },
+  {
+    "word": "very",
+    "level": "A1"
+  },
+  {
+    "word": "here",
+    "level": "A1"
+  },
+  {
+    "word": "now",
+    "level": "A1"
+  },
+  {
+    "word": "then",
+    "level": "A1"
+  },
+  {
+    "word": "today",
+    "level": "A1"
+  },
+  {
+    "word": "tomorrow",
+    "level": "A1"
+  },
+  {
+    "word": "ago",
+    "level": "A1"
+  },
+  {
+    "word": "never",
+    "level": "A1"
+  },
+  {
+    "word": "always",
+    "level": "A1"
+  },
+  {
+    "word": "often",
+    "level": "A1"
+  },
+  {
+    "word": "how",
+    "level": "A1"
+  },
+  {
+    "word": "who",
+    "level": "A1"
+  },
+  {
+    "word": "what",
+    "level": "A1"
+  },
+  {
+    "word": "when",
+    "level": "A1"
+  },
+  {
+    "word": "where",
+    "level": "A1"
+  },
+  {
+    "word": "why",
+    "level": "A1"
+  },
+  {
+    "word": "can",
+    "level": "A1"
+  },
+  {
+    "word": "will",
+    "level": "A1"
+  },
+  {
+    "word": "this",
+    "level": "A1"
+  },
+  {
+    "word": "that",
+    "level": "A1"
+  },
+  {
+    "word": "but",
+    "level": "A1"
+  },
+  {
+    "word": "or",
+    "level": "A1"
+  },
+  {
+    "word": "with",
+    "level": "A1"
+  },
+  {
+    "word": "from",
+    "level": "A1"
+  },
+  {
+    "word": "up",
+    "level": "A1"
+  },
+  {
+    "word": "about",
+    "level": "A1"
+  },
+  {
+    "word": "into",
+    "level": "A1"
+  },
+  {
+    "word": "through",
+    "level": "A1"
+  },
+  {
+    "word": "during",
+    "level": "A1"
+  },
+  {
+    "word": "before",
+    "level": "A1"
+  },
+  {
+    "word": "garden",
+    "level": "A1"
+  },
+  {
+    "word": "near",
+    "level": "A1"
+  },
+  {
+    "word": "sat",
+    "level": "A1"
+  },
+  {
+    "word": "mat",
+    "level": "A1"
+  },
+  {
+    "word": "nice",
+    "level": "A1"
+  },
+  {
+    "word": "their",
+    "level": "A1"
+  },
+  {
+    "word": "you",
+    "level": "A1"
+  },
+  {
+    "word": "we",
+    "level": "A1"
+  },
+  {
+    "word": "they",
+    "level": "A1"
+  },
+  {
+    "word": "it",
+    "level": "A1"
+  },
+  {
+    "word": "travel",
+    "level": "A2"
+  },
+  {
+    "word": "visit",
+    "level": "A2"
+  },
+  {
+    "word": "country",
+    "level": "A2"
+  },
+  {
+    "word": "culture",
+    "level": "A2"
+  },
+  {
+    "word": "holiday",
+    "level": "A2"
+  },
+  {
+    "word": "abroad",
+    "level": "A2"
+  },
+  {
+    "word": "enjoy",
+    "level": "A2"
+  },
+  {
+    "word": "important",
+    "level": "A2"
+  },
+  {
+    "word": "different",
+    "level": "A2"
+  },
+  {
+    "word": "understand",
+    "level": "A2"
+  },
+  {
+    "word": "world",
+    "level": "A2"
+  },
+  {
+    "word": "better",
+    "level": "A2"
+  },
+  {
+    "word": "learn",
+    "level": "A2"
+  },
+  {
+    "word": "problem",
+    "level": "A2"
+  },
+  {
+    "word": "answer",
+    "level": "A2"
+  },
+  {
+    "word": "question",
+    "level": "A2"
+  },
+  {
+    "word": "example",
+    "level": "A2"
+  },
+  {
+    "word": "idea",
+    "level": "A2"
+  },
+  {
+    "word": "history",
+    "level": "A2"
+  },
+  {
+    "word": "language",
+    "level": "A2"
+  },
+  {
+    "word": "music",
+    "level": "A2"
+  },
+  {
+    "word": "sport",
+    "level": "A2"
+  },
+  {
+    "word": "game",
+    "level": "A2"
+  },
+  {
+    "word": "film",
+    "level": "A2"
+  },
+  {
+    "word": "plan",
+    "level": "A2"
+  },
+  {
+    "word": "information",
+    "level": "A2"
+  },
+  {
+    "word": "program",
+    "level": "A2"
+  },
+  {
+    "word": "service",
+    "level": "A2"
+  },
+  {
+    "word": "market",
+    "level": "A2"
+  },
+  {
+    "word": "store",
+    "level": "A2"
+  },
+  {
+    "word": "price",
+    "level": "A2"
+  },
+  {
+    "word": "choose",
+    "level": "A2"
+  },
+  {
+    "word": "spend",
+    "level": "A2"
+  },
+  {
+    "word": "practice",
+    "level": "A2"
+  },
+  {
+    "word": "follow",
+    "level": "A2"
+  },
+  {
+    "word": "live",
+    "level": "A2"
+  },
+  {
+    "word": "remember",
+    "level": "A2"
+  },
+  {
+    "word": "forget",
+    "level": "A2"
+  },
+  {
+    "word": "change",
+    "level": "A2"
+  },
+  {
+    "word": "build",
+    "level": "A2"
+  },
+  {
+    "word": "send",
+    "level": "A2"
+  },
+  {
+    "word": "receive",
+    "level": "A2"
+  },
+  {
+    "word": "create",
+    "level": "A2"
+  },
+  {
+    "word": "develop",
+    "level": "A2"
+  },
+  {
+    "word": "project",
+    "level": "A2"
+  },
+  {
+    "word": "office",
+    "level": "A2"
+  },
+  {
+    "word": "company",
+    "level": "A2"
+  },
+  {
+    "word": "business",
+    "level": "A2"
+  },
+  {
+    "word": "health",
+    "level": "A2"
+  },
+  {
+    "word": "social",
+    "level": "A2"
+  },
+  {
+    "word": "study",
+    "level": "A2"
+  },
+  {
+    "word": "student",
+    "level": "A2"
+  },
+  {
+    "word": "teacher",
+    "level": "A2"
+  },
+  {
+    "word": "science",
+    "level": "A2"
+  },
+  {
+    "word": "technology",
+    "level": "A2"
+  },
+  {
+    "word": "industry",
+    "level": "A2"
+  },
+  {
+    "word": "natural",
+    "level": "A2"
+  },
+  {
+    "word": "physical",
+    "level": "A2"
+  },
+  {
+    "word": "personal",
+    "level": "A2"
+  },
+  {
+    "word": "simple",
+    "level": "A2"
+  },
+  {
+    "word": "easy",
+    "level": "A2"
+  },
+  {
+    "word": "difficult",
+    "level": "A2"
+  },
+  {
+    "word": "possible",
+    "level": "A2"
+  },
+  {
+    "word": "beautiful",
+    "level": "A2"
+  },
+  {
+    "word": "interesting",
+    "level": "A2"
+  },
+  {
+    "word": "popular",
+    "level": "A2"
+  },
+  {
+    "word": "modern",
+    "level": "A2"
+  },
+  {
+    "word": "traditional",
+    "level": "A2"
+  },
+  {
+    "word": "similar",
+    "level": "A2"
+  },
+  {
+    "word": "common",
+    "level": "A2"
+  },
+  {
+    "word": "local",
+    "level": "A2"
+  },
+  {
+    "word": "national",
+    "level": "A2"
+  },
+  {
+    "word": "international",
+    "level": "A2"
+  },
+  {
+    "word": "public",
+    "level": "A2"
+  },
+  {
+    "word": "private",
+    "level": "A2"
+  },
+  {
+    "word": "free",
+    "level": "A2"
+  },
+  {
+    "word": "various",
+    "level": "A2"
+  },
+  {
+    "word": "specific",
+    "level": "A2"
+  },
+  {
+    "word": "recent",
+    "level": "A2"
+  },
+  {
+    "word": "special",
+    "level": "A2"
+  },
+  {
+    "word": "general",
+    "level": "A2"
+  },
+  {
+    "word": "basic",
+    "level": "A2"
+  },
+  {
+    "word": "main",
+    "level": "A2"
+  },
+  {
+    "word": "major",
+    "level": "A2"
+  },
+  {
+    "word": "kind",
+    "level": "A2"
+  },
+  {
+    "word": "type",
+    "level": "A2"
+  },
+  {
+    "word": "form",
+    "level": "A2"
+  },
+  {
+    "word": "process",
+    "level": "A2"
+  },
+  {
+    "word": "system",
+    "level": "A2"
+  },
+  {
+    "word": "relationship",
+    "level": "A2"
+  },
+  {
+    "word": "situation",
+    "level": "A2"
+  },
+  {
+    "word": "activity",
+    "level": "A2"
+  },
+  {
+    "word": "experience",
+    "level": "A2"
+  },
+  {
+    "word": "knowledge",
+    "level": "A2"
+  },
+  {
+    "word": "opinion",
+    "level": "A2"
+  },
+  {
+    "word": "reason",
+    "level": "A2"
+  },
+  {
+    "word": "result",
+    "level": "A2"
+  },
+  {
+    "word": "effect",
+    "level": "A2"
+  },
+  {
+    "word": "method",
+    "level": "A2"
+  },
+  {
+    "word": "condition",
+    "level": "A2"
+  },
+  {
+    "word": "deal",
+    "level": "A2"
+  },
+  {
+    "word": "support",
+    "level": "A2"
+  },
+  {
+    "word": "across",
+    "level": "A2"
+  },
+  {
+    "word": "without",
+    "level": "A2"
+  },
+  {
+    "word": "behind",
+    "level": "A2"
+  },
+  {
+    "word": "between",
+    "level": "A2"
+  },
+  {
+    "word": "under",
+    "level": "A2"
+  },
+  {
+    "word": "along",
+    "level": "A2"
+  },
+  {
+    "word": "after",
+    "level": "A2"
+  },
+  {
+    "word": "already",
+    "level": "A2"
+  },
+  {
+    "word": "still",
+    "level": "A2"
+  },
+  {
+    "word": "again",
+    "level": "A2"
+  },
+  {
+    "word": "quite",
+    "level": "A2"
+  },
+  {
+    "word": "just",
+    "level": "A2"
+  },
+  {
+    "word": "much",
+    "level": "A2"
+  },
+  {
+    "word": "also",
+    "level": "A2"
+  },
+  {
+    "word": "even",
+    "level": "A2"
+  },
+  {
+    "word": "most",
+    "level": "A2"
+  },
+  {
+    "word": "least",
+    "level": "A2"
+  },
+  {
+    "word": "however",
+    "level": "A2"
+  },
+  {
+    "word": "therefore",
+    "level": "A2"
+  },
+  {
+    "word": "another",
+    "level": "A2"
+  },
+  {
+    "word": "itself",
+    "level": "A2"
+  },
+  {
+    "word": "each",
+    "level": "A2"
+  },
+  {
+    "word": "once",
+    "level": "A2"
+  },
+  {
+    "word": "above",
+    "level": "A2"
+  },
+  {
+    "word": "together",
+    "level": "A2"
+  },
+  {
+    "word": "age",
+    "level": "A2"
+  },
+  {
+    "word": "stage",
+    "level": "A2"
+  },
+  {
+    "word": "level",
+    "level": "A2"
+  },
+  {
+    "word": "outside",
+    "level": "A2"
+  },
+  {
+    "word": "care",
+    "level": "A2"
+  },
+  {
+    "word": "large",
+    "level": "A2"
+  },
+  {
+    "word": "wide",
+    "level": "A2"
+  },
+  {
+    "word": "accessible",
+    "level": "B1"
+  },
+  {
+    "word": "achieve",
+    "level": "B1"
+  },
+  {
+    "word": "adapt",
+    "level": "B1"
+  },
+  {
+    "word": "appropriate",
+    "level": "B1"
+  },
+  {
+    "word": "approximately",
+    "level": "B1"
+  },
+  {
+    "word": "attitude",
+    "level": "B1"
+  },
+  {
+    "word": "challenge",
+    "level": "B1"
+  },
+  {
+    "word": "characteristic",
+    "level": "B1"
+  },
+  {
+    "word": "circumstance",
+    "level": "B1"
+  },
+  {
+    "word": "community",
+    "level": "B1"
+  },
+  {
+    "word": "compare",
+    "level": "B1"
+  },
+  {
+    "word": "complex",
+    "level": "B1"
+  },
+  {
+    "word": "conclude",
+    "level": "B1"
+  },
+  {
+    "word": "confirm",
+    "level": "B1"
+  },
+  {
+    "word": "consider",
+    "level": "B1"
+  },
+  {
+    "word": "contribute",
+    "level": "B1"
+  },
+  {
+    "word": "convince",
+    "level": "B1"
+  },
+  {
+    "word": "demonstrate",
+    "level": "B1"
+  },
+  {
+    "word": "depend",
+    "level": "B1"
+  },
+  {
+    "word": "describe",
+    "level": "B1"
+  },
+  {
+    "word": "determine",
+    "level": "B1"
+  },
+  {
+    "word": "distinguish",
+    "level": "B1"
+  },
+  {
+    "word": "effective",
+    "level": "B1"
+  },
+  {
+    "word": "efficient",
+    "level": "B1"
+  },
+  {
+    "word": "emphasize",
+    "level": "B1"
+  },
+  {
+    "word": "enable",
+    "level": "B1"
+  },
+  {
+    "word": "encourage",
+    "level": "B1"
+  },
+  {
+    "word": "environment",
+    "level": "B1"
+  },
+  {
+    "word": "establish",
+    "level": "B1"
+  },
+  {
+    "word": "evaluate",
+    "level": "B1"
+  },
+  {
+    "word": "evidence",
+    "level": "B1"
+  },
+  {
+    "word": "evolve",
+    "level": "B1"
+  },
+  {
+    "word": "examine",
+    "level": "B1"
+  },
+  {
+    "word": "expand",
+    "level": "B1"
+  },
+  {
+    "word": "explain",
+    "level": "B1"
+  },
+  {
+    "word": "facilitate",
+    "level": "B1"
+  },
+  {
+    "word": "factor",
+    "level": "B1"
+  },
+  {
+    "word": "feature",
+    "level": "B1"
+  },
+  {
+    "word": "focus",
+    "level": "B1"
+  },
+  {
+    "word": "fundamental",
+    "level": "B1"
+  },
+  {
+    "word": "generate",
+    "level": "B1"
+  },
+  {
+    "word": "global",
+    "level": "B1"
+  },
+  {
+    "word": "guarantee",
+    "level": "B1"
+  },
+  {
+    "word": "identify",
+    "level": "B1"
+  },
+  {
+    "word": "implement",
+    "level": "B1"
+  },
+  {
+    "word": "improve",
+    "level": "B1"
+  },
+  {
+    "word": "include",
+    "level": "B1"
+  },
+  {
+    "word": "indicate",
+    "level": "B1"
+  },
+  {
+    "word": "influence",
+    "level": "B1"
+  },
+  {
+    "word": "integrate",
+    "level": "B1"
+  },
+  {
+    "word": "investigate",
+    "level": "B1"
+  },
+  {
+    "word": "involve",
+    "level": "B1"
+  },
+  {
+    "word": "issue",
+    "level": "B1"
+  },
+  {
+    "word": "maintain",
+    "level": "B1"
+  },
+  {
+    "word": "manage",
+    "level": "B1"
+  },
+  {
+    "word": "measure",
+    "level": "B1"
+  },
+  {
+    "word": "mention",
+    "level": "B1"
+  },
+  {
+    "word": "occur",
+    "level": "B1"
+  },
+  {
+    "word": "participate",
+    "level": "B1"
+  },
+  {
+    "word": "perceive",
+    "level": "B1"
+  },
+  {
+    "word": "perform",
+    "level": "B1"
+  },
+  {
+    "word": "perspective",
+    "level": "B1"
+  },
+  {
+    "word": "potential",
+    "level": "B1"
+  },
+  {
+    "word": "prevent",
+    "level": "B1"
+  },
+  {
+    "word": "principle",
+    "level": "B1"
+  },
+  {
+    "word": "produce",
+    "level": "B1"
+  },
+  {
+    "word": "promote",
+    "level": "B1"
+  },
+  {
+    "word": "propose",
+    "level": "B1"
+  },
+  {
+    "word": "provide",
+    "level": "B1"
+  },
+  {
+    "word": "publish",
+    "level": "B1"
+  },
+  {
+    "word": "recognize",
+    "level": "B1"
+  },
+  {
+    "word": "reduce",
+    "level": "B1"
+  },
+  {
+    "word": "refer",
+    "level": "B1"
+  },
+  {
+    "word": "reflect",
+    "level": "B1"
+  },
+  {
+    "word": "research",
+    "level": "B1"
+  },
+  {
+    "word": "respond",
+    "level": "B1"
+  },
+  {
+    "word": "reveal",
+    "level": "B1"
+  },
+  {
+    "word": "role",
+    "level": "B1"
+  },
+  {
+    "word": "sector",
+    "level": "B1"
+  },
+  {
+    "word": "significant",
+    "level": "B1"
+  },
+  {
+    "word": "solution",
+    "level": "B1"
+  },
+  {
+    "word": "source",
+    "level": "B1"
+  },
+  {
+    "word": "strategy",
+    "level": "B1"
+  },
+  {
+    "word": "structure",
+    "level": "B1"
+  },
+  {
+    "word": "suggest",
+    "level": "B1"
+  },
+  {
+    "word": "suitable",
+    "level": "B1"
+  },
+  {
+    "word": "survey",
+    "level": "B1"
+  },
+  {
+    "word": "theory",
+    "level": "B1"
+  },
+  {
+    "word": "tradition",
+    "level": "B1"
+  },
+  {
+    "word": "variety",
+    "level": "B1"
+  },
+  {
+    "word": "widespread",
+    "level": "B1"
+  },
+  {
+    "word": "generally",
+    "level": "B1"
+  },
+  {
+    "word": "increasingly",
+    "level": "B1"
+  },
+  {
+    "word": "primarily",
+    "level": "B1"
+  },
+  {
+    "word": "significantly",
+    "level": "B1"
+  },
+  {
+    "word": "typically",
+    "level": "B1"
+  },
+  {
+    "word": "unfortunately",
+    "level": "B1"
+  },
+  {
+    "word": "ultimately",
+    "level": "B1"
+  },
+  {
+    "word": "apparently",
+    "level": "B1"
+  },
+  {
+    "word": "currently",
+    "level": "B1"
+  },
+  {
+    "word": "benefit",
+    "level": "B1"
+  },
+  {
+    "word": "capacity",
+    "level": "B1"
+  },
+  {
+    "word": "category",
+    "level": "B1"
+  },
+  {
+    "word": "concern",
+    "level": "B1"
+  },
+  {
+    "word": "consequence",
+    "level": "B1"
+  },
+  {
+    "word": "context",
+    "level": "B1"
+  },
+  {
+    "word": "contract",
+    "level": "B1"
+  },
+  {
+    "word": "cultural",
+    "level": "B1"
+  },
+  {
+    "word": "decade",
+    "level": "B1"
+  },
+  {
+    "word": "design",
+    "level": "B1"
+  },
+  {
+    "word": "diversity",
+    "level": "B1"
+  },
+  {
+    "word": "economy",
+    "level": "B1"
+  },
+  {
+    "word": "education",
+    "level": "B1"
+  },
+  {
+    "word": "employment",
+    "level": "B1"
+  },
+  {
+    "word": "ensure",
+    "level": "B1"
+  },
+  {
+    "word": "enterprise",
+    "level": "B1"
+  },
+  {
+    "word": "estimate",
+    "level": "B1"
+  },
+  {
+    "word": "exchange",
+    "level": "B1"
+  },
+  {
+    "word": "extensive",
+    "level": "B1"
+  },
+  {
+    "word": "external",
+    "level": "B1"
+  },
+  {
+    "word": "foundation",
+    "level": "B1"
+  },
+  {
+    "word": "function",
+    "level": "B1"
+  },
+  {
+    "word": "negotiate",
+    "level": "B2"
+  },
+  {
+    "word": "sophisticated",
+    "level": "B2"
+  },
+  {
+    "word": "analyze",
+    "level": "B2"
+  },
+  {
+    "word": "abstract",
+    "level": "B2"
+  },
+  {
+    "word": "accumulate",
+    "level": "B2"
+  },
+  {
+    "word": "acquire",
+    "level": "B2"
+  },
+  {
+    "word": "adjacent",
+    "level": "B2"
+  },
+  {
+    "word": "ambiguous",
+    "level": "B2"
+  },
+  {
+    "word": "anticipate",
+    "level": "B2"
+  },
+  {
+    "word": "apparent",
+    "level": "B2"
+  },
+  {
+    "word": "appreciate",
+    "level": "B2"
+  },
+  {
+    "word": "arbitrary",
+    "level": "B2"
+  },
+  {
+    "word": "articulate",
+    "level": "B2"
+  },
+  {
+    "word": "assess",
+    "level": "B2"
+  },
+  {
+    "word": "attribute",
+    "level": "B2"
+  },
+  {
+    "word": "augment",
+    "level": "B2"
+  },
+  {
+    "word": "behalf",
+    "level": "B2"
+  },
+  {
+    "word": "bias",
+    "level": "B2"
+  },
+  {
+    "word": "brevity",
+    "level": "B2"
+  },
+  {
+    "word": "catalyst",
+    "level": "B2"
+  },
+  {
+    "word": "coincide",
+    "level": "B2"
+  },
+  {
+    "word": "collaborate",
+    "level": "B2"
+  },
+  {
+    "word": "commence",
+    "level": "B2"
+  },
+  {
+    "word": "commodity",
+    "level": "B2"
+  },
+  {
+    "word": "compensate",
+    "level": "B2"
+  },
+  {
+    "word": "complement",
+    "level": "B2"
+  },
+  {
+    "word": "comply",
+    "level": "B2"
+  },
+  {
+    "word": "conceive",
+    "level": "B2"
+  },
+  {
+    "word": "conducive",
+    "level": "B2"
+  },
+  {
+    "word": "configure",
+    "level": "B2"
+  },
+  {
+    "word": "constitute",
+    "level": "B2"
+  },
+  {
+    "word": "constrain",
+    "level": "B2"
+  },
+  {
+    "word": "controversial",
+    "level": "B2"
+  },
+  {
+    "word": "controversy",
+    "level": "B2"
+  },
+  {
+    "word": "convention",
+    "level": "B2"
+  },
+  {
+    "word": "converge",
+    "level": "B2"
+  },
+  {
+    "word": "convey",
+    "level": "B2"
+  },
+  {
+    "word": "coordinate",
+    "level": "B2"
+  },
+  {
+    "word": "correlate",
+    "level": "B2"
+  },
+  {
+    "word": "criteria",
+    "level": "B2"
+  },
+  {
+    "word": "crucial",
+    "level": "B2"
+  },
+  {
+    "word": "debate",
+    "level": "B2"
+  },
+  {
+    "word": "dedicate",
+    "level": "B2"
+  },
+  {
+    "word": "deficiency",
+    "level": "B2"
+  },
+  {
+    "word": "deliberate",
+    "level": "B2"
+  },
+  {
+    "word": "depict",
+    "level": "B2"
+  },
+  {
+    "word": "derive",
+    "level": "B2"
+  },
+  {
+    "word": "device",
+    "level": "B2"
+  },
+  {
+    "word": "diminish",
+    "level": "B2"
+  },
+  {
+    "word": "discriminate",
+    "level": "B2"
+  },
+  {
+    "word": "disparity",
+    "level": "B2"
+  },
+  {
+    "word": "diverse",
+    "level": "B2"
+  },
+  {
+    "word": "domain",
+    "level": "B2"
+  },
+  {
+    "word": "dominant",
+    "level": "B2"
+  },
+  {
+    "word": "dynamic",
+    "level": "B2"
+  },
+  {
+    "word": "elaborate",
+    "level": "B2"
+  },
+  {
+    "word": "eliminate",
+    "level": "B2"
+  },
+  {
+    "word": "emerge",
+    "level": "B2"
+  },
+  {
+    "word": "empirical",
+    "level": "B2"
+  },
+  {
+    "word": "encounter",
+    "level": "B2"
+  },
+  {
+    "word": "endorse",
+    "level": "B2"
+  },
+  {
+    "word": "enhance",
+    "level": "B2"
+  },
+  {
+    "word": "enormous",
+    "level": "B2"
+  },
+  {
+    "word": "explicitly",
+    "level": "B2"
+  },
+  {
+    "word": "explicit",
+    "level": "B2"
+  },
+  {
+    "word": "exploit",
+    "level": "B2"
+  },
+  {
+    "word": "exposure",
+    "level": "B2"
+  },
+  {
+    "word": "fluctuate",
+    "level": "B2"
+  },
+  {
+    "word": "formulate",
+    "level": "B2"
+  },
+  {
+    "word": "foster",
+    "level": "B2"
+  },
+  {
+    "word": "hierarchy",
+    "level": "B2"
+  },
+  {
+    "word": "hypothesis",
+    "level": "B2"
+  },
+  {
+    "word": "identical",
+    "level": "B2"
+  },
+  {
+    "word": "ideology",
+    "level": "B2"
+  },
+  {
+    "word": "illuminate",
+    "level": "B2"
+  },
+  {
+    "word": "implicit",
+    "level": "B2"
+  },
+  {
+    "word": "implicitly",
+    "level": "B2"
+  },
+  {
+    "word": "incorporate",
+    "level": "B2"
+  },
+  {
+    "word": "inhibit",
+    "level": "B2"
+  },
+  {
+    "word": "initial",
+    "level": "B2"
+  },
+  {
+    "word": "innovative",
+    "level": "B2"
+  },
+  {
+    "word": "instance",
+    "level": "B2"
+  },
+  {
+    "word": "institutional",
+    "level": "B2"
+  },
+  {
+    "word": "integrity",
+    "level": "B2"
+  },
+  {
+    "word": "interaction",
+    "level": "B2"
+  },
+  {
+    "word": "intervention",
+    "level": "B2"
+  },
+  {
+    "word": "justify",
+    "level": "B2"
+  },
+  {
+    "word": "legitimate",
+    "level": "B2"
+  },
+  {
+    "word": "likewise",
+    "level": "B2"
+  },
+  {
+    "word": "magnitude",
+    "level": "B2"
+  },
+  {
+    "word": "manipulate",
+    "level": "B2"
+  },
+  {
+    "word": "mechanism",
+    "level": "B2"
+  },
+  {
+    "word": "minimize",
+    "level": "B2"
+  },
+  {
+    "word": "misconception",
+    "level": "B2"
+  },
+  {
+    "word": "modify",
+    "level": "B2"
+  },
+  {
+    "word": "moreover",
+    "level": "B2"
+  },
+  {
+    "word": "motivate",
+    "level": "B2"
+  },
+  {
+    "word": "mutual",
+    "level": "B2"
+  },
+  {
+    "word": "navigate",
+    "level": "B2"
+  },
+  {
+    "word": "notion",
+    "level": "B2"
+  },
+  {
+    "word": "objective",
+    "level": "B2"
+  },
+  {
+    "word": "obtain",
+    "level": "B2"
+  },
+  {
+    "word": "offspring",
+    "level": "B2"
+  },
+  {
+    "word": "omit",
+    "level": "B2"
+  },
+  {
+    "word": "ongoing",
+    "level": "B2"
+  },
+  {
+    "word": "optimal",
+    "level": "B2"
+  },
+  {
+    "word": "orientation",
+    "level": "B2"
+  },
+  {
+    "word": "overlap",
+    "level": "B2"
+  },
+  {
+    "word": "parameter",
+    "level": "B2"
+  },
+  {
+    "word": "phenomenon",
+    "level": "B2"
+  },
+  {
+    "word": "position",
+    "level": "B2"
+  },
+  {
+    "word": "preliminary",
+    "level": "B2"
+  },
+  {
+    "word": "presume",
+    "level": "B2"
+  },
+  {
+    "word": "priority",
+    "level": "B2"
+  },
+  {
+    "word": "proficiency",
+    "level": "B2"
+  },
+  {
+    "word": "prohibit",
+    "level": "B2"
+  },
+  {
+    "word": "proportion",
+    "level": "B2"
+  },
+  {
+    "word": "prospect",
+    "level": "B2"
+  },
+  {
+    "word": "rationalize",
+    "level": "B2"
+  },
+  {
+    "word": "refine",
+    "level": "B2"
+  },
+  {
+    "word": "reinforce",
+    "level": "B2"
+  },
+  {
+    "word": "relevant",
+    "level": "B2"
+  },
+  {
+    "word": "resolve",
+    "level": "B2"
+  },
+  {
+    "word": "restrict",
+    "level": "B2"
+  },
+  {
+    "word": "retain",
+    "level": "B2"
+  },
+  {
+    "word": "revenue",
+    "level": "B2"
+  },
+  {
+    "word": "selective",
+    "level": "B2"
+  },
+  {
+    "word": "sequence",
+    "level": "B2"
+  },
+  {
+    "word": "simultaneously",
+    "level": "B2"
+  },
+  {
+    "word": "specify",
+    "level": "B2"
+  },
+  {
+    "word": "stabilize",
+    "level": "B2"
+  },
+  {
+    "word": "status",
+    "level": "B2"
+  },
+  {
+    "word": "subjective",
+    "level": "B2"
+  },
+  {
+    "word": "subordinate",
+    "level": "B2"
+  },
+  {
+    "word": "subsequently",
+    "level": "B2"
+  },
+  {
+    "word": "substantial",
+    "level": "B2"
+  },
+  {
+    "word": "supplement",
+    "level": "B2"
+  },
+  {
+    "word": "sustainability",
+    "level": "B2"
+  },
+  {
+    "word": "symbolic",
+    "level": "B2"
+  },
+  {
+    "word": "systematic",
+    "level": "B2"
+  },
+  {
+    "word": "tangible",
+    "level": "B2"
+  },
+  {
+    "word": "terminate",
+    "level": "B2"
+  },
+  {
+    "word": "threshold",
+    "level": "B2"
+  },
+  {
+    "word": "throughout",
+    "level": "B2"
+  },
+  {
+    "word": "transfer",
+    "level": "B2"
+  },
+  {
+    "word": "transparent",
+    "level": "B2"
+  },
+  {
+    "word": "undermine",
+    "level": "B2"
+  },
+  {
+    "word": "undertake",
+    "level": "B2"
+  },
+  {
+    "word": "validity",
+    "level": "B2"
+  },
+  {
+    "word": "variable",
+    "level": "B2"
+  },
+  {
+    "word": "virtually",
+    "level": "B2"
+  },
+  {
+    "word": "vulnerable",
+    "level": "B2"
+  },
+  {
+    "word": "worldwide",
+    "level": "B2"
+  },
+  {
+    "word": "compensation",
+    "level": "B2"
+  },
+  {
+    "word": "infrastructure",
+    "level": "B2"
+  },
+  {
+    "word": "preservation",
+    "level": "B2"
+  },
+  {
+    "word": "firsthand",
+    "level": "B2"
+  },
+  {
+    "word": "contributions",
+    "level": "B2"
+  },
+  {
+    "word": "environmental",
+    "level": "B2"
+  },
+  {
+    "word": "tourism",
+    "level": "B2"
+  },
+  {
+    "word": "concerns",
+    "level": "B2"
+  },
+  {
+    "word": "masses",
+    "level": "B2"
+  },
+  {
+    "word": "paradigm",
+    "level": "C1"
+  },
+  {
+    "word": "juxtaposition",
+    "level": "C1"
+  },
+  {
+    "word": "nevertheless",
+    "level": "C1"
+  },
+  {
+    "word": "albeit",
+    "level": "C1"
+  },
+  {
+    "word": "pervasiveness",
+    "level": "C1"
+  },
+  {
+    "word": "precipitate",
+    "level": "C1"
+  },
+  {
+    "word": "reconceptualization",
+    "level": "C1"
+  },
+  {
+    "word": "pedagogical",
+    "level": "C1"
+  },
+  {
+    "word": "didactic",
+    "level": "C1"
+  },
+  {
+    "word": "inadequate",
+    "level": "C1"
+  },
+  {
+    "word": "cultivate",
+    "level": "C1"
+  },
+  {
+    "word": "faculties",
+    "level": "C1"
+  },
+  {
+    "word": "adaptive",
+    "level": "C1"
+  },
+  {
+    "word": "competencies",
+    "level": "C1"
+  },
+  {
+    "word": "indispensable",
+    "level": "C1"
+  },
+  {
+    "word": "volatile",
+    "level": "C1"
+  },
+  {
+    "word": "epistemic",
+    "level": "C1"
+  },
+  {
+    "word": "algorithmic",
+    "level": "C1"
+  },
+  {
+    "word": "humanistic",
+    "level": "C1"
+  },
+  {
+    "word": "warrant",
+    "level": "C1"
+  },
+  {
+    "word": "rigorous",
+    "level": "C1"
+  },
+  {
+    "word": "scrutiny",
+    "level": "C1"
+  },
+  {
+    "word": "abstraction",
+    "level": "C1"
+  },
+  {
+    "word": "academia",
+    "level": "C1"
+  },
+  {
+    "word": "accentuate",
+    "level": "C1"
+  },
+  {
+    "word": "ameliorate",
+    "level": "C1"
+  },
+  {
+    "word": "anachronistic",
+    "level": "C1"
+  },
+  {
+    "word": "ascertain",
+    "level": "C1"
+  },
+  {
+    "word": "axiom",
+    "level": "C1"
+  },
+  {
+    "word": "clandestine",
+    "level": "C1"
+  },
+  {
+    "word": "coerce",
+    "level": "C1"
+  },
+  {
+    "word": "cogent",
+    "level": "C1"
+  },
+  {
+    "word": "cognizant",
+    "level": "C1"
+  },
+  {
+    "word": "colloquial",
+    "level": "C1"
+  },
+  {
+    "word": "commensurate",
+    "level": "C1"
+  },
+  {
+    "word": "compensatory",
+    "level": "C1"
+  },
+  {
+    "word": "concede",
+    "level": "C1"
+  },
+  {
+    "word": "concomitant",
+    "level": "C1"
+  },
+  {
+    "word": "conjecture",
+    "level": "C1"
+  },
+  {
+    "word": "consummate",
+    "level": "C1"
+  },
+  {
+    "word": "contemporaneous",
+    "level": "C1"
+  },
+  {
+    "word": "contingent",
+    "level": "C1"
+  },
+  {
+    "word": "corroborate",
+    "level": "C1"
+  },
+  {
+    "word": "counterfactual",
+    "level": "C1"
+  },
+  {
+    "word": "critique",
+    "level": "C1"
+  },
+  {
+    "word": "culminate",
+    "level": "C1"
+  },
+  {
+    "word": "deleterious",
+    "level": "C1"
+  },
+  {
+    "word": "deplorable",
+    "level": "C1"
+  },
+  {
+    "word": "derivative",
+    "level": "C1"
+  },
+  {
+    "word": "discern",
+    "level": "C1"
+  },
+  {
+    "word": "discrepancy",
+    "level": "C1"
+  },
+  {
+    "word": "disdain",
+    "level": "C1"
+  },
+  {
+    "word": "disparate",
+    "level": "C1"
+  },
+  {
+    "word": "disseminate",
+    "level": "C1"
+  },
+  {
+    "word": "diverge",
+    "level": "C1"
+  },
+  {
+    "word": "divisive",
+    "level": "C1"
+  },
+  {
+    "word": "dogmatic",
+    "level": "C1"
+  },
+  {
+    "word": "elucidate",
+    "level": "C1"
+  },
+  {
+    "word": "emanate",
+    "level": "C1"
+  },
+  {
+    "word": "embody",
+    "level": "C1"
+  },
+  {
+    "word": "eminent",
+    "level": "C1"
+  },
+  {
+    "word": "engender",
+    "level": "C1"
+  },
+  {
+    "word": "enumerate",
+    "level": "C1"
+  },
+  {
+    "word": "epistemology",
+    "level": "C1"
+  },
+  {
+    "word": "equivocal",
+    "level": "C1"
+  },
+  {
+    "word": "erroneous",
+    "level": "C1"
+  },
+  {
+    "word": "esoteric",
+    "level": "C1"
+  },
+  {
+    "word": "euphemism",
+    "level": "C1"
+  },
+  {
+    "word": "evanescent",
+    "level": "C1"
+  },
+  {
+    "word": "exhaustive",
+    "level": "C1"
+  },
+  {
+    "word": "expedient",
+    "level": "C1"
+  },
+  {
+    "word": "exacerbate",
+    "level": "C1"
+  },
+  {
+    "word": "fallacious",
+    "level": "C1"
+  },
+  {
+    "word": "fastidious",
+    "level": "C1"
+  },
+  {
+    "word": "formidable",
+    "level": "C1"
+  },
+  {
+    "word": "forthright",
+    "level": "C1"
+  },
+  {
+    "word": "fraudulent",
+    "level": "C1"
+  },
+  {
+    "word": "grandiose",
+    "level": "C1"
+  },
+  {
+    "word": "gratuitous",
+    "level": "C1"
+  },
+  {
+    "word": "gregarious",
+    "level": "C1"
+  },
+  {
+    "word": "hegemony",
+    "level": "C1"
+  },
+  {
+    "word": "holistic",
+    "level": "C1"
+  },
+  {
+    "word": "homogeneous",
+    "level": "C1"
+  },
+  {
+    "word": "hyperbole",
+    "level": "C1"
+  },
+  {
+    "word": "ideological",
+    "level": "C1"
+  },
+  {
+    "word": "idiosyncratic",
+    "level": "C1"
+  },
+  {
+    "word": "imminent",
+    "level": "C1"
+  },
+  {
+    "word": "impede",
+    "level": "C1"
+  },
+  {
+    "word": "impending",
+    "level": "C1"
+  },
+  {
+    "word": "imperative",
+    "level": "C1"
+  },
+  {
+    "word": "impervious",
+    "level": "C1"
+  },
+  {
+    "word": "incisive",
+    "level": "C1"
+  },
+  {
+    "word": "incongruent",
+    "level": "C1"
+  },
+  {
+    "word": "infer",
+    "level": "C1"
+  },
+  {
+    "word": "inherent",
+    "level": "C1"
+  },
+  {
+    "word": "inordinate",
+    "level": "C1"
+  },
+  {
+    "word": "intangible",
+    "level": "C1"
+  },
+  {
+    "word": "intrinsic",
+    "level": "C1"
+  },
+  {
+    "word": "intuitive",
+    "level": "C1"
+  },
+  {
+    "word": "irrefutable",
+    "level": "C1"
+  },
+  {
+    "word": "judicious",
+    "level": "C1"
+  },
+  {
+    "word": "juxtapose",
+    "level": "C1"
+  },
+  {
+    "word": "lucid",
+    "level": "C1"
+  },
+  {
+    "word": "magnanimous",
+    "level": "C1"
+  },
+  {
+    "word": "malevolent",
+    "level": "C1"
+  },
+  {
+    "word": "meticulous",
+    "level": "C1"
+  },
+  {
+    "word": "mitigate",
+    "level": "C1"
+  },
+  {
+    "word": "myriad",
+    "level": "C1"
+  },
+  {
+    "word": "nadir",
+    "level": "C1"
+  },
+  {
+    "word": "nascent",
+    "level": "C1"
+  },
+  {
+    "word": "nonchalant",
+    "level": "C1"
+  },
+  {
+    "word": "nuanced",
+    "level": "C1"
+  },
+  {
+    "word": "obsolete",
+    "level": "C1"
+  },
+  {
+    "word": "ominous",
+    "level": "C1"
+  },
+  {
+    "word": "omnipotent",
+    "level": "C1"
+  },
+  {
+    "word": "oppressive",
+    "level": "C1"
+  },
+  {
+    "word": "ostensible",
+    "level": "C1"
+  },
+  {
+    "word": "paradigmatic",
+    "level": "C1"
+  },
+  {
+    "word": "pernicious",
+    "level": "C1"
+  },
+  {
+    "word": "pervasive",
+    "level": "C1"
+  },
+  {
+    "word": "plausible",
+    "level": "C1"
+  },
+  {
+    "word": "polarize",
+    "level": "C1"
+  },
+  {
+    "word": "polemical",
+    "level": "C1"
+  },
+  {
+    "word": "pragmatic",
+    "level": "C1"
+  },
+  {
+    "word": "precarious",
+    "level": "C1"
+  },
+  {
+    "word": "precedent",
+    "level": "C1"
+  },
+  {
+    "word": "predominant",
+    "level": "C1"
+  },
+  {
+    "word": "preeminent",
+    "level": "C1"
+  },
+  {
+    "word": "prescient",
+    "level": "C1"
+  },
+  {
+    "word": "prevalence",
+    "level": "C1"
+  },
+  {
+    "word": "profound",
+    "level": "C1"
+  },
+  {
+    "word": "proliferate",
+    "level": "C1"
+  },
+  {
+    "word": "propagate",
+    "level": "C1"
+  },
+  {
+    "word": "propensity",
+    "level": "C1"
+  },
+  {
+    "word": "proponent",
+    "level": "C1"
+  },
+  {
+    "word": "prudent",
+    "level": "C1"
+  },
+  {
+    "word": "quintessential",
+    "level": "C1"
+  },
+  {
+    "word": "recalcitrant",
+    "level": "C1"
+  },
+  {
+    "word": "rectify",
+    "level": "C1"
+  },
+  {
+    "word": "reductive",
+    "level": "C1"
+  },
+  {
+    "word": "refute",
+    "level": "C1"
+  },
+  {
+    "word": "reprehensible",
+    "level": "C1"
+  },
+  {
+    "word": "resilience",
+    "level": "C1"
+  },
+  {
+    "word": "resonate",
+    "level": "C1"
+  },
+  {
+    "word": "rhetoric",
+    "level": "C1"
+  },
+  {
+    "word": "rudimentary",
+    "level": "C1"
+  },
+  {
+    "word": "salient",
+    "level": "C1"
+  },
+  {
+    "word": "sanctimonious",
+    "level": "C1"
+  },
+  {
+    "word": "scrutinize",
+    "level": "C1"
+  },
+  {
+    "word": "superficial",
+    "level": "C1"
+  },
+  {
+    "word": "symbiotic",
+    "level": "C1"
+  },
+  {
+    "word": "tacit",
+    "level": "C1"
+  },
+  {
+    "word": "tenacious",
+    "level": "C1"
+  },
+  {
+    "word": "tentative",
+    "level": "C1"
+  },
+  {
+    "word": "tortuous",
+    "level": "C1"
+  },
+  {
+    "word": "transcend",
+    "level": "C1"
+  },
+  {
+    "word": "trenchant",
+    "level": "C1"
+  },
+  {
+    "word": "turbulent",
+    "level": "C1"
+  },
+  {
+    "word": "ubiquitous",
+    "level": "C1"
+  },
+  {
+    "word": "unprecedented",
+    "level": "C1"
+  },
+  {
+    "word": "unwieldy",
+    "level": "C1"
+  },
+  {
+    "word": "vacuous",
+    "level": "C1"
+  },
+  {
+    "word": "vehement",
+    "level": "C1"
+  },
+  {
+    "word": "venerate",
+    "level": "C1"
+  },
+  {
+    "word": "vindicate",
+    "level": "C1"
+  },
+  {
+    "word": "zealous",
+    "level": "C1"
+  },
+  {
+    "word": "manifestation",
+    "level": "C1"
+  },
+  {
+    "word": "categorical",
+    "level": "C1"
+  },
+  {
+    "word": "autonomous",
+    "level": "C1"
+  },
+  {
+    "word": "pragmatism",
+    "level": "C1"
+  },
+  {
+    "word": "contingency",
+    "level": "C1"
+  },
+  {
+    "word": "taxonomy",
+    "level": "C1"
+  },
+  {
+    "word": "pedagogies",
+    "level": "C1"
+  },
+  {
+    "word": "methodologies",
+    "level": "C1"
+  },
+  {
+    "word": "reconceptualize",
+    "level": "C1"
+  },
+  {
+    "word": "abstruse",
+    "level": "C2"
+  },
+  {
+    "word": "alacrity",
+    "level": "C2"
+  },
+  {
+    "word": "amelioration",
+    "level": "C2"
+  },
+  {
+    "word": "animadversion",
+    "level": "C2"
+  },
+  {
+    "word": "apotheosis",
+    "level": "C2"
+  },
+  {
+    "word": "arcane",
+    "level": "C2"
+  },
+  {
+    "word": "arduous",
+    "level": "C2"
+  },
+  {
+    "word": "assiduous",
+    "level": "C2"
+  },
+  {
+    "word": "atavistic",
+    "level": "C2"
+  },
+  {
+    "word": "beatitude",
+    "level": "C2"
+  },
+  {
+    "word": "beneficent",
+    "level": "C2"
+  },
+  {
+    "word": "callous",
+    "level": "C2"
+  },
+  {
+    "word": "capricious",
+    "level": "C2"
+  },
+  {
+    "word": "celerity",
+    "level": "C2"
+  },
+  {
+    "word": "chicanery",
+    "level": "C2"
+  },
+  {
+    "word": "circumlocution",
+    "level": "C2"
+  },
+  {
+    "word": "contumacious",
+    "level": "C2"
+  },
+  {
+    "word": "copious",
+    "level": "C2"
+  },
+  {
+    "word": "coruscating",
+    "level": "C2"
+  },
+  {
+    "word": "crepuscular",
+    "level": "C2"
+  },
+  {
+    "word": "dearth",
+    "level": "C2"
+  },
+  {
+    "word": "desuetude",
+    "level": "C2"
+  },
+  {
+    "word": "diachronic",
+    "level": "C2"
+  },
+  {
+    "word": "diaphanous",
+    "level": "C2"
+  },
+  {
+    "word": "diffident",
+    "level": "C2"
+  },
+  {
+    "word": "dilettante",
+    "level": "C2"
+  },
+  {
+    "word": "disingenuous",
+    "level": "C2"
+  },
+  {
+    "word": "dolorous",
+    "level": "C2"
+  },
+  {
+    "word": "ebullient",
+    "level": "C2"
+  },
+  {
+    "word": "effulgent",
+    "level": "C2"
+  },
+  {
+    "word": "egregious",
+    "level": "C2"
+  },
+  {
+    "word": "elision",
+    "level": "C2"
+  },
+  {
+    "word": "encomium",
+    "level": "C2"
+  },
+  {
+    "word": "endogenous",
+    "level": "C2"
+  },
+  {
+    "word": "epistemological",
+    "level": "C2"
+  },
+  {
+    "word": "equanimity",
+    "level": "C2"
+  },
+  {
+    "word": "equivocation",
+    "level": "C2"
+  },
+  {
+    "word": "eschew",
+    "level": "C2"
+  },
+  {
+    "word": "evocative",
+    "level": "C2"
+  },
+  {
+    "word": "exegesis",
+    "level": "C2"
+  },
+  {
+    "word": "exiguous",
+    "level": "C2"
+  },
+  {
+    "word": "expiation",
+    "level": "C2"
+  },
+  {
+    "word": "expunge",
+    "level": "C2"
+  },
+  {
+    "word": "extemporaneous",
+    "level": "C2"
+  },
+  {
+    "word": "factitious",
+    "level": "C2"
+  },
+  {
+    "word": "felicitous",
+    "level": "C2"
+  },
+  {
+    "word": "fecundity",
+    "level": "C2"
+  },
+  {
+    "word": "florid",
+    "level": "C2"
+  },
+  {
+    "word": "forbearance",
+    "level": "C2"
+  },
+  {
+    "word": "forswear",
+    "level": "C2"
+  },
+  {
+    "word": "fractiousness",
+    "level": "C2"
+  },
+  {
+    "word": "frangible",
+    "level": "C2"
+  },
+  {
+    "word": "genuflect",
+    "level": "C2"
+  },
+  {
+    "word": "gluttony",
+    "level": "C2"
+  },
+  {
+    "word": "hagiography",
+    "level": "C2"
+  },
+  {
+    "word": "hapless",
+    "level": "C2"
+  },
+  {
+    "word": "hedonism",
+    "level": "C2"
+  },
+  {
+    "word": "hermeneutics",
+    "level": "C2"
+  },
+  {
+    "word": "histrionic",
+    "level": "C2"
+  },
+  {
+    "word": "hubris",
+    "level": "C2"
+  },
+  {
+    "word": "iconoclast",
+    "level": "C2"
+  },
+  {
+    "word": "idiomatic",
+    "level": "C2"
+  },
+  {
+    "word": "immanent",
+    "level": "C2"
+  },
+  {
+    "word": "immutable",
+    "level": "C2"
+  },
+  {
+    "word": "impecunious",
+    "level": "C2"
+  },
+  {
+    "word": "impugn",
+    "level": "C2"
+  },
+  {
+    "word": "inchoate",
+    "level": "C2"
+  },
+  {
+    "word": "incontrovertible",
+    "level": "C2"
+  },
+  {
+    "word": "indefatigable",
+    "level": "C2"
+  },
+  {
+    "word": "ineffable",
+    "level": "C2"
+  },
+  {
+    "word": "inimical",
+    "level": "C2"
+  },
+  {
+    "word": "insouciance",
+    "level": "C2"
+  },
+  {
+    "word": "intransigent",
+    "level": "C2"
+  },
+  {
+    "word": "invidious",
+    "level": "C2"
+  },
+  {
+    "word": "laconic",
+    "level": "C2"
+  },
+  {
+    "word": "lassitude",
+    "level": "C2"
+  },
+  {
+    "word": "levity",
+    "level": "C2"
+  },
+  {
+    "word": "libertine",
+    "level": "C2"
+  },
+  {
+    "word": "liminal",
+    "level": "C2"
+  },
+  {
+    "word": "loquacious",
+    "level": "C2"
+  },
+  {
+    "word": "luminary",
+    "level": "C2"
+  },
+  {
+    "word": "magniloquent",
+    "level": "C2"
+  },
+  {
+    "word": "maladroit",
+    "level": "C2"
+  },
+  {
+    "word": "malapropism",
+    "level": "C2"
+  },
+  {
+    "word": "mendacious",
+    "level": "C2"
+  },
+  {
+    "word": "mercurial",
+    "level": "C2"
+  },
+  {
+    "word": "misanthropic",
+    "level": "C2"
+  },
+  {
+    "word": "modicum",
+    "level": "C2"
+  },
+  {
+    "word": "morbid",
+    "level": "C2"
+  },
+  {
+    "word": "moribund",
+    "level": "C2"
+  },
+  {
+    "word": "multifarious",
+    "level": "C2"
+  },
+  {
+    "word": "munificent",
+    "level": "C2"
+  },
+  {
+    "word": "nebulous",
+    "level": "C2"
+  },
+  {
+    "word": "nefarious",
+    "level": "C2"
+  },
+  {
+    "word": "neologism",
+    "level": "C2"
+  },
+  {
+    "word": "nihilism",
+    "level": "C2"
+  },
+  {
+    "word": "nominalism",
+    "level": "C2"
+  },
+  {
+    "word": "nugatory",
+    "level": "C2"
+  },
+  {
+    "word": "obsequious",
+    "level": "C2"
+  },
+  {
+    "word": "obstreperous",
+    "level": "C2"
+  },
+  {
+    "word": "obtuse",
+    "level": "C2"
+  },
+  {
+    "word": "occult",
+    "level": "C2"
+  },
+  {
+    "word": "odious",
+    "level": "C2"
+  },
+  {
+    "word": "officious",
+    "level": "C2"
+  },
+  {
+    "word": "onerous",
+    "level": "C2"
+  },
+  {
+    "word": "ontological",
+    "level": "C2"
+  },
+  {
+    "word": "opprobrium",
+    "level": "C2"
+  },
+  {
+    "word": "orthogonal",
+    "level": "C2"
+  },
+  {
+    "word": "ostracize",
+    "level": "C2"
+  },
+  {
+    "word": "overwrought",
+    "level": "C2"
+  },
+  {
+    "word": "paternalistic",
+    "level": "C2"
+  },
+  {
+    "word": "peccadillo",
+    "level": "C2"
+  },
+  {
+    "word": "pellucid",
+    "level": "C2"
+  },
+  {
+    "word": "perfidious",
+    "level": "C2"
+  },
+  {
+    "word": "peripatetic",
+    "level": "C2"
+  },
+  {
+    "word": "perspicacious",
+    "level": "C2"
+  },
+  {
+    "word": "perturb",
+    "level": "C2"
+  },
+  {
+    "word": "petulant",
+    "level": "C2"
+  },
+  {
+    "word": "philistine",
+    "level": "C2"
+  },
+  {
+    "word": "phlegmatic",
+    "level": "C2"
+  },
+  {
+    "word": "picaresque",
+    "level": "C2"
+  },
+  {
+    "word": "pleonasm",
+    "level": "C2"
+  },
+  {
+    "word": "portentous",
+    "level": "C2"
+  },
+  {
+    "word": "precipitous",
+    "level": "C2"
+  },
+  {
+    "word": "predicate",
+    "level": "C2"
+  },
+  {
+    "word": "prescriptive",
+    "level": "C2"
+  },
+  {
+    "word": "presumptuous",
+    "level": "C2"
+  },
+  {
+    "word": "proclivity",
+    "level": "C2"
+  },
+  {
+    "word": "prodigal",
+    "level": "C2"
+  },
+  {
+    "word": "prognosticate",
+    "level": "C2"
+  },
+  {
+    "word": "propitious",
+    "level": "C2"
+  },
+  {
+    "word": "prosaic",
+    "level": "C2"
+  },
+  {
+    "word": "pungent",
+    "level": "C2"
+  }
+]
