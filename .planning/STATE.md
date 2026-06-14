@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-04 CEFR ClassifierService
-last_updated: "2026-06-14T08:42:08.897Z"
+stopped_at: Completed 05-05 CrawlerService + SeedService + pipeline CLI
+last_updated: "2026-06-14T13:23:42.328Z"
 last_activity: 2026-06-14
 progress:
   total_phases: 8
   completed_phases: 4
   total_plans: 33
-  completed_plans: 28
+  completed_plans: 29
   percent: 50
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-06-11)
 ## Current Position
 
 Phase: 05 (reading-comprehension-content-pipeline) — EXECUTING
-Plan: 4 of 9
+Plan: 5 of 9
 Status: Ready to execute
 Last activity: 2026-06-14
 
@@ -62,6 +62,7 @@ Progress: [███████░░░] 72%
 | Phase 05 P01 | 5min | 3 tasks | 14 files |
 | Phase 05 P03 | 10m | 1 tasks | 2 files |
 | Phase 05 P04 | 8min | 1 tasks | 3 files |
+| Phase 05 P05 | 20m | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,9 @@ Recent decisions affecting current work:
 - [Phase ?]: Sentence length C1 threshold set to >15 avg words/sentence (validated against test passages)
 - [Phase ?]: BrillPOSTagger initialized with Lexicon EN language code — not file path, to avoid Dutch lexicon default
 - [Phase ?]: cefr-word-list.json stored in packages/database/prisma/seed-data/ following existing seed data pattern
+- [Phase ?]: [05-05-D1] playwright added to apps/api dependencies (TypeScript resolution)
+- [Phase ?]: [05-05-D2] tsconfig.pipeline.json created (CommonJS mode for ts-node/register compatibility)
+- [Phase ?]: [05-05-D3] SeedService stub questions use first-sentence context for all 6 question types (READ-02)
 
 ### Pending Todos
 
@@ -104,6 +108,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-14T08:42:08.891Z
-Stopped at: Completed 05-04 CEFR ClassifierService
+Last session: 2026-06-14T13:23:42.324Z
+Stopped at: Completed 05-05 CrawlerService + SeedService + pipeline CLI
 Resume file: None

@@ -85,12 +85,12 @@
 
 ### Content Pipeline
 
-- [ ] **PIPE-01**: Crawler fetches content from VOA Learning English, BBC Learning English, News in Levels, and Simple English Wikipedia using Playwright + Cheerio
-- [ ] **PIPE-02**: Crawler applies a content quality gate: minimum 150 words, no navigation/boilerplate (detected by low unique-word ratio), deduplicated by URL and content hash
+- [x] **PIPE-01**: Crawler fetches content from VOA Learning English, BBC Learning English, News in Levels, and Simple English Wikipedia using Playwright + Cheerio
+- [x] **PIPE-02**: Crawler applies a content quality gate: minimum 150 words, no navigation/boilerplate (detected by low unique-word ratio), deduplicated by URL and content hash
 - [x] **PIPE-03**: CEFR classification engine scores each passage using vocabulary frequency lists (proper nouns excluded via NER) and sentence complexity metrics; classifies as B1/B2/C1 with confidence score
 - [x] **PIPE-04**: Content with classification confidence below 0.65 is flagged for review rather than auto-published
-- [ ] **PIPE-05**: Seed scripts populate the database on first deploy with minimum: 500 grammar lessons, 5,000 vocabulary records, 2,000 reading passages, 1,000 listening transcripts, 20,000 quiz questions
-- [ ] **PIPE-06**: Seed scripts use Prisma `createMany()` in batches of 500 records (not individual `create()` calls) to complete within a practical time window
+- [x] **PIPE-05**: Seed scripts populate the database on first deploy with minimum: 500 grammar lessons, 5,000 vocabulary records, 2,000 reading passages, 1,000 listening transcripts, 20,000 quiz questions
+- [x] **PIPE-06**: Seed scripts use Prisma `createMany()` in batches of 500 records (not individual `create()` calls) to complete within a practical time window
 
 ### Adaptive Learning
 
@@ -198,12 +198,12 @@
 | READ-05 | Phase 5 | Complete |
 | READ-06 | Phase 5 | Complete |
 | READ-07 | Phase 5 | Complete |
-| PIPE-01 | Phase 5 | Pending |
-| PIPE-02 | Phase 5 | Pending |
+| PIPE-01 | Phase 5 | Complete |
+| PIPE-02 | Phase 5 | Complete |
 | PIPE-03 | Phase 5 | Complete |
 | PIPE-04 | Phase 5 | Complete |
-| PIPE-05 | Phase 5 | Pending |
-| PIPE-06 | Phase 5 | Pending |
+| PIPE-05 | Phase 5 | Complete |
+| PIPE-06 | Phase 5 | Complete |
 | LIST-01 | Phase 6 | Pending |
 | LIST-02 | Phase 6 | Pending |
 | LIST-03 | Phase 6 | Pending |
