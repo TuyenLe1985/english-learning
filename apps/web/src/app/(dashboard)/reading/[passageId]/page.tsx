@@ -2,30 +2,26 @@
  * /reading/[passageId] — Reading Passage detail page.
  *
  * READ-06: Server Component that fetches passage detail from NestJS and
- * renders the passage header, body (temporary dangerouslySetInnerHTML
- * fallback), and questions section placeholder.
- *
- * PassageRenderer and QuestionsSection client components (full interactive
- * implementation) are added in plan 05-07. This plan wires the data
- * fetch and the server-rendered HTML shell.
+ * renders the passage header. All client-side interactivity (PassageRenderer,
+ * QuestionsSection, NotesPanel, timer) is delegated to ReadingPageClient.
  *
  * Auth-gated: redirects to /login if no session.
  *
  * UI-SPEC Screen 2, §2a: passage header anatomy.
  * Security: T-05-06-01 — content sanitized by isomorphic-dompurify in
- * SeedService before DB storage; 05-07 adds client-side DOMPurify in
- * PassageRenderer.
+ * SeedService before DB storage; PassageRenderer adds client-side DOMPurify.
+ * T-05-07-01 — PassageRenderer enforces DOMPurify sanitization on render.
  */
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { ChevronLeft, Clock, Bookmark } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CefrBadge } from "@/components/cefr-badge";
 import { fetchWithAuth, INTERNAL_API_URL } from "@/lib/api-client";
+import { ReadingPageClient } from "@/components/reading/reading-page-client";
 import type { ReadingPassageDetailDto } from "@repo/shared";
 
 async function fetchPassageDetail(
@@ -94,7 +90,7 @@ export default async function ReadingPassagePage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      {/* ── 2a. Passage header ───────────────────────────────────────────── */}
+      {/* ── 2a. Passage header ───────────────────────────────────────────────── */}
 
       {/* Back link */}
       <Link
@@ -123,68 +119,14 @@ export default async function ReadingPassagePage({ params }: Props) {
         <span>{contentTypeLabel(data.contentType)}</span>
       </div>
 
-      {/* Action row: timer (placeholder — starts client-side in PassageRenderer) + Bookmark */}
-      <div className="mb-6 flex items-center gap-4 text-sm text-muted-foreground">
-        <span className="inline-flex items-center gap-1">
-          <Clock className="h-4 w-4" />
-          <span aria-live="polite">0m 0s</span>
-        </span>
-        <button
-          aria-label={
-            data.isBookmarked ? "Remove bookmark" : "Bookmark passage"
-          }
-          className="inline-flex min-h-[44px] items-center gap-1 transition-colors"
-        >
-          <Bookmark
-            className={`h-4 w-4 ${
-              data.isBookmarked
-                ? "fill-amber-400 text-amber-400"
-                : "text-muted-foreground"
-            }`}
-          />
-          <span>{data.isBookmarked ? "Bookmarked" : "Bookmark"}</span>
-        </button>
-      </div>
-
-      {/* ── 2b. Passage body ─────────────────────────────────────────────────
-           Temporary dangerouslySetInnerHTML fallback.
-           Content was sanitized by isomorphic-dompurify in SeedService before
-           DB storage (T-05-06-01). PassageRenderer (05-07) replaces this with
-           a "use client" component that runs DOMPurify client-side again and
-           wraps each word in interactive <span> elements.
+      {/* ── Client-side interactive shell ────────────────────────────────────────
+           ReadingPageClient coordinates:
+           - Action row (timer, bookmark, notes toggle)
+           - PassageRenderer (client-only, dynamic import ssr:false)
+           - QuestionsSection (inline questions + score card)
+           - NotesPanel (Sheet/sidebar)
       ──────────────────────────────────────────────────────────────────────── */}
-      <div
-        className="max-w-[65ch] text-[18px] leading-[1.75] text-foreground"
-        /* eslint-disable-next-line react/no-danger */
-        dangerouslySetInnerHTML={{ __html: data.content }}
-      />
-
-      <Separator className="my-8" />
-
-      {/* ── 2c. Questions section placeholder ────────────────────────────────
-           Full interactive QuestionsSection client component added in 05-07.
-           Renders static heading with question count as placeholder.
-      ──────────────────────────────────────────────────────────────────────── */}
-      <section aria-label="Comprehension Questions">
-        <h2 className="mb-4 text-sm font-semibold text-foreground">
-          Comprehension Questions
-          {data.questions.length > 0 && (
-            <span className="ml-2 font-normal text-muted-foreground">
-              ({data.questions.length} questions)
-            </span>
-          )}
-        </h2>
-
-        {data.questions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No questions available for this passage.
-          </p>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            Interactive questions will be available in the next update.
-          </p>
-        )}
-      </section>
+      <ReadingPageClient data={data} passageId={passageId} />
     </div>
   );
 }
