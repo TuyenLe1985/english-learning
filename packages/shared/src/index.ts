@@ -20,3 +20,6 @@ export * from "./vocabulary.dto";
 
 // Phase 4: Grammar DTOs
 export * from "./grammar.dto";
+
+// Phase 5: Reading DTOs
+export * from "./reading.dto";
