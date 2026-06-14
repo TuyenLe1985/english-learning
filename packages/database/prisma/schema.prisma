@@ -405,7 +405,7 @@ model Note {
   user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   passage ReadingPassage @relation(fields: [passageId], references: [id])
 
-  @@index([userId, passageId])
+  @@unique([userId, passageId])
 }
 
 model Bookmark {
