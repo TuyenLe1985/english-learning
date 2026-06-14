@@ -403,7 +403,7 @@ export class CrawlerService {
 
         // Use Playwright's live DOM (not Cheerio on static HTML) so JS-rendered links are visible
         const hrefs: string[] = await page.$$eval('a[href]', (els) =>
-          els.map((el) => (el as HTMLAnchorElement).href).filter(Boolean),
+          els.map((el) => (el as { href: string }).href).filter(Boolean),
         );
 
         for (const href of hrefs) {
