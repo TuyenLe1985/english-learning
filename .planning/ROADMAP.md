@@ -206,7 +206,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Wave 3** *(blocked on 05-04 — parallel with 05-06)*
 
 - [x] 05-05-PLAN.md — Content pipeline: CrawlerService (Playwright+Cheerio, 4 sources, validateSelectors, polite delay), SeedService (classify+createMany 500-batch), pipeline CLI (NestFactory.createApplicationContext), pnpm scripts (PIPE-01, PIPE-02, PIPE-05, PIPE-06)
-- [ ] 05-06-PLAN.md — Next.js Server Components: /reading browse page (filter bar+grid) and /reading/[passageId] detail page shell (READ-01, READ-06)
+- [x] 05-06-PLAN.md — Next.js Server Components: /reading browse page (filter bar+grid) and /reading/[passageId] detail page shell (READ-01, READ-06)
 
 **Wave 4** *(blocked on 05-06, 05-02, 05-03 — parallel)*
 
@@ -291,7 +291,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
-| 5. Reading Comprehension + Content Pipeline | 5/9 | In Progress|  |
+| 5. Reading Comprehension + Content Pipeline | 6/9 | In Progress|  |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
