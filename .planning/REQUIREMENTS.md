@@ -45,17 +45,17 @@
 - [x] **VOCAB-05**: SRS schedules vocabulary reviews using the FSRS algorithm at intervals: Day 1 / 3 / 7 / 14 / 30 / 90
 - [x] **VOCAB-06**: Pending SRS reviews appear on the dashboard and in a dedicated review queue; each session shows card, prompts recall, then reveals answer with rating buttons (Again / Hard / Good / Easy)
 - [x] **VOCAB-07**: User can see their full vocabulary list with status (new / learning / reviewing / mastered) and next review date
-- [ ] **VOCAB-08**: Vocabulary-in-context: when reading a passage, user can tap an unknown word to add it directly to their SRS queue with that sentence as context
+- [x] **VOCAB-08**: Vocabulary-in-context: when reading a passage, user can tap an unknown word to add it directly to their SRS queue with that sentence as context
 
 ### Reading Comprehension Module
 
-- [ ] **READ-01**: User can browse reading passages filtered by CEFR level (B1/B2/C1), topic, and content type (article, news, blog post, academic text, story, opinion piece)
-- [ ] **READ-02**: Each reading passage includes at least 6 comprehension questions covering: main idea, detail, inference, vocabulary-in-context, true/false, and summary completion
-- [ ] **READ-03**: Reading module shows elapsed time and allows user to record their reading time per passage
-- [ ] **READ-04**: User can highlight text in a passage and the highlight persists on re-visit
-- [ ] **READ-05**: User can take notes on a passage; notes are stored and visible on re-visit
-- [ ] **READ-06**: User can bookmark a passage for later from the passage page or from browse view
-- [ ] **READ-07**: Score and accuracy from comprehension questions are stored against the user's reading progress
+- [x] **READ-01**: User can browse reading passages filtered by CEFR level (B1/B2/C1), topic, and content type (article, news, blog post, academic text, story, opinion piece)
+- [x] **READ-02**: Each reading passage includes at least 6 comprehension questions covering: main idea, detail, inference, vocabulary-in-context, true/false, and summary completion
+- [x] **READ-03**: Reading module shows elapsed time and allows user to record their reading time per passage
+- [x] **READ-04**: User can highlight text in a passage and the highlight persists on re-visit
+- [x] **READ-05**: User can take notes on a passage; notes are stored and visible on re-visit
+- [x] **READ-06**: User can bookmark a passage for later from the passage page or from browse view
+- [x] **READ-07**: Score and accuracy from comprehension questions are stored against the user's reading progress
 
 ### Listening Comprehension Module
 
@@ -87,8 +87,8 @@
 
 - [ ] **PIPE-01**: Crawler fetches content from VOA Learning English, BBC Learning English, News in Levels, and Simple English Wikipedia using Playwright + Cheerio
 - [ ] **PIPE-02**: Crawler applies a content quality gate: minimum 150 words, no navigation/boilerplate (detected by low unique-word ratio), deduplicated by URL and content hash
-- [ ] **PIPE-03**: CEFR classification engine scores each passage using vocabulary frequency lists (proper nouns excluded via NER) and sentence complexity metrics; classifies as B1/B2/C1 with confidence score
-- [ ] **PIPE-04**: Content with classification confidence below 0.65 is flagged for review rather than auto-published
+- [x] **PIPE-03**: CEFR classification engine scores each passage using vocabulary frequency lists (proper nouns excluded via NER) and sentence complexity metrics; classifies as B1/B2/C1 with confidence score
+- [x] **PIPE-04**: Content with classification confidence below 0.65 is flagged for review rather than auto-published
 - [ ] **PIPE-05**: Seed scripts populate the database on first deploy with minimum: 500 grammar lessons, 5,000 vocabulary records, 2,000 reading passages, 1,000 listening transcripts, 20,000 quiz questions
 - [ ] **PIPE-06**: Seed scripts use Prisma `createMany()` in batches of 500 records (not individual `create()` calls) to complete within a practical time window
 
@@ -184,24 +184,24 @@
 | VOCAB-05 | Phase 3 | Complete |
 | VOCAB-06 | Phase 3 | Complete |
 | VOCAB-07 | Phase 3 | Complete |
-| VOCAB-08 | Phase 5 | Pending |
+| VOCAB-08 | Phase 5 | Complete |
 | GRAM-01 | Phase 4 | Complete |
 | GRAM-02 | Phase 4 | Complete |
 | GRAM-03 | Phase 4 | Complete |
 | GRAM-04 | Phase 4 | Complete |
 | GRAM-05 | Phase 4 | Complete |
 | GRAM-06 | Phase 4 | Complete |
-| READ-01 | Phase 5 | Pending |
-| READ-02 | Phase 5 | Pending |
-| READ-03 | Phase 5 | Pending |
-| READ-04 | Phase 5 | Pending |
-| READ-05 | Phase 5 | Pending |
-| READ-06 | Phase 5 | Pending |
-| READ-07 | Phase 5 | Pending |
+| READ-01 | Phase 5 | Complete |
+| READ-02 | Phase 5 | Complete |
+| READ-03 | Phase 5 | Complete |
+| READ-04 | Phase 5 | Complete |
+| READ-05 | Phase 5 | Complete |
+| READ-06 | Phase 5 | Complete |
+| READ-07 | Phase 5 | Complete |
 | PIPE-01 | Phase 5 | Pending |
 | PIPE-02 | Phase 5 | Pending |
-| PIPE-03 | Phase 5 | Pending |
-| PIPE-04 | Phase 5 | Pending |
+| PIPE-03 | Phase 5 | Complete |
+| PIPE-04 | Phase 5 | Complete |
 | PIPE-05 | Phase 5 | Pending |
 | PIPE-06 | Phase 5 | Pending |
 | LIST-01 | Phase 6 | Pending |

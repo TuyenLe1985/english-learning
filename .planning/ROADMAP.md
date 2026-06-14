@@ -195,7 +195,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 1** *(no dependencies — run in parallel with 02, 03, 04)*
 
-- [ ] 05-01-PLAN.md — Wave 0 foundation: package installs (natural, cheerio, isomorphic-dompurify, dom-anchor-text-position), shadcn components (popover/sheet/separator/select/textarea/tooltip), shared reading.dto.ts, TDD RED scaffolds (reading.service.spec, classifier.service.spec, vocabulary.service.spec.lookupByWord)
+- [x] 05-01-PLAN.md — Wave 0 foundation: package installs (natural, cheerio, isomorphic-dompurify, dom-anchor-text-position), shadcn components (popover/sheet/separator/select/textarea/tooltip), shared reading.dto.ts, TDD RED scaffolds (reading.service.spec, classifier.service.spec, vocabulary.service.spec.lookupByWord)
 
 **Wave 2** *(blocked on 05-01 — parallel)*
 
@@ -291,7 +291,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
-| 5. Reading Comprehension + Content Pipeline | 0/9 | Not started | - |
+| 5. Reading Comprehension + Content Pipeline | 1/9 | In Progress|  |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |

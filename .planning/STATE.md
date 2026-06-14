@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planned
-stopped_at: Phase 5 planned — ready to execute
-last_updated: "2026-06-14"
+status: executing
+stopped_at: Phase 5 planned — 9 plans verified and ready to execute
+last_updated: "2026-06-14T08:24:38.498Z"
 last_activity: 2026-06-14
 progress:
   total_phases: 8
   completed_phases: 4
   total_plans: 33
-  completed_plans: 24
+  completed_plans: 25
   percent: 50
 ---
 
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-06-11)
 
 ## Current Position
 
-Phase: 5
-Plan: Ready to execute (9 plans, 5 waves)
-Status: Planned — awaiting execution
+Phase: 05 (reading-comprehension-content-pipeline) — EXECUTING
+Plan: 2 of 9
+Status: Ready to execute
 Last activity: 2026-06-14
 
 Progress: [███████░░░] 72%
@@ -59,6 +59,7 @@ Progress: [███████░░░] 72%
 | Phase 02-authentication-user-profile P05 | 20m | 3 tasks | 6 files |
 | Phase 02-authentication-user-profile P06 | 13m | 3 tasks | 23 files |
 | Phase 03-vocabulary-module-srs-core P01 | 14m | 2 tasks | 27 files |
+| Phase 05 P01 | 5min | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,9 @@ Recent decisions affecting current work:
 - [Roadmap]: FSRS algorithm selected over SM-2 to eliminate ease-floor trap; must be decided finally in Phase 3 planning before any SRS code is written
 - [Roadmap]: VOCAB-08 (vocab-in-context tap-to-SRS) deferred to Phase 5 so it is built after both reading and SRS are stable
 - [Roadmap]: All gamification (GAME-01–05) consolidated in Phase 7 for single delivery boundary; XP event infrastructure wired in earlier phases but badge/level display ships in Phase 7
+- [Phase 05]: dom-anchor-text-position used over @hypothesis/anchoring (404 on npm confirmed)
+- [Phase 05]: ClassifierService spec uses direct instantiation — pure function service with no DB dependency
+- [Phase 05]: lookupByWord returns null on word not found (D-13 graceful no-match, not 404)
 
 ### Pending Todos
 
@@ -94,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-14
+Last session: 2026-06-14T08:24:38.494Z
 Stopped at: Phase 5 planned — 9 plans verified and ready to execute
-Resume file: .planning/phases/05-reading-comprehension-content-pipeline/05-01-PLAN.md
+Resume file: None
