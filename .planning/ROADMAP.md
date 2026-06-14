@@ -191,7 +191,42 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. User can tap an unknown word in a passage to see its meaning and add it to their SRS queue with that sentence as context
   5. The seed script completes within a practical time window (under 10 minutes on the target machine) using Prisma createMany batching, and every CEFR level shelf contains content
 
-**Plans**: TBD
+**Plans**: 9 plans in 5 waves
+
+**Wave 1** *(no dependencies — run in parallel with 02, 03, 04)*
+
+- [ ] 05-01-PLAN.md — Wave 0 foundation: package installs (natural, cheerio, isomorphic-dompurify, dom-anchor-text-position), shadcn components (popover/sheet/separator/select/textarea/tooltip), shared reading.dto.ts, TDD RED scaffolds (reading.service.spec, classifier.service.spec, vocabulary.service.spec.lookupByWord)
+
+**Wave 2** *(blocked on 05-01 — parallel)*
+
+- [ ] 05-02-PLAN.md — NestJS ReadingModule API: 7 endpoints (browse, detail, sessions/complete, highlights CRUD, notes, bookmarks) + AppModule registration (READ-01–07) [TDD]
+- [ ] 05-03-PLAN.md — VocabularyModule lookup extension: GET /api/vocabulary/lookup?word= + lookupByWord() in VocabularyService (VOCAB-08) [TDD]
+- [ ] 05-04-PLAN.md — CEFR classifier: cefr-word-list.json generation from Words-CEFR-Dataset CSV, PipelineModule, ClassifierService with vocabulary + sentence length + syntactic complexity scoring (PIPE-03, PIPE-04) [TDD]
+
+**Wave 3** *(blocked on 05-04 — parallel with 05-06)*
+
+- [ ] 05-05-PLAN.md — Content pipeline: CrawlerService (Playwright+Cheerio, 4 sources, validateSelectors, polite delay), SeedService (classify+createMany 500-batch), pipeline CLI (NestFactory.createApplicationContext), pnpm scripts (PIPE-01, PIPE-02, PIPE-05, PIPE-06)
+- [ ] 05-06-PLAN.md — Next.js Server Components: /reading browse page (filter bar+grid) and /reading/[passageId] detail page shell (READ-01, READ-06)
+
+**Wave 4** *(blocked on 05-06, 05-02, 05-03 — parallel)*
+
+- [ ] 05-07-PLAN.md — Reading passage client components: PassageRenderer (DOMPurify+word-span+highlight restore), HighlightTooltip (selection→save), QuestionsSection (inline feedback+timer+submit), PassageScoreCard (framer-motion), NotesPanel (Sheet+auto-save) (READ-02, READ-03, READ-04, READ-05, READ-07)
+- [ ] 05-08-PLAN.md — Word tap popover (VOCAB-08): WordPopover component (lookup→enroll), bookmark toggle wiring in passage page (READ-06, VOCAB-08)
+
+**Wave 5** *(blocked on 05-05, 05-07, 05-08)*
+
+- [ ] 05-09-PLAN.md — End-to-end verification: full test suite + pipeline execution (validate selectors → crawl → seed 2,000+ passages) + human checkpoint on all 6 user journeys [has checkpoint]
+
+**Cross-cutting constraints:**
+
+- do NOT install `@hypothesis/anchoring` — does not exist on npm (404 confirmed); use `dom-anchor-text-position@5.0.0`
+- `dom-anchor-text-position` is browser-only — import only in "use client" components, never Server Components or pipeline CLI
+- `isomorphic-dompurify` is client-component-only — avoid in Server Components to prevent jsdom ESM conflict
+- Words-CEFR-Dataset ships as CSV (no JSON export) — Wave 0 must run CSV-to-JSON conversion before classifier can run
+- ReadingProgress uses upsert not create (@@unique([userId, passageId]) constraint)
+- EnrollWordSchema requires wordId (non-optional) — disable "Add to SRS" when vocabulary lookup returns null
+- Pipeline selector validation (50-URL sample, ≥80% success) is REQUIRED before bulk crawl
+
 **UI hint**: yes
 
 ### Phase 6: Listening Comprehension
@@ -256,7 +291,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
-| 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
+| 5. Reading Comprehension + Content Pipeline | 0/9 | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
