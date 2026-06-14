@@ -200,7 +200,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Wave 2** *(blocked on 05-01 — parallel)*
 
 - [x] 05-02-PLAN.md — NestJS ReadingModule API: 7 endpoints (browse, detail, sessions/complete, highlights CRUD, notes, bookmarks) + AppModule registration (READ-01–07) [TDD]
-- [ ] 05-03-PLAN.md — VocabularyModule lookup extension: GET /api/vocabulary/lookup?word= + lookupByWord() in VocabularyService (VOCAB-08) [TDD]
+- [x] 05-03-PLAN.md — VocabularyModule lookup extension: GET /api/vocabulary/lookup?word= + lookupByWord() in VocabularyService (VOCAB-08) [TDD]
 - [ ] 05-04-PLAN.md — CEFR classifier: cefr-word-list.json generation from Words-CEFR-Dataset CSV, PipelineModule, ClassifierService with vocabulary + sentence length + syntactic complexity scoring (PIPE-03, PIPE-04) [TDD]
 
 **Wave 3** *(blocked on 05-04 — parallel with 05-06)*
@@ -291,7 +291,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
-| 5. Reading Comprehension + Content Pipeline | 2/9 | In Progress|  |
+| 5. Reading Comprehension + Content Pipeline | 3/9 | In Progress|  |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
