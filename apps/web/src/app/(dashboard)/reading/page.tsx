@@ -141,23 +141,9 @@ export default async function ReadingPage({ searchParams }: Props) {
                     {/* Top row: CefrBadge + Bookmark icon */}
                     <div className="mb-3 flex items-start justify-between gap-2">
                       <CefrBadge level={passage.cefrLevel} />
-                      <button
-                        aria-label={
-                          passage.isBookmarked
-                            ? "Remove bookmark"
-                            : "Bookmark passage"
-                        }
-                        className="shrink-0 p-1 transition-colors"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <Bookmark
-                          className={`h-4 w-4 ${
-                            passage.isBookmarked
-                              ? "fill-amber-400 text-amber-400"
-                              : "text-muted-foreground"
-                          }`}
-                        />
-                      </button>
+                      {passage.isBookmarked && (
+                        <Bookmark className="h-4 w-4 shrink-0 fill-amber-400 text-amber-400" />
+                      )}
                     </div>
 
                     {/* Title */}
