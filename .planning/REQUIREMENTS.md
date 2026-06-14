@@ -29,12 +29,12 @@
 
 ### Grammar Module
 
-- [ ] **GRAM-01**: User can browse grammar topics organized into 10 areas: verb tenses, modal verbs, conditionals, passive voice, relative clauses, reported speech, gerunds & infinitives, articles, prepositions, linking words
-- [ ] **GRAM-02**: Each grammar lesson presents an explanation section with examples and visual learning blocks before exercises
-- [ ] **GRAM-03**: Grammar exercises include at least 3 of: multiple choice, fill-in-the-blank, sentence transformation, error correction, drag-and-drop
-- [ ] **GRAM-04**: Grammar lesson ends with an assessment quiz and stores the score against the user's profile
-- [ ] **GRAM-05**: Each grammar topic has at least 20 practice questions across all exercise types
-- [ ] **GRAM-06**: Grammar topic pages show user's mastery percentage and allow re-attempt of weak exercises
+- [x] **GRAM-01**: User can browse grammar topics organized into 10 areas: verb tenses, modal verbs, conditionals, passive voice, relative clauses, reported speech, gerunds & infinitives, articles, prepositions, linking words
+- [x] **GRAM-02**: Each grammar lesson presents an explanation section with examples and visual learning blocks before exercises
+- [x] **GRAM-03**: Grammar exercises include at least 3 of: multiple choice, fill-in-the-blank, sentence transformation, error correction, drag-and-drop
+- [x] **GRAM-04**: Grammar lesson ends with an assessment quiz and stores the score against the user's profile
+- [x] **GRAM-05**: Each grammar topic has at least 20 practice questions across all exercise types
+- [x] **GRAM-06**: Grammar topic pages show user's mastery percentage and allow re-attempt of weak exercises
 
 ### Vocabulary Module
 
@@ -185,12 +185,12 @@
 | VOCAB-06 | Phase 3 | Complete |
 | VOCAB-07 | Phase 3 | Complete |
 | VOCAB-08 | Phase 5 | Pending |
-| GRAM-01 | Phase 4 | Pending |
-| GRAM-02 | Phase 4 | Pending |
-| GRAM-03 | Phase 4 | Pending |
-| GRAM-04 | Phase 4 | Pending |
-| GRAM-05 | Phase 4 | Pending |
-| GRAM-06 | Phase 4 | Pending |
+| GRAM-01 | Phase 4 | Complete |
+| GRAM-02 | Phase 4 | Complete |
+| GRAM-03 | Phase 4 | Complete |
+| GRAM-04 | Phase 4 | Complete |
+| GRAM-05 | Phase 4 | Complete |
+| GRAM-06 | Phase 4 | Complete |
 | READ-01 | Phase 5 | Pending |
 | READ-02 | Phase 5 | Pending |
 | READ-03 | Phase 5 | Pending |
