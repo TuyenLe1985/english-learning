@@ -7,7 +7,7 @@
     "paths": {},
     "types": ["node"],
     "module": "CommonJS",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
