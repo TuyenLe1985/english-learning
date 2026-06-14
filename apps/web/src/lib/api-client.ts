@@ -21,6 +21,20 @@ const API_URL =
   process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
 
 /**
+ * Server-side base URL for fetches that run inside the container.
+ *
+ * NEXT_PUBLIC_API_URL is baked at build time for the browser and points at
+ * the public hostname, which a Server Component inside the Docker network
+ * cannot reach. INTERNAL_API_URL (e.g. http://api:3001 in docker-compose)
+ * is the server-side address. The fallback chain keeps local dev working
+ * with zero new env vars.
+ */
+export const INTERNAL_API_URL =
+  process.env["INTERNAL_API_URL"] ??
+  process.env["NEXT_PUBLIC_API_URL"] ??
+  "http://localhost:3001";
+
+/**
  * Extract the raw JWE session token string from the cookie header.
  * Auth.js stores the session as a compact JWE in:
  *   - `authjs.session-token`          (development / http)

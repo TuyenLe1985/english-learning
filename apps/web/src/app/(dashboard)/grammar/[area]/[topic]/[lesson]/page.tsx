@@ -4,10 +4,11 @@
  * GRAM-02 (explanation before exercises), GRAM-03 (5-type carousel),
  * GRAM-04 (session completion + mastery update), GRAM-06 (weak-review mode).
  *
- * Server Component: fetches GrammarLessonDetailDto from NestJS using
- * getSessionToken(). When searchParams.review === "weak", also fetches
- * the weak-questions set and passes it to GrammarLessonPage, which will
- * skip the explanation phase and run only those questions (D-09).
+ * Server Component: fetches GrammarLessonDetailDto from NestJS via fetchWithAuth
+ * with forwarded JWE cookie against INTERNAL_API_URL. When searchParams.review
+ * === "weak", also fetches the weak-questions set and passes it to
+ * GrammarLessonPage, which will skip the explanation phase and run only those
+ * questions (D-09).
  *
  * Auth-gated: redirects to /login if no session.
  *
@@ -17,24 +18,20 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { headers } from "next/headers";
 import Link from "next/link";
-import { getSessionToken } from "@/lib/get-session-token";
+import { fetchWithAuth, INTERNAL_API_URL } from "@/lib/api-client";
 import { GrammarLessonPage } from "@/components/grammar/grammar-lesson-page";
 import type { GrammarLessonDetailDto, GrammarQuestionDto } from "@repo/shared";
 
-const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
-
 async function fetchLessonDetail(
+  cookieHeader: string,
   lessonSlug: string,
 ): Promise<GrammarLessonDetailDto | null> {
   try {
-    const token = getSessionToken();
-    const res = await fetch(
-      `${API_URL}/api/grammar/lessons/${lessonSlug}`,
-      {
-        cache: "no-store",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      },
+    const res = await fetchWithAuth(
+      cookieHeader,
+      `${INTERNAL_API_URL}/api/grammar/lessons/${lessonSlug}`,
     );
     if (!res.ok) return null;
     return res.json() as Promise<GrammarLessonDetailDto>;
@@ -44,16 +41,13 @@ async function fetchLessonDetail(
 }
 
 async function fetchWeakQuestions(
+  cookieHeader: string,
   topicSlug: string,
 ): Promise<GrammarQuestionDto[]> {
   try {
-    const token = getSessionToken();
-    const res = await fetch(
-      `${API_URL}/api/grammar/topics/${topicSlug}/weak-questions`,
-      {
-        cache: "no-store",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      },
+    const res = await fetchWithAuth(
+      cookieHeader,
+      `${INTERNAL_API_URL}/api/grammar/topics/${topicSlug}/weak-questions`,
     );
     if (!res.ok) return [];
     return res.json() as Promise<GrammarQuestionDto[]>;
@@ -77,8 +71,11 @@ export default async function GrammarLessonDetailPage({
   const { area, topic, lesson: lessonSlug } = await params;
   const { review } = await searchParams;
 
+  const reqHeaders = await headers();
+  const cookieHeader = reqHeaders.get("cookie") ?? "";
+
   // Fetch lesson detail with questions
-  const lessonData = await fetchLessonDetail(lessonSlug);
+  const lessonData = await fetchLessonDetail(cookieHeader, lessonSlug);
 
   if (!lessonData) {
     return (
@@ -102,7 +99,7 @@ export default async function GrammarLessonDetailPage({
   // Weak-review mode (D-09): review=weak → fetch weak-questions + skip explanation
   let weakQuestions: GrammarQuestionDto[] | undefined;
   if (review === "weak") {
-    weakQuestions = await fetchWeakQuestions(topic);
+    weakQuestions = await fetchWeakQuestions(cookieHeader, topic);
   }
 
   return (

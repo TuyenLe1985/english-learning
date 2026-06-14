@@ -4,31 +4,29 @@
  * GRAM-01 (Screen 2): Displays topics for a grammar area in a stacked list.
  * Each row shows topic title, CEFR badge, mastery percentage (if > 0), and a chevron.
  *
- * Server Component: fetches topics from NestJS with getSessionToken() and cache: 'no-store'.
- * Auth-gated: redirects to /login if no session.
+ * Server Component: fetches topics from NestJS via fetchWithAuth with forwarded
+ * JWE cookie against INTERNAL_API_URL. Auth-gated: redirects to /login if no session.
  *
  * UI-SPEC: max-w-3xl, area name heading (28px/600), "{N} topics" subtitle, back link to /grammar.
  */
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { CefrBadge } from "@/components/cefr-badge";
-import { getSessionToken } from "@/lib/get-session-token";
+import { fetchWithAuth, INTERNAL_API_URL } from "@/lib/api-client";
 import type { GrammarTopicDto } from "@repo/shared";
 
-const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
-
-async function fetchTopics(area: string): Promise<GrammarTopicDto[]> {
+async function fetchTopics(
+  cookieHeader: string,
+  area: string,
+): Promise<GrammarTopicDto[]> {
   try {
-    const token = getSessionToken();
-    const res = await fetch(
-      `${API_URL}/api/grammar/areas/${area}/topics`,
-      {
-        cache: "no-store",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      },
+    const res = await fetchWithAuth(
+      cookieHeader,
+      `${INTERNAL_API_URL}/api/grammar/areas/${area}/topics`,
     );
     if (!res.ok) return [];
     return res.json() as Promise<GrammarTopicDto[]>;
@@ -46,7 +44,9 @@ export default async function GrammarAreaPage({ params }: Props) {
   if (!session) redirect("/login");
 
   const { area } = await params;
-  const topics = await fetchTopics(area);
+  const reqHeaders = await headers();
+  const cookieHeader = reqHeaders.get("cookie") ?? "";
+  const topics = await fetchTopics(cookieHeader, area);
 
   // Derive a display name from the slug (capitalize each word)
   const areaName = area

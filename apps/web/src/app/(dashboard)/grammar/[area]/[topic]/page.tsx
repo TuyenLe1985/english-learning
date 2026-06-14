@@ -5,7 +5,8 @@
  * "Review weak exercises" CTA (linked to the first lesson with ?review=weak),
  * and the list of lessons for the topic.
  *
- * Server Component: fetches GrammarTopicDetailDto from NestJS via getSessionToken().
+ * Server Component: fetches GrammarTopicDetailDto from NestJS via fetchWithAuth
+ * with forwarded JWE cookie against INTERNAL_API_URL.
  * Auth-gated: redirects to /login if no session.
  *
  * UI-SPEC: max-w-3xl, topic heading + inline CefrBadge, mastery section (when masteryPct != null),
@@ -15,26 +16,22 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { CefrBadge } from "@/components/cefr-badge";
 import { Progress } from "@/components/ui/progress";
-import { getSessionToken } from "@/lib/get-session-token";
+import { fetchWithAuth, INTERNAL_API_URL } from "@/lib/api-client";
 import type { GrammarTopicDetailDto } from "@repo/shared";
 
-const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
-
 async function fetchTopicDetail(
+  cookieHeader: string,
   topicSlug: string,
 ): Promise<GrammarTopicDetailDto | null> {
   try {
-    const token = getSessionToken();
-    const res = await fetch(
-      `${API_URL}/api/grammar/topics/${topicSlug}/lessons`,
-      {
-        cache: "no-store",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      },
+    const res = await fetchWithAuth(
+      cookieHeader,
+      `${INTERNAL_API_URL}/api/grammar/topics/${topicSlug}/lessons`,
     );
     if (!res.ok) return null;
     return res.json() as Promise<GrammarTopicDetailDto>;
@@ -52,7 +49,9 @@ export default async function GrammarTopicPage({ params }: Props) {
   if (!session) redirect("/login");
 
   const { area, topic: topicSlug } = await params;
-  const data = await fetchTopicDetail(topicSlug);
+  const reqHeaders = await headers();
+  const cookieHeader = reqHeaders.get("cookie") ?? "";
+  const data = await fetchTopicDetail(cookieHeader, topicSlug);
 
   if (!data) {
     return (

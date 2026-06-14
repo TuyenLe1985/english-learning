@@ -177,7 +177,7 @@ describe('GrammarService', () => {
       mockAttemptCreateMany.mockResolvedValue({ count: 2 });
       mockProgressFindUnique.mockResolvedValue(null);
       mockProgressUpsert.mockResolvedValue({
-        masteryPct: 0.5,
+        masteryPct: 50,
         attempts: 2,
         correct: 1,
       });
@@ -195,11 +195,11 @@ describe('GrammarService', () => {
       );
     });
 
-    it('upserts grammarProgress with masteryPct = newCorrect / newAttempts', async () => {
+    it('upserts grammarProgress with masteryPct on 0-100 scale', async () => {
       mockAttemptCreateMany.mockResolvedValue({ count: 2 });
       mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
       mockProgressFindUnique.mockResolvedValue({ attempts: 0, correct: 0, masteryPct: 0 });
-      mockProgressUpsert.mockResolvedValue({ masteryPct: 0.5, attempts: 2, correct: 1 });
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 50, attempts: 2, correct: 1 });
 
       const result = await service.completeSession('user-001', sessionPayload);
 
@@ -211,7 +211,7 @@ describe('GrammarService', () => {
       mockAttemptCreateMany.mockResolvedValue({ count: 2 });
       mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
       mockProgressFindUnique.mockResolvedValue({ attempts: 0, correct: 0, masteryPct: 0 });
-      mockProgressUpsert.mockResolvedValue({ masteryPct: 0.5, attempts: 2, correct: 1 });
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 50, attempts: 2, correct: 1 });
 
       const result = await service.completeSession('user-001', sessionPayload);
 
@@ -219,6 +219,93 @@ describe('GrammarService', () => {
         score: 1,
         total: 2,
       });
+    });
+
+    it('returns masteryPct === 80 for 8/10 correct with no prior progress', async () => {
+      const payload8of10 = {
+        lessonId: 'lesson-001',
+        attempts: [
+          ...Array.from({ length: 8 }, (_, i) => ({
+            questionId: `q-00${i + 1}`,
+            isCorrect: true,
+            userAnswer: 'correct',
+          })),
+          ...Array.from({ length: 2 }, (_, i) => ({
+            questionId: `q-00${i + 9}`,
+            isCorrect: false,
+            userAnswer: 'wrong',
+          })),
+        ],
+        timeTakenMs: 60000,
+      };
+      mockAttemptCreateMany.mockResolvedValue({ count: 10 });
+      mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
+      mockProgressFindUnique.mockResolvedValue(null); // no prior progress
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 80, attempts: 10, correct: 8 });
+
+      const result = await service.completeSession('user-001', payload8of10);
+
+      expect(result.masteryPct).toBe(80);
+      // Verify the upsert was called with masteryPct === 80 (0-100 scale)
+      expect(mockProgressUpsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          create: expect.objectContaining({ masteryPct: 80 }),
+          update: expect.objectContaining({ masteryPct: 80 }),
+        }),
+      );
+    });
+
+    it('returns masteryPct === 0 when 0 attempts (divide-by-zero guard)', async () => {
+      const emptyPayload = {
+        lessonId: 'lesson-001',
+        attempts: [],
+        timeTakenMs: 0,
+      };
+      mockAttemptCreateMany.mockResolvedValue({ count: 0 });
+      mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
+      mockProgressFindUnique.mockResolvedValue(null);
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 0, attempts: 0, correct: 0 });
+
+      const result = await service.completeSession('user-001', emptyPayload);
+
+      expect(result.masteryPct).toBe(0);
+      expect(Number.isNaN(result.masteryPct)).toBe(false);
+    });
+
+    it('accumulates masteryPct across sessions (5/10 then 3/10 → 40)', async () => {
+      // Simulate second session: prior progress has 5/10, new session has 3/10
+      const payload3of10 = {
+        lessonId: 'lesson-001',
+        attempts: [
+          ...Array.from({ length: 3 }, (_, i) => ({
+            questionId: `q-00${i + 1}`,
+            isCorrect: true,
+            userAnswer: 'correct',
+          })),
+          ...Array.from({ length: 7 }, (_, i) => ({
+            questionId: `q-00${i + 4}`,
+            isCorrect: false,
+            userAnswer: 'wrong',
+          })),
+        ],
+        timeTakenMs: 45000,
+      };
+      mockAttemptCreateMany.mockResolvedValue({ count: 10 });
+      mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
+      // Prior progress: 5 correct of 10 attempts
+      mockProgressFindUnique.mockResolvedValue({ attempts: 10, correct: 5, masteryPct: 50 });
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 40, attempts: 20, correct: 8 });
+
+      const result = await service.completeSession('user-001', payload3of10);
+
+      // 5 + 3 = 8 correct / 10 + 10 = 20 total = 40%
+      expect(result.masteryPct).toBe(40);
+      expect(mockProgressUpsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          create: expect.objectContaining({ masteryPct: 40, attempts: 20, correct: 8 }),
+          update: expect.objectContaining({ masteryPct: 40, attempts: 20, correct: 8 }),
+        }),
+      );
     });
   });
 

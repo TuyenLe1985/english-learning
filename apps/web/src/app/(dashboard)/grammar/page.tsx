@@ -4,27 +4,25 @@
  * GRAM-01: Displays all 10 grammar areas in a responsive 2-column (mobile) /
  * 4-column (desktop) grid. Each card links to the area topic list at /grammar/[slug].
  *
- * Server Component: fetches areas from NestJS with getSessionToken() and cache: 'no-store'.
- * Auth-gated: redirects to /login if no session.
+ * Server Component: fetches areas from NestJS via fetchWithAuth with forwarded
+ * JWE cookie against INTERNAL_API_URL. Auth-gated: redirects to /login if no session.
  *
  * UI-SPEC: "Grammar" heading (28px/600), "Browse by area" subtitle (base muted).
  */
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { headers } from "next/headers";
 import { GrammarAreaCard } from "@/components/grammar/grammar-area-card";
-import { getSessionToken } from "@/lib/get-session-token";
+import { fetchWithAuth, INTERNAL_API_URL } from "@/lib/api-client";
 import type { GrammarAreaDto } from "@repo/shared";
 
-const API_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
-
-async function fetchAreas(): Promise<GrammarAreaDto[]> {
+async function fetchAreas(cookieHeader: string): Promise<GrammarAreaDto[]> {
   try {
-    const token = getSessionToken();
-    const res = await fetch(`${API_URL}/api/grammar/areas`, {
-      cache: "no-store",
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+    const res = await fetchWithAuth(
+      cookieHeader,
+      `${INTERNAL_API_URL}/api/grammar/areas`,
+    );
     if (!res.ok) return [];
     return res.json() as Promise<GrammarAreaDto[]>;
   } catch {
@@ -36,7 +34,9 @@ export default async function GrammarPage() {
   const session = await auth();
   if (!session) redirect("/login");
 
-  const areas = await fetchAreas();
+  const reqHeaders = await headers();
+  const cookieHeader = reqHeaders.get("cookie") ?? "";
+  const areas = await fetchAreas(cookieHeader);
 
   return (
     <div className="mx-auto max-w-screen-xl">

@@ -235,7 +235,7 @@ export class GrammarService {
 
     const newAttempts = (existing?.attempts ?? 0) + totalCount;
     const newCorrect = (existing?.correct ?? 0) + correctCount;
-    const newMasteryPct = newAttempts > 0 ? newCorrect / newAttempts : 0;
+    const newMasteryPct = newAttempts > 0 ? (newCorrect / newAttempts) * 100 : 0;
 
     // 5. Upsert GrammarProgress — unique on userId_topicId (Pitfall 5: use upsert, not create)
     await this.prisma.grammarProgress.upsert({
