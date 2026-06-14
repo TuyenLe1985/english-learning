@@ -261,7 +261,7 @@ Feedback expansion uses `framer-motion` `height: 0→auto` animate.
 |---------|------|
 | Browse page h1 | Reading Passages |
 | Browse page subtitle | Browse passages at your CEFR level |
-| Browse empty state heading | No passages found |
+| Browse empty state heading | No passages match your filters |
 | Browse empty state body | Try adjusting your filters, or check back after the content pipeline has run. |
 | Browse error state | Could not load passages. Refresh the page or try again later. |
 | Passage page back link | Back to Reading |
@@ -273,7 +273,7 @@ Feedback expansion uses `framer-motion` `height: 0→auto` animate.
 | Post-score secondary CTA | Browse all passages |
 | Highlight tooltip label | Highlight |
 | Highlight save error | Could not save highlight. Try again. |
-| Highlight remove confirmation | Remove this highlight? (Dialog: "Remove" + "Cancel") |
+| Highlight remove confirmation | Remove this highlight? (Dialog: "Remove Highlight" + "Keep Highlight") |
 | Notes panel heading | Notes |
 | Notes textarea placeholder | Jot down your notes about this passage... |
 | Notes saved indicator | Saved |
@@ -305,6 +305,7 @@ Feedback expansion uses `framer-motion` `height: 0→auto` animate.
 - Notes Sheet (mobile): focus trapped inside sheet when open.
 - CEFR badges: existing `role="img"` + `aria-label` from `CefrBadge` component — no changes needed.
 - Touch targets: all interactive elements minimum 44×44px.
+- Browse card bookmark icon: icon-only toggle button must declare `aria-label="Bookmark passage"` (unfilled state) and `aria-label="Remove bookmark"` (filled/BookmarkCheck state). Label updates dynamically to reflect current toggle state.
 
 ---
 
