@@ -1,46 +1,58 @@
 {
   "version": "1.0",
-  "timestamp": "2026-06-14T08:44:07.094Z",
+  "timestamp": "2026-06-14T14:23:22.705Z",
   "phase": "05",
   "phase_name": "reading-comprehension-content-pipeline",
   "phase_dir": ".planning/phases/05-reading-comprehension-content-pipeline",
-  "plan": 5,
-  "task": 1,
-  "total_tasks": 9,
+  "plan": 9,
+  "task": 2,
+  "total_tasks": 2,
   "status": "paused",
   "completed_tasks": [
-    {"id": "05-01", "name": "Foundation — packages, shared DTOs, TDD RED scaffolds", "status": "done", "commit": "94bd53d"},
-    {"id": "05-02", "name": "ReadingModule TDD GREEN — service, controller, module", "status": "done", "commit": "1fae691"},
-    {"id": "05-03", "name": "VocabularyService lookupByWord TDD GREEN (VOCAB-08)", "status": "done", "commit": "04104f4"},
-    {"id": "05-04", "name": "ClassifierService + PipelineModule TDD GREEN", "status": "done", "commit": "2efff93"},
-    {"id": "05-05", "name": "Content pipeline CLI (CrawlerService + SeedService)", "status": "in_progress", "progress": "Background agent a4084fc27e3d2e4bd running in worktree — not yet committed"}
+    {"id": "05-01", "name": "Foundation + TDD RED scaffolds", "status": "done", "commit": "94bd53d"},
+    {"id": "05-02", "name": "ReadingModule GREEN (7 endpoints)", "status": "done", "commit": "1fae691"},
+    {"id": "05-03", "name": "VocabularyService.lookupByWord (VOCAB-08)", "status": "done", "commit": "04104f4"},
+    {"id": "05-04", "name": "ClassifierService + PipelineModule", "status": "done", "commit": "2efff93"},
+    {"id": "05-05", "name": "CrawlerService + SeedService + pipeline CLI", "status": "done", "commit": "e64d96e"},
+    {"id": "05-06", "name": "Next.js reading browse + detail Server Components", "status": "done", "commit": "fd1e98d"},
+    {"id": "05-07", "name": "PassageRenderer + HighlightTooltip + QuestionsSection + NotesPanel", "status": "done", "commit": "3ace398"},
+    {"id": "05-08", "name": "WordPopover + bookmark toggle wiring", "status": "done", "commit": "3ef9714"},
+    {"id": "05-09", "name": "E2E checkpoint — automated verification done", "status": "done", "commit": "4f71121"}
   ],
   "remaining_tasks": [
-    {"id": "05-06", "name": "Next.js reading browse + detail pages (Server Components)", "status": "not_started"},
-    {"id": "05-07", "name": "Interactive passage client components (PassageRenderer, QuestionsSection, etc.)", "status": "not_started"},
-    {"id": "05-08", "name": "VOCAB-08 word-tap-to-SRS popover + bookmark toggle", "status": "not_started"},
-    {"id": "05-09", "name": "E2E checkpoint — crawler validation + pipeline seed run", "status": "not_started", "autonomous": false}
+    {"id": "phase-close", "name": "Run gsd-sdk query phase.complete 05 to mark phase done in ROADMAP/STATE", "status": "not_started"},
+    {"id": "code-review-fix", "name": "Apply remaining code review fixes (CR-01/02/03/04, WR-05)", "status": "not_started"},
+    {"id": "pipeline-confirm", "name": "Confirm pipeline:run seeded 2000+ passages after crawler fix", "status": "not_started"},
+    {"id": "human-uat", "name": "User completes 6 browser UI journeys and gives approval", "status": "not_started"}
   ],
   "blockers": [
     {
-      "description": "Background agent a4084fc27e3d2e4bd executing plan 05-05 in worktree — may complete or may need re-run",
+      "description": "Pipeline crawler fix committed (f741646) — needs re-run to confirm VOA/BBC/NewsInLevels now collect URLs.",
       "type": "technical",
-      "workaround": "Check for 05-05-SUMMARY.md in phase dir. If missing, re-run plan 05-05 sequentially."
+      "workaround": "pnpm --filter @repo/api pipeline:run"
     },
     {
-      "description": "Pre-existing RED stubs in jwt.guard.spec.ts (4 failing tests) — not from Phase 5",
-      "type": "technical",
-      "workaround": "Pre-existing. Not introduced by Phase 5 changes. Safe to ignore for Phase 5 verification."
+      "description": "Verification returned human_needed (13/16). Needs browser UI journey approval.",
+      "type": "human_action",
+      "workaround": "User verifies 6 journeys at http://localhost:3000/reading then confirms"
     }
   ],
-  "human_actions_pending": [],
-  "decisions": [
-    {"decision": "Added @@unique([userId, passageId]) to Note model in Prisma schema", "rationale": "Required for prisma.note.upsert with compound key to work", "phase": "05"},
-    {"decision": "Wave 2 agents ran sequentially due to worktree base-commit issues", "rationale": "First parallel attempt failed — 2 of 3 worktrees created at wrong base (bf998e8 instead of 94bd53d). Re-ran sequentially.", "phase": "05"},
-    {"decision": "TDD RED tests committed in 05-01, GREEN in 05-02/03/04", "rationale": "Phase 5 plan design has a shared RED foundation plan (05-01). TDD gate was bypassed for 05-02/03/04 with explicit override.", "phase": "05"},
-    {"decision": "ClassifierService uses 923-word CEFR list with 3-factor weighted scoring", "rationale": "vocab 50% + sentence length 25% + syntactic complexity 25%", "phase": "05"}
+  "human_actions_pending": [
+    {"action": "Verify 6 UI journeys at /reading after pipeline seeds data", "context": "See 05-09-PLAN.md Task 2 for full journey list", "blocking": true},
+    {"action": "Run pnpm --filter @repo/api pipeline:run to confirm 2000+ passages seeded", "context": "Crawler fix committed f741646 — re-run needed", "blocking": false}
   ],
-  "uncommitted_files": [],
-  "next_action": "Check if 05-05 background agent completed (look for 05-05-SUMMARY.md). If yes, run Wave 3 post-merge gate and proceed to Wave 3 plan 05-06. If no, re-run 05-05 sequentially. Then execute Wave 3 (05-05 + 05-06 in parallel), Wave 4 (05-07 + 05-08 in parallel), Wave 5 (05-09 checkpoint).",
-  "context_notes": "Phase 5 Wave 1 and Wave 2 complete. 4/9 plans done. Background agent for 05-05 was launched just before pausing. The worktree isolation approach had issues in Wave 2 (wrong base commits) — Wave 3+ should use sequential mode or verify worktrees are created from the correct HEAD before spawning parallel agents."
+  "decisions": [
+    {"decision": "Sequential execution for all Phase 5 waves (no worktree isolation)", "rationale": "Wave 2 parallel worktrees got wrong base commits — sequential is safer", "phase": "05"},
+    {"decision": "TDD RED tests all in 05-01 (shared foundation), GREEN in 05-02/03/04/05", "rationale": "Executor agents for 05-02+ need explicit tdd_gate_override block in prompts", "phase": "05"},
+    {"decision": "cefr-word-list.json at packages/database/prisma/seed-data/", "rationale": "ClassifierService references via relative path from apps/api root", "phase": "05"},
+    {"decision": "Bookmark on browse grid is display-only (amber icon, no onClick)", "rationale": "onClick in Server Component causes Next.js runtime error — toggle only on detail page", "phase": "05"}
+  ],
+  "uncommitted_files": [
+    ".planning/STATE.md",
+    ".planning/phases/05-reading-comprehension-content-pipeline/05-REVIEW.md",
+    ".planning/phases/05-reading-comprehension-content-pipeline/05-VERIFICATION.md",
+    "apps/api/crawled-passages.json"
+  ],
+  "next_action": "1) Confirm pipeline:run seeded 2000+ passages. 2) User approves 6 UI journeys. 3) Run gsd-sdk query phase.complete 05. 4) /gsd-code-review 5 --fix for CR-01/02/03/04 and WR-05.",
+  "context_notes": "All 9 Phase 5 plans implemented. 36/36 Phase 5 tests green. 4 pre-existing RED stubs from Phases 2+4 — NOT regressions. Verification human_needed because pipeline seeded only 10 sample passages (no internet in dev). Crawler fixed. Phase close pending user approval of UI journeys."
 }
