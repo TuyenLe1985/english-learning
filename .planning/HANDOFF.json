@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-06-14T08:44:07.094Z",
+  "phase": "05",
+  "phase_name": "reading-comprehension-content-pipeline",
+  "phase_dir": ".planning/phases/05-reading-comprehension-content-pipeline",
+  "plan": 5,
+  "task": 1,
+  "total_tasks": 9,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": "05-01", "name": "Foundation — packages, shared DTOs, TDD RED scaffolds", "status": "done", "commit": "94bd53d"},
+    {"id": "05-02", "name": "ReadingModule TDD GREEN — service, controller, module", "status": "done", "commit": "1fae691"},
+    {"id": "05-03", "name": "VocabularyService lookupByWord TDD GREEN (VOCAB-08)", "status": "done", "commit": "04104f4"},
+    {"id": "05-04", "name": "ClassifierService + PipelineModule TDD GREEN", "status": "done", "commit": "2efff93"},
+    {"id": "05-05", "name": "Content pipeline CLI (CrawlerService + SeedService)", "status": "in_progress", "progress": "Background agent a4084fc27e3d2e4bd running in worktree — not yet committed"}
+  ],
+  "remaining_tasks": [
+    {"id": "05-06", "name": "Next.js reading browse + detail pages (Server Components)", "status": "not_started"},
+    {"id": "05-07", "name": "Interactive passage client components (PassageRenderer, QuestionsSection, etc.)", "status": "not_started"},
+    {"id": "05-08", "name": "VOCAB-08 word-tap-to-SRS popover + bookmark toggle", "status": "not_started"},
+    {"id": "05-09", "name": "E2E checkpoint — crawler validation + pipeline seed run", "status": "not_started", "autonomous": false}
+  ],
+  "blockers": [
+    {
+      "description": "Background agent a4084fc27e3d2e4bd executing plan 05-05 in worktree — may complete or may need re-run",
+      "type": "technical",
+      "workaround": "Check for 05-05-SUMMARY.md in phase dir. If missing, re-run plan 05-05 sequentially."
+    },
+    {
+      "description": "Pre-existing RED stubs in jwt.guard.spec.ts (4 failing tests) — not from Phase 5",
+      "type": "technical",
+      "workaround": "Pre-existing. Not introduced by Phase 5 changes. Safe to ignore for Phase 5 verification."
+    }
+  ],
+  "human_actions_pending": [],
+  "decisions": [
+    {"decision": "Added @@unique([userId, passageId]) to Note model in Prisma schema", "rationale": "Required for prisma.note.upsert with compound key to work", "phase": "05"},
+    {"decision": "Wave 2 agents ran sequentially due to worktree base-commit issues", "rationale": "First parallel attempt failed — 2 of 3 worktrees created at wrong base (bf998e8 instead of 94bd53d). Re-ran sequentially.", "phase": "05"},
+    {"decision": "TDD RED tests committed in 05-01, GREEN in 05-02/03/04", "rationale": "Phase 5 plan design has a shared RED foundation plan (05-01). TDD gate was bypassed for 05-02/03/04 with explicit override.", "phase": "05"},
+    {"decision": "ClassifierService uses 923-word CEFR list with 3-factor weighted scoring", "rationale": "vocab 50% + sentence length 25% + syntactic complexity 25%", "phase": "05"}
+  ],
+  "uncommitted_files": [],
+  "next_action": "Check if 05-05 background agent completed (look for 05-05-SUMMARY.md). If yes, run Wave 3 post-merge gate and proceed to Wave 3 plan 05-06. If no, re-run 05-05 sequentially. Then execute Wave 3 (05-05 + 05-06 in parallel), Wave 4 (05-07 + 05-08 in parallel), Wave 5 (05-09 checkpoint).",
+  "context_notes": "Phase 5 Wave 1 and Wave 2 complete. 4/9 plans done. Background agent for 05-05 was launched just before pausing. The worktree isolation approach had issues in Wave 2 (wrong base commits) — Wave 3+ should use sequential mode or verify worktrees are created from the correct HEAD before spawning parallel agents."
+}
