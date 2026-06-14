@@ -231,4 +231,18 @@ export class VocabularyService {
     });
     return words as VocabularyWordDto[];
   }
+
+  /**
+   * VOCAB-08 — GET /api/vocabulary/lookup?word=
+   * Case-insensitive word lookup for the reading passage word-tap popover.
+   * Returns null (not NotFoundException) on miss — per D-13 graceful no-match.
+   */
+  async lookupByWord(word: string): Promise<VocabularyWordDto | null> {
+    const results = await this.prisma.vocabularyWord.findMany({
+      where: { word: { equals: word, mode: 'insensitive' } },
+      select: WORD_SELECT,
+      take: 1,
+    });
+    return (results[0] as VocabularyWordDto) ?? null;
+  }
 }

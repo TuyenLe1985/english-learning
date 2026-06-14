@@ -5,6 +5,7 @@
  * VOCAB-01: GET /api/vocabulary/:category/words — paginated word list (20/page, A-Z)
  * VOCAB-02: GET /api/vocabulary/:category/:wordId — full word detail
  * VOCAB-07: GET /api/vocabulary/my-words — personal word list filtered by SRS status
+ * VOCAB-08: GET /api/vocabulary/lookup?word= — case-insensitive word lookup (null on miss)
  *
  * Security (T-03-03):
  *   - @UseGuards(JwtAuthGuard) applied to every endpoint
@@ -67,6 +68,23 @@ export class VocabularyController {
     @Query('status') status?: string,
   ): Promise<MyWordDto[]> {
     return this.vocabularyService.getMyWords(req.user.userId, status);
+  }
+
+  /**
+   * VOCAB-08 — GET /api/vocabulary/lookup?word=
+   * Case-insensitive word lookup for the reading passage word-tap popover.
+   * Returns null (not 404) when word is not found — per D-13 graceful no-match.
+   *
+   * NOTE: This route must appear before :category/words to avoid NestJS
+   * route matching "lookup" as a :category parameter (T-05-03-02).
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('lookup')
+  async lookupWord(
+    @Query('word') word: string,
+  ): Promise<VocabularyWordDto | null> {
+    const normalized = (word ?? '').toLowerCase().trim();
+    return this.vocabularyService.lookupByWord(normalized);
   }
 
   /**
