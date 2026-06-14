@@ -152,7 +152,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Completing a lesson's assessment quiz stores the score against the user's profile; the grammar topic page shows the user's mastery percentage
   5. User can re-attempt exercises from a topic where their accuracy was weak
 
-**Plans**: 5 plans in 4 waves
+**Plans**: 6 plans in 5 waves
 
 **Wave 1** *(no dependencies)*
 
@@ -170,6 +170,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Wave 4** *(blocked on 04-02, 04-03, 04-04)*
 
 - [x] 04-05-PLAN.md — Lesson page slice: explanation→carousel→results, session-complete/weak relays, weak re-attempt + end-to-end verification (GRAM-02, GRAM-03, GRAM-04, GRAM-06) [has checkpoint]
+
+**Wave 5** *(gap closure — no dependencies)*
+
+- [ ] 04-06-PLAN.md — Gap closure: masteryPct 0-100 scale fix (CR-01) + grammar Server Components via relay auth model (CR-03/CR-04) (GRAM-01, GRAM-02, GRAM-03, GRAM-04, GRAM-05, GRAM-06)
 
 **UI hint**: yes
 
