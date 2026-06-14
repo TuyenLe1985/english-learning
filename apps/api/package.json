@@ -28,6 +28,7 @@
     "dom-anchor-text-position": "^5.0.0",
     "isomorphic-dompurify": "^3.17.0",
     "natural": "^8.1.1",
+    "playwright": "^1.60.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
