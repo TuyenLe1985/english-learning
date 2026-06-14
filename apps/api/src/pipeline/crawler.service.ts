@@ -52,6 +52,8 @@ interface SourceConfig {
   linkSelector: string; // CSS selector for article anchor tags on listing pages
   linkFilter?: RegExp; // Optional: only follow links matching this pattern
   skipFilter?: RegExp; // Optional: skip article URLs matching this pattern
+  minWordCount?: number; // Override global MIN_WORD_COUNT for this source
+  scrollToLoad?: boolean; // Auto-scroll listing pages to trigger infinite scroll
 }
 
 const SOURCES: SourceConfig[] = [
@@ -59,6 +61,8 @@ const SOURCES: SourceConfig[] = [
     name: 'VOA Learning English',
     baseUrl: 'https://learningenglish.voanews.com',
     contentType: 'NEWS',
+    minWordCount: 120,
+    scrollToLoad: true,
     listingUrls: [
       'https://learningenglish.voanews.com/z/4691',
       'https://learningenglish.voanews.com/z/4692',
@@ -81,6 +85,7 @@ const SOURCES: SourceConfig[] = [
     name: 'BBC Learning English',
     baseUrl: 'https://www.bbc.co.uk/learningenglish',
     contentType: 'NEWS',
+    minWordCount: 120,
     listingUrls: [
       'https://www.bbc.co.uk/learningenglish/english/features/6-minute-english',
       'https://www.bbc.co.uk/learningenglish/english/features/lingohack',
@@ -103,16 +108,19 @@ const SOURCES: SourceConfig[] = [
     name: 'News In Levels',
     baseUrl: 'https://www.newsinlevels.com',
     contentType: 'NEWS',
+    minWordCount: 100,
     listingUrls: [
       'https://www.newsinlevels.com/level/level-1/',
       'https://www.newsinlevels.com/level/level-2/',
       'https://www.newsinlevels.com/level/level-3/',
-      'https://www.newsinlevels.com/news/',
+      'https://www.newsinlevels.com/level/level-1/page/2/',
+      'https://www.newsinlevels.com/level/level-2/page/2/',
+      'https://www.newsinlevels.com/level/level-3/page/2/',
     ],
-    articleSelectors: ['.entry-content', '.post-content', 'article .content'],
-    titleSelectors: ['h1.entry-title', 'h1.post-title', 'h1'],
-    linkSelector: 'article a[href], h2.entry-title a[href]',
-    linkFilter: /newsinlevels\.com\/news\//,
+    articleSelectors: ['.article-upper', '.article-lower', '.article', '.entry-content'],
+    titleSelectors: ['h1.article-title', 'h1.entry-title', 'h1'],
+    linkSelector: 'a[href]',
+    linkFilter: /newsinlevels\.com\/products\//,
   },
   {
     name: 'Simple English Wikipedia',
@@ -135,7 +143,8 @@ const SOURCES: SourceConfig[] = [
 
 // ─── Quality Gate Constants ───────────────────────────────────────────────────
 
-const MIN_WORD_COUNT = 150;
+const MIN_WORD_COUNT = 250;
+const MIN_TITLE_LENGTH = 5;
 const MIN_UNIQUE_WORD_RATIO = 0.4;
 const VALIDATE_SAMPLE_SIZE = 50;
 const CRAWL_TARGET_PER_SOURCE = 625;
@@ -201,7 +210,9 @@ export class CrawlerService {
    *
    * Polite delay: 300 + Math.random() * 900 ms between page fetches (T-05-05-03).
    */
-  async crawlAll(): Promise<RawPassage[]> {
+  async crawlAll(
+    onBatch?: (passages: RawPassage[]) => Promise<void>,
+  ): Promise<RawPassage[]> {
     this.logger.log(
       `Starting bulk crawl: ${CRAWL_TARGET_PER_SOURCE} URLs per source × ${SOURCES.length} sources`,
     );
@@ -214,7 +225,7 @@ export class CrawlerService {
     try {
       for (const source of SOURCES) {
         this.logger.log(`Crawling source: ${source.name}`);
-        const passages = await this.crawlSource(browser, source, seenHashes, seenUrls);
+        const passages = await this.crawlSource(browser, source, seenHashes, seenUrls, onBatch);
         allPassages.push(...passages);
         this.logger.log(
           `[${source.name}] Done: ${passages.length} passages passed quality gate`,
@@ -325,6 +336,7 @@ export class CrawlerService {
     source: SourceConfig,
     seenHashes: Set<string>,
     seenUrls: Set<string>,
+    onBatch?: (passages: RawPassage[]) => Promise<void>,
   ): Promise<RawPassage[]> {
     const passages: RawPassage[] = [];
     const articleUrls = await this.collectArticleUrls(
@@ -335,6 +347,7 @@ export class CrawlerService {
 
     let fetched = 0;
     let passed = 0;
+    let pendingBatch: RawPassage[] = [];
 
     for (const url of articleUrls) {
       if (passed >= CRAWL_TARGET_PER_SOURCE) break;
@@ -355,12 +368,17 @@ export class CrawlerService {
           if (!seenHashes.has(passage.contentHash)) {
             seenHashes.add(passage.contentHash);
             passages.push(passage);
+            pendingBatch.push(passage);
             passed++;
 
             if (passed % 50 === 0) {
               this.logger.log(
                 `[${source.name}] Progress: ${passed}/${CRAWL_TARGET_PER_SOURCE} passed (${fetched} fetched)`,
               );
+              if (onBatch && pendingBatch.length > 0) {
+                await onBatch([...pendingBatch]);
+                pendingBatch = [];
+              }
             }
           }
         }
@@ -369,6 +387,11 @@ export class CrawlerService {
       } finally {
         await page.close();
       }
+    }
+
+    // Flush any remaining passages that didn't fill a full batch
+    if (onBatch && pendingBatch.length > 0) {
+      await onBatch([...pendingBatch]);
     }
 
     this.logger.log(
@@ -400,6 +423,14 @@ export class CrawlerService {
       try {
         // Use networkidle so JS-rendered article lists fully populate before extraction
         await page.goto(listingUrl, { waitUntil: 'networkidle', timeout: 20_000 });
+
+        // For infinite-scroll sources, scroll down repeatedly to load more articles
+        if (source.scrollToLoad) {
+          for (let i = 0; i < 8; i++) {
+            await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
+            await page.waitForTimeout(1500);
+          }
+        }
 
         // Use Playwright's live DOM (not Cheerio on static HTML) so JS-rendered links are visible
         const hrefs: string[] = await page.$$eval('a[href]', (els) =>
@@ -474,6 +505,7 @@ export class CrawlerService {
     url: string,
     source: SourceConfig,
   ): RawPassage | null {
+    const minWords = source.minWordCount ?? MIN_WORD_COUNT;
     const $ = cheerio.load(html);
 
     // Extract title
@@ -485,6 +517,7 @@ export class CrawlerService {
     if (!title) {
       title = $('title').text().trim().split('|')[0]?.trim() ?? 'Untitled';
     }
+    if (title.length < MIN_TITLE_LENGTH) return null;
 
     // Extract article body HTML
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -494,7 +527,7 @@ export class CrawlerService {
       if (el.length > 0) {
         // Quick check: does it have substantial text?
         const text = el.text().replace(/\s+/g, ' ').trim();
-        if (this.countWords(text) >= MIN_WORD_COUNT) {
+        if (this.countWords(text) >= minWords) {
           bodyEl = el;
           break;
         }
@@ -506,11 +539,12 @@ export class CrawlerService {
     // Remove script and style elements (T-05-05-01 — XSS sanitization step 1)
     bodyEl.find('script, style, noscript, iframe, object, embed').remove();
 
-    // For Wikipedia: remove edit links, navigation boxes, references section
+    // For Wikipedia: remove all Parsoid transclusion templates (infoboxes, sidebars, navboxes)
+    // Parsoid HTML uses typeof="mw:Transclusion" instead of class="infobox"
     if (source.name === 'Simple English Wikipedia') {
-      bodyEl.find('.mw-editsection, .reflist, #References, .navbox, .infobox, .sidebar').remove();
-      bodyEl.find('table.wikitable').remove();
-      bodyEl.find('.toc').remove();
+      bodyEl.find('[typeof*="mw:Transclusion"]').remove();
+      bodyEl.find('.mw-editsection, .reflist, .navbox, .infobox, .sidebar, .toc').remove();
+      bodyEl.find('table').remove();
     }
 
     // Get sanitized inner HTML
@@ -523,7 +557,7 @@ export class CrawlerService {
 
     // Quality gate — PIPE-02
     const wordCount = this.countWords(plainText);
-    if (wordCount < MIN_WORD_COUNT) return null;
+    if (wordCount < minWords) return null;
 
     const uniqueWordRatio = this.calcUniqueWordRatio(plainText);
     if (uniqueWordRatio < MIN_UNIQUE_WORD_RATIO) return null;

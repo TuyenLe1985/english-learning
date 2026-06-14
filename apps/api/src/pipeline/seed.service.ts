@@ -25,7 +25,7 @@ import { type RawPassage } from './crawler.service';
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const BATCH_SIZE = 500;
-const CONFIDENCE_THRESHOLD = 0.65;
+const CONFIDENCE_THRESHOLD = 0.40;
 
 // READ-02 question types — all 6 must be present per passage
 const QUESTION_TYPES = [
@@ -78,6 +78,27 @@ export class SeedService {
   ) {}
 
   // ─── Public API ────────────────────────────────────────────────────────────
+
+  /**
+   * Classify and seed a batch of raw passages immediately (streaming mode).
+   * Called by the pipeline every 50 articles so content appears in /reading in real time.
+   */
+  async seedPassages(raw: RawPassage[]): Promise<void> {
+    if (raw.length === 0) return;
+    const passageData = await this.preparePassageData(raw);
+    await this.seedInBatches(
+      passageData,
+      (batch) =>
+        this.prisma.readingPassage.createMany({
+          data: batch,
+          skipDuplicates: true,
+        }),
+      'ReadingPassage',
+    );
+    await this.seedStubQuestions(passageData);
+    const published = passageData.filter((p) => p.isPublished).length;
+    this.logger.log(`Batch seeded: ${published}/${raw.length} published`);
+  }
 
   /**
    * Seed reading passages and stub questions from a JSON file produced by CrawlerService.

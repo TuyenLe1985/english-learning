@@ -71,11 +71,14 @@ async function bootstrap(): Promise<void> {
       }
 
       case '--run': {
-        console.log('Running full pipeline: crawl → classify → seed…');
-        const passages = await crawler.crawlAll();
-        console.log(`Crawled ${passages.length} passages. Starting seed…`);
-        await seeder.seedFromFile(DEFAULT_CRAWLED_FILE);
-        console.log('\nFull pipeline complete.');
+        console.log('Running full pipeline: crawl → classify → seed (streaming, every 50 articles)…');
+        let totalSeeded = 0;
+        const passages = await crawler.crawlAll(async (batch) => {
+          await seeder.seedPassages(batch);
+          totalSeeded += batch.length;
+          console.log(`Streamed ${totalSeeded} articles seeded so far — visible at /reading now`);
+        });
+        console.log(`\nFull pipeline complete. ${passages.length} articles crawled, ${totalSeeded} seeded.`);
         break;
       }
 
