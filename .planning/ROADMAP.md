@@ -173,7 +173,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 5** *(gap closure — no dependencies)*
 
-- [ ] 04-06-PLAN.md — Gap closure: masteryPct 0-100 scale fix (CR-01) + grammar Server Components via relay auth model (CR-03/CR-04) (GRAM-01, GRAM-02, GRAM-03, GRAM-04, GRAM-05, GRAM-06)
+- [x] 04-06-PLAN.md — Gap closure: masteryPct 0-100 scale fix (CR-01) + grammar Server Components via relay auth model (CR-03/CR-04) (GRAM-01, GRAM-02, GRAM-03, GRAM-04, GRAM-05, GRAM-06)
 
 **UI hint**: yes
 
@@ -255,7 +255,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation + Infrastructure | 6/6 | Complete   | 2026-06-11 |
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
-| 4. Grammar Module | 5/5 | Complete   | 2026-06-14 |
+| 4. Grammar Module | 6/6 | Complete   | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 0/TBD | Not started | - |
 | 6. Listening Comprehension | 0/TBD | Not started | - |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
