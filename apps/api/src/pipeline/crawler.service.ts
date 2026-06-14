@@ -398,24 +398,21 @@ export class CrawlerService {
       if (urls.size >= maxUrls) break;
       const page = await browser.newPage();
       try {
-        await page.goto(listingUrl, { waitUntil: 'domcontentloaded', timeout: 15_000 });
-        const html = await page.content();
-        const $ = cheerio.load(html);
+        // Use networkidle so JS-rendered article lists fully populate before extraction
+        await page.goto(listingUrl, { waitUntil: 'networkidle', timeout: 20_000 });
 
-        $(source.linkSelector).each((_i, el) => {
-          if (urls.size >= maxUrls) return false; // break
-          const href = $(el).attr('href') ?? '';
+        // Use Playwright's live DOM (not Cheerio on static HTML) so JS-rendered links are visible
+        const hrefs: string[] = await page.$$eval('a[href]', (els) =>
+          els.map((el) => (el as HTMLAnchorElement).href).filter(Boolean),
+        );
+
+        for (const href of hrefs) {
+          if (urls.size >= maxUrls) break;
           const absolute = this.toAbsolute(href, source.baseUrl);
-          if (!absolute) return;
-          if (source.linkFilter && !source.linkFilter.test(absolute)) return;
-          if (source.skipFilter && source.skipFilter.test(absolute)) return;
+          if (!absolute) continue;
+          if (source.linkFilter && !source.linkFilter.test(absolute)) continue;
+          if (source.skipFilter && source.skipFilter.test(absolute)) continue;
           urls.add(absolute);
-        });
-
-        // Try pagination: look for "next page" links
-        const nextPage = $('a[rel="next"], .next-page a, .pagination a.next').attr('href');
-        if (nextPage && urls.size < maxUrls) {
-          // Collected one more listing page — handled by re-running via listingUrls in next iteration
         }
       } catch (err) {
         this.logger.debug(`Failed to load listing page ${listingUrl}: ${String(err)}`);
