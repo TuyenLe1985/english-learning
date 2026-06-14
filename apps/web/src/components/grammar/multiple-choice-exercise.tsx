@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -33,16 +33,20 @@ export function MultipleChoiceExercise({ question, onCorrect, onIncorrect }: Pro
 
   const [selected, setSelected] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
 
   const handleSelect = (option: string) => {
     if (answered) return;
     setSelected(option);
     setAnswered(true);
-    if (option === answer) {
-      onCorrect();
-    } else {
-      onIncorrect();
-    }
+    const correct = option === answer;
+    timerRef.current = setTimeout(() => {
+      if (correct) onCorrect(); else onIncorrect();
+    }, 900);
   };
 
   return (

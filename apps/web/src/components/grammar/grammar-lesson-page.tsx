@@ -314,8 +314,8 @@ export function GrammarLessonPage({
         />
       </div>
 
-      {/* Exercise card — no overflow:hidden (DnD Pitfall 3) */}
-      <div className="rounded-xl border border-border bg-card p-6 shadow-sm min-h-[280px]">
+      {/* Exercise card — key forces fresh mount per question; no overflow:hidden (DnD Pitfall 3) */}
+      <div key={currentQuestion.id} className="rounded-xl border border-border bg-card p-6 shadow-sm min-h-[280px]">
         {renderExercise(currentQuestion, handleCorrect, handleIncorrect)}
       </div>
     </div>

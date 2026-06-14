@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +27,11 @@ export function FillInTheBlankExercise({ question, onCorrect, onIncorrect }: Pro
   const [input, setInput] = useState("");
   const [checked, setChecked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,12 +40,9 @@ export function FillInTheBlankExercise({ question, onCorrect, onIncorrect }: Pro
     const correct = input.trim().toLowerCase() === answer.toLowerCase();
     setIsCorrect(correct);
     setChecked(true);
-
-    if (correct) {
-      onCorrect();
-    } else {
-      onIncorrect();
-    }
+    timerRef.current = setTimeout(() => {
+      if (correct) onCorrect(); else onIncorrect();
+    }, 900);
   };
 
   return (

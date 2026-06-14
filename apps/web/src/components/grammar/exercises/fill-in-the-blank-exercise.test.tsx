@@ -1,19 +1,16 @@
 /**
  * FillInTheBlankExercise — unit tests (Vitest + Testing Library)
  *
- * RED scaffold — FillInTheBlankExercise component does not exist yet.
- * Import will fail until Plan 04-03 implements the component.
- *
  * Asserts:
  * 1. Prompt is rendered
  * 2. A text input is present
- * 3. Case-insensitive + trimmed correct answer calls onCorrect
- * 4. Wrong answer calls onIncorrect
+ * 3. Case-insensitive + trimmed correct answer calls onCorrect (after 900ms delay)
+ * 4. Wrong answer calls onIncorrect (after 900ms delay)
  * 5. Submit button or Enter key triggers evaluation
  */
 
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { FillInTheBlankExercise } from "../fill-in-the-blank-exercise";
 
 describe("FillInTheBlankExercise", () => {
@@ -34,6 +31,11 @@ describe("FillInTheBlankExercise", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("renders the question prompt", () => {
@@ -53,6 +55,7 @@ describe("FillInTheBlankExercise", () => {
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "has worked" } });
     fireEvent.submit(input.closest("form")!);
+    act(() => { vi.runAllTimers(); });
     expect(defaultProps.onCorrect).toHaveBeenCalledTimes(1);
   });
 
@@ -61,6 +64,7 @@ describe("FillInTheBlankExercise", () => {
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "  has worked  " } });
     fireEvent.submit(input.closest("form")!);
+    act(() => { vi.runAllTimers(); });
     expect(defaultProps.onCorrect).toHaveBeenCalledTimes(1);
   });
 
@@ -69,6 +73,7 @@ describe("FillInTheBlankExercise", () => {
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "Has Worked" } });
     fireEvent.submit(input.closest("form")!);
+    act(() => { vi.runAllTimers(); });
     expect(defaultProps.onCorrect).toHaveBeenCalledTimes(1);
   });
 
@@ -84,6 +89,7 @@ describe("FillInTheBlankExercise", () => {
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "  Has Been " } });
     fireEvent.submit(input.closest("form")!);
+    act(() => { vi.runAllTimers(); });
     expect(defaultProps.onCorrect).toHaveBeenCalledTimes(1);
   });
 
@@ -92,6 +98,7 @@ describe("FillInTheBlankExercise", () => {
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "have worked" } });
     fireEvent.submit(input.closest("form")!);
+    act(() => { vi.runAllTimers(); });
     expect(defaultProps.onIncorrect).toHaveBeenCalledTimes(1);
   });
 
@@ -100,6 +107,7 @@ describe("FillInTheBlankExercise", () => {
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "worked" } });
     fireEvent.submit(input.closest("form")!);
+    act(() => { vi.runAllTimers(); });
     expect(defaultProps.onCorrect).not.toHaveBeenCalled();
   });
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   DndContext,
   PointerSensor,
@@ -125,6 +125,12 @@ export function DragAndDropExercise({ question, onCorrect, onIncorrect }: Props)
   const [checked, setChecked] = useState(false);
   const [feedbackCorrect, setFeedbackCorrect] = useState<Record<number, boolean>>({});
 
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
@@ -187,11 +193,9 @@ export function DragAndDropExercise({ question, onCorrect, onIncorrect }: Props)
     }
     setFeedbackCorrect(feedback);
     setChecked(true);
-    if (allCorrect) {
-      onCorrect();
-    } else {
-      onIncorrect();
-    }
+    timerRef.current = setTimeout(() => {
+      if (allCorrect) onCorrect(); else onIncorrect();
+    }, 900);
   };
 
   const segments = parsePrompt(prompt);
