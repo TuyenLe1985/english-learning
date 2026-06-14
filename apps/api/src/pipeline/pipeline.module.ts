@@ -7,17 +7,18 @@
  * PrismaModule must be imported explicitly here because PipelineModule is not
  * part of AppModule, so the global PrismaModule registration does not apply.
  *
- * Exports ClassifierService so the standalone CLI context can retrieve it.
- * Additional pipeline services (CrawlerService, SeedService) will be added in 05-05.
+ * Exports all pipeline services so the standalone CLI context can retrieve them.
  */
 
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ClassifierService } from './classifier.service';
+import { CrawlerService } from './crawler.service';
+import { SeedService } from './seed.service';
 
 @Module({
   imports: [PrismaModule],
-  providers: [ClassifierService],
-  exports: [ClassifierService],
+  providers: [ClassifierService, CrawlerService, SeedService],
+  exports: [ClassifierService, CrawlerService, SeedService],
 })
 export class PipelineModule {}

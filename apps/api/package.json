@@ -9,7 +9,11 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint --config eslint.config.mjs src",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "pipeline:validate": "TS_NODE_PROJECT=tsconfig.pipeline.json node -r ts-node/register src/pipeline/pipeline.cli.ts -- --validate",
+    "pipeline:crawl": "TS_NODE_PROJECT=tsconfig.pipeline.json node -r ts-node/register src/pipeline/pipeline.cli.ts -- --crawl",
+    "pipeline:seed": "TS_NODE_PROJECT=tsconfig.pipeline.json node -r ts-node/register src/pipeline/pipeline.cli.ts -- --seed",
+    "pipeline:run": "TS_NODE_PROJECT=tsconfig.pipeline.json node -r ts-node/register src/pipeline/pipeline.cli.ts -- --run"
   },
   "dependencies": {
     "@auth/core": "^0.34.3",
@@ -47,6 +51,7 @@
     "@types/node": "^20.0.0",
     "@types/passport-jwt": "^4.0.1",
     "@vitest/coverage-v8": "^2.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
   }
