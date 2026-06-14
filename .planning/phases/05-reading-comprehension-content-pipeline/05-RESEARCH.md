@@ -666,27 +666,27 @@ async function fetchPassages(cookieHeader: string, params: PassageQuery) {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Crawler selectors for current VOA/BBC page templates**
+1. **Crawler selectors for current VOA/BBC page templates** — RESOLVED
    - What we know: STATE.md flags VOA/BBC selector specificity as a blocker. The validate step addresses this.
    - What's unclear: Current CSS class names used by VOA (`learningenglish.voanews.com`) and BBC (`bbc.co.uk/learningenglish`) article body elements as of June 2026.
-   - Recommendation: The planner must include a Wave 0 task to manually inspect each source URL and document the CSS selectors before writing the crawler. This is not automatable ahead of time.
+   - Resolution: 05-05-PLAN.md includes a `validateSelectors()` step (50-URL sample, ≥80% threshold) that verifies live selectors before bulk crawl. Selector specificity is validated at runtime, not pre-determined at planning time. The `--validate-selectors` flag is the required first step of any crawl run (D-11).
 
-2. **natural.js BrillPOSTagger performance at scale**
+2. **natural.js BrillPOSTagger performance at scale** — RESOLVED
    - What we know: BrillPOSTagger requires loading rules files; O(n) complexity per passage.
    - What's unclear: Performance for 2,500 passages × ~300 words average — estimated ~750,000 total token tagging operations.
-   - Recommendation: Run the classifier service with concurrency 4 (not 1) in the pipeline. If BrillPOSTagger proves too slow, fall back to a simpler proper-noun heuristic (words starting with uppercase mid-sentence). [ASSUMED]
+   - Resolution: Acceptable risk. Pipeline runs offline as a standalone CLI (not in the API hot path). If BrillPOSTagger proves too slow, 05-04 documents the uppercase-mid-sentence heuristic fallback. Pipeline concurrency set to 4 workers in CrawlerService.
 
-3. **Pipeline CLI execution model in the monorepo**
+3. **Pipeline CLI execution model in the monorepo** — RESOLVED
    - What we know: The seed.ts in `packages/database` uses `ts-node` with `TS_NODE_PROJECT`. The NestJS app uses SWC compiler for dev/build.
    - What's unclear: Whether `ts-node` resolves `@repo/shared` and `@repo/database` workspace aliases correctly for the pipeline CLI, or whether the pipeline CLI needs its own build step.
-   - Recommendation: Start with `ts-node` + `tsconfig-paths/register`. If import resolution fails, use `nest build --path apps/api` and run the compiled output.
+   - Resolution: 05-05-PLAN.md uses `ts-node + tsconfig-paths/register` consistent with `packages/database/prisma/seed.ts`. Fallback documented: `nest build --path apps/api` then run compiled output. This is the established monorepo pattern.
 
-4. **VocabularyWord table coverage for VOCAB-08**
+4. **VocabularyWord table coverage for VOCAB-08** — RESOLVED
    - What we know: The vocabulary seed currently has 200 words (from Phase 3).
    - What's unclear: What percentage of words tapped in passages will exist in the 200-word VocabularyWord table.
-   - Recommendation: For Phase 5, the graceful no-match fallback (D-13) handles all misses. The vocabulary table will expand in post-v1 phases. No action needed now beyond correct no-match handling.
+   - Resolution: D-13 graceful no-match fallback is sufficient for v1. 05-08-PLAN.md disables "Add to SRS" button when lookup returns null. Vocabulary table expansion to 5,000 words is deferred to a post-Phase 5 seed enhancement.
 
 ---
 

@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Phase 5 UI-SPEC approved
-last_updated: "2026-06-14T03:57:59.183Z"
+status: planned
+stopped_at: Phase 5 planned — ready to execute
+last_updated: "2026-06-14"
 last_activity: 2026-06-14
 progress:
   total_phases: 8
   completed_phases: 4
-  total_plans: 24
+  total_plans: 33
   completed_plans: 24
   percent: 50
 ---
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-11)
 
 **Core value:** A learner can open the app, immediately find hundreds of exercises at their CEFR level across all skill areas, and feel their progress through XP and visible advancement — no empty screens, no placeholder data.
-**Current focus:** Phase 04 — grammar-module
+**Current focus:** Phase 05 — reading-comprehension-content-pipeline
 
 ## Current Position
 
 Phase: 5
-Plan: Not started
-Status: Executing Phase 04
+Plan: Ready to execute (9 plans, 5 waves)
+Status: Planned — awaiting execution
 Last activity: 2026-06-14
 
 Progress: [███████░░░] 72%
@@ -94,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-14T03:57:59.179Z
-Stopped at: Phase 5 UI-SPEC approved
-Resume file: .planning/phases/05-reading-comprehension-content-pipeline/05-UI-SPEC.md
+Last session: 2026-06-14
+Stopped at: Phase 5 planned — 9 plans verified and ready to execute
+Resume file: .planning/phases/05-reading-comprehension-content-pipeline/05-01-PLAN.md
