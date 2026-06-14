@@ -28,8 +28,8 @@ interface PassageRendererProps {
   passageId: string;
   highlights: HighlightDto[];
   onHighlightCreated: (h: HighlightDto) => void;
-  /** Optional: called when user taps a word (D-14 / VOCAB-08). */
-  onWordTap?: (word: string, sentence: string) => void;
+  /** Optional: called when user taps a word (D-14 / VOCAB-08). Passes the clicked span element for popover positioning. */
+  onWordTap?: (word: string, sentence: string, anchorEl: HTMLElement) => void;
 }
 
 // ─── Sanitization config (T-05-07-01) ────────────────────────────────────────
@@ -160,7 +160,10 @@ export function PassageRenderer({
 
     const handleWordTap = onWordTap
       ? (word: string, sentence: string, _container: HTMLElement) => {
-          onWordTap(word, sentence);
+          // Note: keyboard-triggered onWordTap passes container as element (no span available);
+          // click-triggered handler passes the actual wordSpan (see handleClick).
+          // The keyboard path is rarely used; the parent can handle null el gracefully.
+          onWordTap(word, sentence, _container);
         }
       : undefined;
 
@@ -267,7 +270,8 @@ export function PassageRenderer({
       if (!container) return;
 
       const sentence = extractSentence(container, wordSpan);
-      onWordTap(word, sentence);
+      // Pass wordSpan as anchorEl so parent can position the WordPopover (D-14)
+      onWordTap(word, sentence, wordSpan);
     },
     [onWordTap],
   );

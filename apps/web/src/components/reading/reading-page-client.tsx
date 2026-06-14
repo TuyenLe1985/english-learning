@@ -8,18 +8,23 @@
  * - Highlight state (optimistic add from onHighlightCreated)
  * - Reading timer (starts on mount, stops when QuestionsSection calls onTimerStop)
  * - Notes panel open/close state
+ * - Word popover state (activeWord — VOCAB-08 / D-14)
+ * - Bookmark toggle state (READ-06)
  * - Coordinates PassageRenderer ↔ QuestionsSection via shared refs
  *
  * UI-SPEC Screen 2: Reading timer, Bookmark button, Notes panel toggle.
+ * UI-SPEC Screen 3: Bookmark icon states — Bookmark (unfilled muted) / BookmarkCheck (amber-400).
  * D-03: Passive timer — starts on mount, stops on last question answered.
  */
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { Clock, StickyNote, Bookmark } from "lucide-react";
+import { Clock, StickyNote, Bookmark, BookmarkCheck } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { QuestionsSection } from "./questions-section";
 import { NotesPanel } from "./notes-panel";
+import { WordPopover } from "./word-popover";
+import { useToast } from "@/hooks/use-toast";
 import type { HighlightDto, ReadingPassageDetailDto } from "@repo/shared";
 
 // Dynamic import — PassageRenderer uses isomorphic-dompurify and
@@ -36,6 +41,14 @@ interface ReadingPageClientProps {
   passageId: string;
 }
 
+// ─── Word tap state ───────────────────────────────────────────────────────────
+
+interface ActiveWord {
+  word: string;
+  sentence: string;
+  anchorEl: HTMLElement;
+}
+
 // ─── Timer utils ──────────────────────────────────────────────────────────────
 
 function formatElapsed(seconds: number): string {
@@ -47,6 +60,8 @@ function formatElapsed(seconds: number): string {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function ReadingPageClient({ data, passageId }: ReadingPageClientProps) {
+  const { toast } = useToast();
+
   // Highlight state — optimistic adds from HighlightTooltip
   const [highlights, setHighlights] = useState<HighlightDto[]>(data.highlights);
 
@@ -58,6 +73,13 @@ export function ReadingPageClient({ data, passageId }: ReadingPageClientProps) {
 
   // Notes panel visibility
   const [notesOpen, setNotesOpen] = useState(false);
+
+  // Word popover state (VOCAB-08 / D-14)
+  const [activeWord, setActiveWord] = useState<ActiveWord | null>(null);
+
+  // Bookmark state (READ-06) — optimistic UI
+  const [isBookmarked, setIsBookmarked] = useState(data.isBookmarked);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
 
   // Start timer on mount
   useEffect(() => {
@@ -84,8 +106,65 @@ export function ReadingPageClient({ data, passageId }: ReadingPageClientProps) {
     setHighlights((prev) => [...prev, h]);
   }, []);
 
+  // ── Word tap handler — VOCAB-08 (D-14) ────────────────────────────────────
+  const handleWordTap = useCallback(
+    (word: string, sentence: string, el?: HTMLElement) => {
+      if (!el) return;
+      // If same word clicked again, close the popover
+      if (activeWord?.word === word && activeWord?.anchorEl === el) {
+        setActiveWord(null);
+        return;
+      }
+      setActiveWord({ word, sentence, anchorEl: el });
+    },
+    [activeWord],
+  );
+
+  // ── Bookmark toggle — READ-06 ──────────────────────────────────────────────
+  const toggleBookmark = useCallback(async () => {
+    if (bookmarkLoading) return;
+
+    // Optimistic update
+    const next = !isBookmarked;
+    setIsBookmarked(next);
+    setBookmarkLoading(true);
+
+    try {
+      const res = await fetch("/api/reading/bookmarks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ passageId }),
+      });
+
+      if (!res.ok) {
+        // Revert optimistic update on error
+        setIsBookmarked(!next);
+        toast({
+          title: "Could not update bookmark. Try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Show confirmation toast (UI-SPEC Copywriting Contract)
+      toast({
+        title: next ? "Passage bookmarked." : "Bookmark removed.",
+      });
+    } catch {
+      // Revert on network error
+      setIsBookmarked(!next);
+      toast({
+        title: "Could not update bookmark. Try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBookmarkLoading(false);
+    }
+  }, [bookmarkLoading, isBookmarked, passageId, toast]);
+
   return (
-    <>
+    <div className="relative">
       {/* ── Action row: timer + Notes toggle + Bookmark ─────────────────────── */}
       <div className="mb-6 flex items-center gap-4 text-sm text-muted-foreground">
         {/* Reading timer (D-03, UI-SPEC Reading Timer Contract) */}
@@ -94,19 +173,19 @@ export function ReadingPageClient({ data, passageId }: ReadingPageClientProps) {
           <span aria-live="polite">{formatElapsed(elapsedSec)}</span>
         </span>
 
-        {/* Bookmark button (non-interactive in this plan — wired later) */}
+        {/* Bookmark toggle (READ-06, UI-SPEC Screen 3) */}
         <button
-          aria-label={data.isBookmarked ? "Remove bookmark" : "Bookmark passage"}
-          className="inline-flex min-h-[44px] items-center gap-1 transition-colors"
+          aria-label={isBookmarked ? "Remove bookmark" : "Bookmark passage"}
+          onClick={() => { void toggleBookmark(); }}
+          disabled={bookmarkLoading}
+          className="inline-flex min-h-[44px] items-center gap-1 transition-colors disabled:opacity-50"
         >
-          <Bookmark
-            className={`h-4 w-4 ${
-              data.isBookmarked
-                ? "fill-amber-400 text-amber-400"
-                : "text-muted-foreground"
-            }`}
-          />
-          <span>{data.isBookmarked ? "Bookmarked" : "Bookmark"}</span>
+          {isBookmarked ? (
+            <BookmarkCheck className="h-4 w-4 text-amber-400" />
+          ) : (
+            <Bookmark className="h-4 w-4 text-muted-foreground" />
+          )}
+          <span>{isBookmarked ? "Bookmarked" : "Bookmark"}</span>
         </button>
 
         {/* Notes toggle (D-08) */}
@@ -129,7 +208,18 @@ export function ReadingPageClient({ data, passageId }: ReadingPageClientProps) {
         passageId={passageId}
         highlights={highlights}
         onHighlightCreated={handleHighlightCreated}
+        onWordTap={(word, sentence, el) => handleWordTap(word, sentence, el)}
       />
+
+      {/* ── Word tap popover — VOCAB-08 (D-14) ──────────────────────────────── */}
+      {activeWord && (
+        <WordPopover
+          word={activeWord.word}
+          contextSentence={activeWord.sentence}
+          anchorEl={activeWord.anchorEl}
+          onClose={() => setActiveWord(null)}
+        />
+      )}
 
       <Separator className="my-8" />
 
@@ -147,6 +237,6 @@ export function ReadingPageClient({ data, passageId }: ReadingPageClientProps) {
         isOpen={notesOpen}
         onClose={() => setNotesOpen(false)}
       />
-    </>
+    </div>
   );
 }
