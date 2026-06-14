@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-03 VOCAB-08 vocabulary lookup endpoint
-last_updated: "2026-06-14T08:38:31.069Z"
+stopped_at: Completed 05-04 CEFR ClassifierService
+last_updated: "2026-06-14T08:42:08.897Z"
 last_activity: 2026-06-14
 progress:
   total_phases: 8
   completed_phases: 4
   total_plans: 33
-  completed_plans: 27
+  completed_plans: 28
   percent: 50
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-06-11)
 ## Current Position
 
 Phase: 05 (reading-comprehension-content-pipeline) — EXECUTING
-Plan: 3 of 9
+Plan: 4 of 9
 Status: Ready to execute
 Last activity: 2026-06-14
 
@@ -61,6 +61,7 @@ Progress: [███████░░░] 72%
 | Phase 03-vocabulary-module-srs-core P01 | 14m | 2 tasks | 27 files |
 | Phase 05 P01 | 5min | 3 tasks | 14 files |
 | Phase 05 P03 | 10m | 1 tasks | 2 files |
+| Phase 05 P04 | 8min | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,9 @@ Recent decisions affecting current work:
 - [Phase 05]: ClassifierService spec uses direct instantiation — pure function service with no DB dependency
 - [Phase 05]: lookupByWord returns null on word not found (D-13 graceful no-match, not 404)
 - [Phase ?]: [05-03]: lookupByWord uses findMany/take:1 not findFirst — semantically equivalent and matches test mock
+- [Phase ?]: Sentence length C1 threshold set to >15 avg words/sentence (validated against test passages)
+- [Phase ?]: BrillPOSTagger initialized with Lexicon EN language code — not file path, to avoid Dutch lexicon default
+- [Phase ?]: cefr-word-list.json stored in packages/database/prisma/seed-data/ following existing seed data pattern
 
 ### Pending Todos
 
@@ -100,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-14T08:38:31.065Z
-Stopped at: Completed 05-03 VOCAB-08 vocabulary lookup endpoint
+Last session: 2026-06-14T08:42:08.891Z
+Stopped at: Completed 05-04 CEFR ClassifierService
 Resume file: None
