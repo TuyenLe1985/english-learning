@@ -298,4 +298,32 @@ describe('VocabularyService', () => {
       expect(mockUserItemFindMany).toHaveBeenCalled();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // VOCAB-08 — GET /api/vocabulary/lookup?word=
+  // RED stub: lookupByWord does not exist yet on VocabularyService
+  // ---------------------------------------------------------------------------
+  describe('lookupByWord()', () => {
+    it('returns a VocabularyWordDto when the word is found', async () => {
+      // mockFindMany is the vocabularyWord.findMany mock available in scope
+      // lookupByWord uses vocabularyWord.findFirst — add mock to mockPrisma
+      // For RED state we call the method that does not exist yet
+      mockFindMany.mockResolvedValue([sampleWord]);
+
+      const result = await service.lookupByWord('negotiate');
+
+      // word found → returns the word object (not null)
+      expect(result).not.toBeNull();
+      expect(result).toMatchObject({ word: 'negotiate' });
+    });
+
+    it('returns null when the word is not found (D-13 — graceful no-match, not 404)', async () => {
+      mockFindMany.mockResolvedValue([]);
+
+      const result = await service.lookupByWord('xyzabc');
+
+      // word not found → returns null (not a NotFoundException)
+      expect(result).toBeNull();
+    });
+  });
 });
