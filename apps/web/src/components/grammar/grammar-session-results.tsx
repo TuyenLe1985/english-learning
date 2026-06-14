@@ -64,9 +64,9 @@ export function GrammarSessionResults({
       {/* Topic mastery progress bar — grammar-specific */}
       <div className="w-full">
         <p className="mb-1 text-sm text-muted-foreground">Topic mastery</p>
-        <Progress value={masteryPct * 100} className="h-3" aria-label="Topic mastery" />
+        <Progress value={masteryPct} className="h-3" aria-label="Topic mastery" />
         <p className="mt-1 text-xs text-muted-foreground">
-          {Math.round(masteryPct * 100)}%
+          {Math.round(masteryPct)}%
         </p>
       </div>
 
