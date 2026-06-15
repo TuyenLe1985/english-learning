@@ -94,7 +94,33 @@ services:
       retries: 3
       start_period: 30s
 
+  whisper-worker:
+    image: hwdsl2/whisper-server
+    container_name: el_whisper_worker
+    # CPU-only image — no :cuda tag. Suitable for dev and most VPS deployments.
+    # Security: port bound to 127.0.0.1:9002 only — not exposed to public internet (T-06-W1-01).
+    # Uses port 9002 externally because MinIO occupies 9000 (API) and 9001 (console).
+    environment:
+      WHISPER_MODEL: base
+      WHISPER_DEVICE: cpu
+      WHISPER_COMPUTE_TYPE: int8
+      WHISPER_THREADS: 2
+      WHISPER_LANGUAGE: en
+      WHISPER_WORD_TIMESTAMPS: "true"
+      WHISPER_LOG_LEVEL: WARNING
+    ports:
+      - "127.0.0.1:9002:9000"
+    volumes:
+      - whisper_data:/var/lib/whisper
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
 volumes:
   postgres_data:
   redis_bullmq_data:
   minio_data:
+  whisper_data:
