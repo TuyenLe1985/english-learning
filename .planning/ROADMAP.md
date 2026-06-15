@@ -243,7 +243,33 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. The full transcript is locked (hidden) during the exercise and automatically unlocks after the user submits their final answer
   5. The unlocked transcript highlights the currently spoken word or phrase in sync with audio; user can tap any transcript word to add it to their SRS vocabulary queue
 
-**Plans**: TBD
+**Plans**: 7 plans in 6 waves
+
+**Wave 1** *(no dependencies)*
+
+- [ ] 06-01-PLAN.md — Foundation: wordTimestamps schema migration [BLOCKING], whisper-worker docker-compose, shared listening.dto.ts, TDD RED scaffolds (listening.service.spec, use-audio-player.test, transcript-panel.test)
+
+**Wave 2** *(blocked on 06-01)*
+
+- [ ] 06-02-PLAN.md — NestJS ListeningModule: GET items, GET items/:id, POST sessions/complete; AppModule registration (LIST-01, LIST-03, LIST-07) [TDD]
+
+**Wave 3** *(blocked on 06-01, parallel)*
+
+- [ ] 06-03-PLAN.md — useAudioPlayer hook + findActiveWordIndex (binary search) + AudioPlayer component + TranscriptPanel component (LIST-03, LIST-04, LIST-05, LIST-06) [TDD]
+- [ ] 06-04-PLAN.md — Listening browse page + item detail page shell + ListeningItemCard + relay route; fastest-levenshtein checkpoint (LIST-01, LIST-06)
+
+**Wave 4** *(blocked on 06-02, 06-04)*
+
+- [ ] 06-05-PLAN.md — Pipeline: ListeningCrawlerService (VOA/BBC/ESLPod/lecture) + ListeningSeedService (3 exercise types, 200-300 items, 500-batch) + pnpm scripts (LIST-01, LIST-02, LIST-07)
+
+**Wave 5** *(blocked on 06-03, 06-04)*
+
+- [ ] 06-06-PLAN.md — FillMissingWords + Dictation exercise components + ListeningSession orchestrator + ListeningScoreCard + full ListeningItemClient (LIST-02, LIST-03, LIST-04, LIST-05, LIST-06, LIST-07)
+
+**Wave 6** *(blocked on 06-05, 06-06)*
+
+- [ ] 06-07-PLAN.md — End-to-end verification: full test suite, pipeline validation (20-URL sample), sample seed run, human checkpoint on all 7 user journeys [has checkpoint]
+
 **UI hint**: yes
 
 ### Phase 7: Quiz Center + Gamification
