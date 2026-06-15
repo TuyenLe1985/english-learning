@@ -8,6 +8,7 @@ import { ProfileModule } from './profile/profile.module';
 import { VocabularyModule } from './vocabulary/vocabulary.module';
 import { SrsModule } from './srs/srs.module';
 import { GrammarModule } from './grammar/grammar.module';
+import { ListeningModule } from './listening/listening.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { GrammarModule } from './grammar/grammar.module';
     VocabularyModule,
     SrsModule,
     GrammarModule,
+    ListeningModule,
   ],
   controllers: [],
   providers: [],
