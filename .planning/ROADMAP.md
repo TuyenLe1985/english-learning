@@ -256,7 +256,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Wave 3** *(blocked on 06-01, parallel)*
 
 - [x] 06-03-PLAN.md — useAudioPlayer hook + findActiveWordIndex (binary search) + AudioPlayer component + TranscriptPanel component (LIST-03, LIST-04, LIST-05, LIST-06) [TDD]
-- [ ] 06-04-PLAN.md — Listening browse page + item detail page shell + ListeningItemCard + relay route (LIST-01, LIST-06)
+- [x] 06-04-PLAN.md — Listening browse page + item detail page shell + ListeningItemCard + relay route (LIST-01, LIST-06)
 
 **Wave 4** *(blocked on 06-02, 06-04)*
 
@@ -318,6 +318,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 1/9 | In Progress|  |
-| 6. Listening Comprehension | 3/7 | In Progress|  |
+| 6. Listening Comprehension | 4/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
