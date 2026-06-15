@@ -30,15 +30,13 @@ export function findActiveWordIndex(
   while (lo <= hi) {
     const mid = Math.floor((lo + hi) / 2);
     const word = words[mid];
+    if (!word) return -1;
 
     if (word.start <= currentTime && currentTime < word.end) {
-      // currentTime is strictly inside this word's range
       return mid;
     } else if (word.end <= currentTime) {
-      // currentTime is at or after this word's end — look right
       lo = mid + 1;
     } else {
-      // currentTime is before this word's start — look left
       hi = mid - 1;
     }
   }

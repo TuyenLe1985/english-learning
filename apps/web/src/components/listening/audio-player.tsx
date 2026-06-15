@@ -95,7 +95,7 @@ export function AudioPlayer({
         min={0}
         max={duration || 1}
         step={0.1}
-        onValueChange={([v]) => seek(v)}
+        onValueChange={([v]) => seek(v ?? 0)}
         aria-label="Audio seek bar"
       />
 
