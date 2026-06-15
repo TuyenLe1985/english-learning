@@ -247,7 +247,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 1** *(no dependencies)*
 
-- [ ] 06-01-PLAN.md — Foundation: wordTimestamps schema migration [BLOCKING], whisper-worker docker-compose, shared listening.dto.ts, TDD RED scaffolds (listening.service.spec, use-audio-player.test, transcript-panel.test)
+- [x] 06-01-PLAN.md — Foundation: wordTimestamps schema migration [BLOCKING], whisper-worker docker-compose, shared listening.dto.ts, TDD RED scaffolds (listening.service.spec, use-audio-player.test, transcript-panel.test)
 
 **Wave 2** *(blocked on 06-01)*
 
@@ -318,6 +318,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 1/9 | In Progress|  |
-| 6. Listening Comprehension | 0/TBD | Not started | - |
+| 6. Listening Comprehension | 1/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
