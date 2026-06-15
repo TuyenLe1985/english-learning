@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 6 UI-SPEC approved — ready for plan-phase
-last_updated: "2026-06-15T00:00:00.000Z"
-last_activity: 2026-06-15
+stopped_at: context exhaustion at 76% (2026-06-15)
+last_updated: "2026-06-15T13:48:42.809Z"
+last_activity: 2026-06-14
 progress:
   total_phases: 8
   completed_phases: 4
-  total_plans: 33
+  total_plans: 40
   completed_plans: 25
   percent: 50
 ---
@@ -88,7 +88,8 @@ None yet.
 - [Phase 3]: FSRS vs SM-2 final selection must happen at planning time — wrong choice requires DB migration after 5,000 cards are scheduled
 - [Phase 5]: Crawler selector specificity for VOA/BBC needs validation against current page templates before bulk crawl
 - [Phase 5]: CEFR classifier accuracy must be empirically validated on a 50-URL sample before proceeding to bulk seeding
-- [Phase 6]: Synchronized transcript timestamp availability (WebVTT/SRT from sources vs. forced-alignment tooling) is an unknown that significantly affects Phase 6 scope
+- [Phase 6]: Whisper word_timestamps output unit (seconds) assumed but not explicitly confirmed — validate with known audio clip in Wave 0
+- [Phase 6]: VOA/BBC/ESLPod/TED CSS selectors assumed from RESEARCH.md — validate with 20-URL sample before bulk crawl (per D-07)
 
 ## Deferred Items
 
@@ -98,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-14T08:24:38.494Z
-Stopped at: Phase 5 planned — 9 plans verified and ready to execute
+Last session: 2026-06-15T13:48:42.805Z
+Stopped at: context exhaustion at 76% (2026-06-15)
 Resume file: None

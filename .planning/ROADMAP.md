@@ -256,7 +256,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Wave 3** *(blocked on 06-01, parallel)*
 
 - [ ] 06-03-PLAN.md — useAudioPlayer hook + findActiveWordIndex (binary search) + AudioPlayer component + TranscriptPanel component (LIST-03, LIST-04, LIST-05, LIST-06) [TDD]
-- [ ] 06-04-PLAN.md — Listening browse page + item detail page shell + ListeningItemCard + relay route; fastest-levenshtein checkpoint (LIST-01, LIST-06)
+- [ ] 06-04-PLAN.md — Listening browse page + item detail page shell + ListeningItemCard + relay route (LIST-01, LIST-06)
 
 **Wave 4** *(blocked on 06-02, 06-04)*
 
