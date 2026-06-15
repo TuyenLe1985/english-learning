@@ -24,6 +24,10 @@ created: 2026-06-15
 | Icon library | Lucide React (shadcn default) |
 | Font | Inter (Google Fonts, `--font-inter` variable) |
 
+**Focal Points:**
+- Primary interactive anchor: the sticky audio player bar (`sticky top-0 z-40`) — it persists across all scroll positions on the item page and is the user's constant locus of control for audio playback, seeking, and speed adjustment.
+- Primary display anchor: the 28px score headline (`"{score}/{total} correct"`) in the inline score card — it is the largest text element on the page and the user's first visual destination after submitting exercises.
+
 Source: `apps/web/components.json` + `apps/web/tailwind.config.ts` + `apps/web/src/app/globals.css`
 
 ---
@@ -54,7 +58,7 @@ Exceptions:
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
 | Body (transcript) | 16px | 400 (regular) | 1.75 | Transcript prose text — `text-base leading-[1.75]` |
-| Body (UI) | 14px | 400 (regular) | 1.5 | Labels, metadata, muted descriptions, question prompts |
+| Body (UI) | 14px | 400 (regular) | 1.5 | Labels, metadata, muted descriptions, question prompts, player time display, speed toggle labels |
 | Label | 14px | 600 (semibold) | 1.4 | Section headers, card titles, exercise headers |
 | Heading | 20px | 600 (semibold) | 1.2 | Listening item title on item page, section headings |
 | Display | 28px | 600 (semibold) | 1.1 | Inline score card headline ("{score}/{total} correct") |
@@ -62,7 +66,7 @@ Exceptions:
 Notes:
 - Transcript text uses `text-base` (16px) at `leading-[1.75]` — same line height as Phase 5 reading body but one size step smaller (18px → 16px) since karaoke word spans require tighter word-boundary precision. A 16px transcript at 1.75 line-height leaves adequate vertical space between highlight rows.
 - Karaoke active word highlight does not change font size — it only changes background color and border-radius.
-- Player control labels (time display, speed toggle labels) use `text-xs` (12px) at weight 400 — acceptable at this size because they are supplementary, not primary reading content.
+- Player control labels (time display `"1:23 / 4:07"` and speed toggle labels `0.75×` / `1×` etc.) use `text-sm` (14px) at weight 400 — the Body (UI) size. These are functional readouts integrated into the player bar, not decorative elements.
 - All prior phase typographic constraints preserved: max 2 weights (400, 600), `text-sm` for all non-special UI text.
 
 ---
@@ -149,7 +153,7 @@ Listening item card anatomy (component: `listening-item-card.tsx`):
 - Top row (flex, space-between):
   - Left: `CefrBadge` (level). Right: `Badge variant="secondary"` for content type (display-mapped label — see Copywriting Contract).
 - Title: `text-sm font-semibold text-foreground line-clamp-2 mt-2`.
-- Metadata row (`text-xs text-muted-foreground`, flex gap-2, items-center):
+- Metadata row (`text-sm text-muted-foreground`, flex gap-2, items-center):
   - `Clock` Lucide icon (12px, `size-3`) + duration formatted as `"3m 45s"` (from `durationSec`). If `durationSec` is null: omit duration entry.
   - Separator `·` character.
   - Topic `Badge variant="secondary"` if topic exists.
@@ -173,7 +177,7 @@ The page has three vertical regions:
 
 - Back link: `← Back to Listening` using `ChevronLeft` (16px) Lucide icon + `text-sm text-muted-foreground`.
 - Item title: `text-[20px] font-semibold text-foreground` at `mb-1`.
-- Metadata row: `CefrBadge` + content-type `Badge` + duration + exercise count, all `text-xs text-muted-foreground`, separated by `·`. Same pattern as Phase 5 passage header metadata row.
+- Metadata row: `CefrBadge` + content-type `Badge` + duration + exercise count, all `text-sm text-muted-foreground`, separated by `·`. Same pattern as Phase 5 passage header metadata row.
 
 ---
 
@@ -187,12 +191,12 @@ Element layout (left to right, in a single flex row):
 
 1. **Play/Pause button** — `Button variant="ghost" size="icon"` with `size-9` (36px). Icon: `Play` (filled) when paused, `Pause` when playing. `aria-label="Play"` / `aria-label="Pause"`.
 
-2. **Time display** — `text-xs text-muted-foreground tabular-nums` formatted as `"1:23 / 4:07"` (currentTime / duration). Width: `w-[84px]` (fixed to prevent layout shift as time changes).
+2. **Time display** — `text-sm text-muted-foreground tabular-nums` formatted as `"1:23 / 4:07"` (currentTime / duration). Width: `w-[84px]` (fixed to prevent layout shift as time changes).
 
 3. **Seek bar** — shadcn `Slider`, `flex-1` (fills remaining horizontal space). `min={0}` `max={duration}` `step={0.1}` `value={[currentTime]}` `onValueChange={([v]) => seek(v)}`. Default thumb/track styling from shadcn (zinc theme). The slider receives `aria-label="Audio seek bar"` and `aria-valuetext="{formatted currentTime}"`.
 
 4. **Speed toggles** — four pill buttons inline, no wrapping. Each button is `Button variant="ghost" size="sm"` with custom overrides:
-   - Base classes: `rounded-full px-3 py-1 text-xs font-medium h-7`
+   - Base classes: `rounded-full px-3 py-1 text-sm font-medium h-7`
    - Inactive state: `border border-border bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground`
    - Active state (currently selected speed): `bg-primary text-primary-foreground border-transparent`
    - Button labels: `0.75×` / `1×` / `1.25×` / `1.5×`
@@ -225,7 +229,7 @@ Container: `relative mt-4 rounded-xl border border-border bg-card p-6`.
 - Transcript-cue replay: each sentence `<div>` has `onClick={() => seek(cue.start)}` + `role="button"` + `tabIndex={0}` + hover `bg-muted/40 rounded-md px-1 cursor-pointer transition-colors`.
 - WordPopover: each word span in unlocked transcript has `onClick={() => openPopover(word, contextSentence)}`. Reuses Phase 5 `WordPopover` component directly.
 - Auto-scroll: when `activeWordIndex` changes, `wordRefs[activeWordIndex].current?.scrollIntoView({ behavior: 'smooth', block: 'center' })`.
-- Fallback (no `wordTimestamps`): if `wordTimestamps` is null or empty, render transcript as plain `<p>` text without word spans or karaoke. Show `"Karaoke sync unavailable for this item."` at `text-xs text-muted-foreground` below the transcript.
+- Fallback (no `wordTimestamps`): if `wordTimestamps` is null or empty, render transcript as plain `<p>` text without word spans or karaoke. Show `"Karaoke sync unavailable for this item."` at `text-sm text-muted-foreground` below the transcript.
 
 Transcript section header: `text-sm font-semibold text-foreground mb-3` — "Transcript". Appears above the transcript container.
 
@@ -250,7 +254,7 @@ Position: below transcript panel, above exercise section. Centered.
 - Disabled state (`!hasListenedEnough`): `opacity-50 cursor-not-allowed pointer-events-none`. No tooltip on disabled state — the player's progress implicitly communicates why.
 - Enabled state: primary variant fills with `--primary` background.
 - After click: button replaced (removed from DOM or `hidden`) by the exercise section rendering.
-- Progress indicator below button (only visible when `!hasListenedEnough`): `text-xs text-muted-foreground text-center mt-2` — `"Listen to at least half the audio to unlock exercises."` This disappears once `hasListenedEnough` becomes true.
+- Progress indicator below button (only visible when `!hasListenedEnough`): `text-sm text-muted-foreground text-center mt-2` — `"Listen to at least half the audio to unlock exercises."` This disappears once `hasListenedEnough` becomes true.
 
 ---
 
@@ -258,38 +262,38 @@ Position: below transcript panel, above exercise section. Centered.
 
 Appears after "Start Exercises" is clicked. Container: `mt-8 flex flex-col gap-6`.
 
-Section header: `text-sm font-semibold text-foreground` — "Exercises" + progress counter `text-xs text-muted-foreground` — `"3 of 5 answered"` updating as user answers.
+Section header: `text-sm font-semibold text-foreground` — "Exercises" + progress counter `text-sm text-muted-foreground` — `"3 of 5 answered"` updating as user answers.
 
 Each exercise wrapped in `Card` with `p-6`. Exercises render in sort order from `ListeningQuestionDto.sortOrder`.
 
 **MultipleChoice exercise** (reuses `MultipleChoiceExercise` component from Phase 4 Grammar):
-- Question number: `text-xs text-muted-foreground` `"Question {n} of {total}"`.
+- Question number: `text-sm text-muted-foreground` `"Question {n} of {total}"`.
 - Prompt: `text-sm font-semibold text-foreground leading-relaxed`.
 - Options: 2×2 grid (`grid grid-cols-2 gap-3`). Each option button: `min-h-[44px] rounded-lg border px-3 py-2 text-left text-sm font-medium transition-colors`.
 - Answer states: same as Phase 5 — correct: `border-emerald-400 bg-emerald-50 text-emerald-800`, incorrect (selected): `border-red-400 bg-red-50 text-red-700`.
 - After answering: all options disabled, correct option stays highlighted. No immediate "next" button — exercises stay visible for review.
 
 **FillMissingWords exercise** (new component: `fill-missing-words.tsx`):
-- Question number: `text-xs text-muted-foreground` `"Question {n} of {total}"`.
-- Prompt label: `text-xs text-muted-foreground mb-2` — `"Fill in the missing word"`.
+- Question number: `text-sm text-muted-foreground` `"Question {n} of {total}"`.
+- Prompt label: `text-sm text-muted-foreground mb-2` — `"Fill in the missing word"`.
 - Sentence display: `text-sm text-foreground leading-relaxed`. The blanked word is rendered as an inline pill: `<span class="inline-block min-w-[80px] text-center rounded-md border-2 border-primary bg-primary/5 px-2 py-0.5 font-semibold">___</span>`. After user answers correctly, the pill shows the answer word with `border-emerald-400 bg-emerald-50 text-emerald-800`.
 - Options: 3 horizontal buttons in a flex-wrap row, `gap-2`. Each: `Button variant="outline" size="sm"` with `min-h-[36px] rounded-full px-4 text-sm`. Pill shape matches speed toggles for visual consistency.
 - Answer states: selected correct option: `bg-emerald-50 border-emerald-500 text-emerald-800`, selected incorrect: `bg-red-50 border-red-500 text-red-700`. All options disabled after selection.
-- Explanation row (if `explanation` is not null): `text-xs text-muted-foreground mt-3` — shown only after answering.
+- Explanation row (if `explanation` is not null): `text-sm text-muted-foreground mt-3` — shown only after answering.
 
 **Dictation exercise** (new component: `dictation-exercise.tsx`):
-- Question number: `text-xs text-muted-foreground` `"Question {n} of {total}"`.
-- Prompt label: `text-xs text-muted-foreground mb-2` — `"Type what you hear"`.
+- Question number: `text-sm text-muted-foreground` `"Question {n} of {total}"`.
+- Prompt label: `text-sm text-muted-foreground mb-2` — `"Type what you hear"`.
 - Mini clip player — a secondary play button, not the main sticky player:
   - Container: `flex items-center gap-3 rounded-lg bg-muted p-3 mb-4`.
   - Button: `Button variant="ghost" size="icon"` with `size-8`. Icon: `Play` / `Pause`. `aria-label="Play audio clip"`.
-  - Clip label: `text-xs text-muted-foreground` — `"Audio clip · {clipDuration}s"`. Duration from `question.timestampSec` and estimated clip length (10s max).
+  - Clip label: `text-sm text-muted-foreground` — `"Audio clip · {clipDuration}s"`. Duration from `question.timestampSec` and estimated clip length (10s max).
   - The mini player calls `seek(question.timestampSec)` on the main `audioRef` and plays the segment.
 - Text input: `Textarea` shadcn component. `rows={2}`. `placeholder="Type what you hear..."`. `className="resize-none text-sm"`. Full width.
 - Submit button: `Button variant="default" size="sm"` — `"Check Answer"`. `min-h-[36px]`. Disabled until textarea has content.
 - After submission:
-  - Correct (`distance <= 2`): input gets `border-emerald-400 bg-emerald-50` class. `CheckCircle` Lucide icon (emerald, 16px) + `text-xs text-emerald-700` `"Correct!"` below input.
-  - Incorrect: input gets `border-red-400 bg-red-50`. `XCircle` (red, 16px) + `text-xs text-muted-foreground` `"Correct: "{answer}""` below input.
+  - Correct (`distance <= 2`): input gets `border-emerald-400 bg-emerald-50` class. `CheckCircle` Lucide icon (emerald, 16px) + `text-sm text-emerald-700` `"Correct!"` below input.
+  - Incorrect: input gets `border-red-400 bg-red-50`. `XCircle` (red, 16px) + `text-sm text-muted-foreground` `"Correct: "{answer}""` below input.
   - Submit button hidden after answer is revealed.
 
 ---
@@ -326,12 +330,12 @@ Motion: `framer-motion` `initial={{ opacity: 0, scale: 0.95 }} animate={{ opacit
 Container: `Card mx-auto max-w-lg mt-8 p-6`.
 
 Layout (flex-col, gap-6):
-1. **Score headline**: `text-[28px] font-semibold text-foreground text-center` — `"{score}/{total} correct"`.
+1. **Score headline**: `text-[28px] font-semibold text-foreground text-center` — `"{score}/{total} correct"`. This is the primary display anchor for the page — the largest text element, the user's first visual destination after submit.
 2. **Sub-line**: `text-sm text-muted-foreground text-center` — `"{pct}% accuracy · {xpEarned} XP earned"`.
 3. **Exercise-type breakdown** — 3-row table (`<dl>` definition list):
    - Each row: `flex items-center justify-between text-sm`. Label: exercise type in human-readable form (`text-muted-foreground`), value: `"2/3 correct"` (`text-foreground font-medium`).
    - Types shown: "Multiple Choice", "Fill in the Blank", "Dictation".
-4. **Transcript reminder** (contextual, shown when `wordTimestamps` is not null): `text-xs text-muted-foreground text-center mt-2` — `"The transcript is now unlocked. Tap any word to add it to your vocabulary."`. This draws attention to the newly revealed transcript.
+4. **Transcript reminder** (contextual, shown when `wordTimestamps` is not null): `text-sm text-muted-foreground text-center mt-2` — `"The transcript is now unlocked. Tap any word to add it to your vocabulary."`. This draws attention to the newly revealed transcript.
 5. **Action buttons** (flex-col gap-3, w-full):
    - `"Try another item"` — `Button variant="default" size="lg" min-h-[44px] w-full`. Navigates to `/listening`.
    - `"Browse all listening"` — `Button variant="outline" size="lg" min-h-[44px] w-full`. Also navigates to `/listening`.
@@ -383,7 +387,7 @@ The trailing `{' '}` renders the inter-word space outside the span, preventing h
 - WordPopover not available (no word spans to tap).
 - Transcript-cue replay unavailable (no sentence-level timestamp data).
 - Static transcript text remains readable.
-- Banner: `text-xs text-muted-foreground italic mt-2` — `"Word-level sync is unavailable for this item."`.
+- Banner: `text-sm text-muted-foreground italic mt-2` — `"Word-level sync is unavailable for this item."`.
 
 ---
 
