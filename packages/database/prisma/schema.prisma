@@ -439,6 +439,7 @@ model ListeningContent {
   flaggedForReview Boolean     @default(false)
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
+  wordTimestamps   Json?       // [{word: String, start: Float, end: Float}] from Whisper forced alignment — nullable for items without a Whisper run
 
   questions ListeningQuestion[]
   progress  ListeningProgress[]

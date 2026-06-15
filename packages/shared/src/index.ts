@@ -23,3 +23,6 @@ export * from "./grammar.dto";
 
 // Phase 5: Reading DTOs
 export * from "./reading.dto";
+
+// Phase 6: Listening DTOs
+export * from "./listening.dto";
