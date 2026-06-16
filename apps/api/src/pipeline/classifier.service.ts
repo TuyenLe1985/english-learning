@@ -140,7 +140,7 @@ export class ClassifierService {
     let cefrLevel: CefrLevel;
     let cefrConfidence: number;
 
-    if (c1Likelihood >= 0.5) {
+    if (c1Likelihood >= 0.45) {
       cefrLevel = 'C1';
       cefrConfidence = Math.min(0.97, 0.55 + c1Likelihood * 0.4);
     } else if (c1Likelihood >= 0.2) {
@@ -173,15 +173,17 @@ export class ClassifierService {
     let known = 0;
     for (const token of tokens) {
       const level = this.wordMap.get(token);
-      if (level) {
+      // Only count B1+ words — A1/A2 function words dilute the average without
+      // contributing a difficulty signal (articles, prepositions, etc.)
+      if (level && (LEVEL_SCORE[level] ?? 0) >= 2) {
         total += LEVEL_SCORE[level] ?? 1;
         known++;
       }
     }
     if (known === 0) return 0;
-    const avgScore = total / known; // 1 = A1/A2 (B1 band), 4 = C1/C2 (C1 band)
-    // Normalise: score 1 → 0.0, score 4 → 1.0
-    return Math.min(1, (avgScore - 1) / 3);
+    const avgScore = total / known; // 2 = B1, 3 = B2, 4 = C1/C2
+    // Normalise: score 2 → 0.0 (B1 baseline), score 4 → 1.0 (C1/C2)
+    return Math.min(1, (avgScore - 2) / 2);
   }
 
   /**
