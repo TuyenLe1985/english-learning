@@ -1,32 +1,39 @@
 /**
  * /reading/[passageId] — Passage reader page.
  *
- * READ-06: Server Component that fetches the full passage detail from NestJS,
- * renders the passage header, and provides the HTML content + questions via
- * placeholder implementations until PassageRenderer and QuestionsSection
- * client components are wired in plan 05-07.
+ * Plan 05-07: Replaces the dangerouslySetInnerHTML placeholder from 05-06 with:
+ * - PassageRenderer (dynamic import, ssr:false): DOMPurify sanitize + word-span + highlight restore
+ * - QuestionsSection: inline questions with per-question state + session submit
+ * - NotesPanel: auto-save on blur, Sheet on mobile, sidebar on desktop
  *
  * Server Component: fetches from NestJS via fetchWithAuth. Auth-gated.
+ * Client interaction is delegated to child Client Components.
  *
- * UI-SPEC: Screen 2 — passage header anatomy (back link, title, metadata, action row),
- * passage body (dangerouslySetInnerHTML temporary fallback), questions section placeholder.
- * Copywriting: "Back to Reading" link, "Comprehension Questions" heading.
- *
- * SECURITY (T-05-06-01): Content was sanitized by isomorphic-dompurify in SeedService
- * before DB storage. PassageRenderer (plan 05-07) will add a second client-side DOMPurify
- * pass. The temporary dangerouslySetInnerHTML here is therefore safe for the transition period.
+ * SECURITY (T-05-07-01): PassageRenderer runs DOMPurify client-side with a strict
+ * allowlist — no script/style/iframe elements can survive into the DOM.
  */
 
 import { redirect } from "next/navigation";
+import dynamic from "next/dynamic";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { ChevronLeft, Clock, Bookmark, BookmarkCheck, StickyNote } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CefrBadge } from "@/components/cefr-badge";
 import { fetchWithAuth, INTERNAL_API_URL } from "@/lib/api-client";
+import { ReadingPassageClient } from "./reading-passage-client";
 import type { ReadingPassageDetailDto } from "@repo/shared";
+
+// Dynamic imports — both components use browser-only APIs (DOMPurify, dom-anchor-text-position)
+const PassageRenderer = dynamic(
+  () =>
+    import("@/components/reading/passage-renderer").then((m) => ({
+      default: m.PassageRenderer,
+    })),
+  { ssr: false },
+);
 
 async function fetchPassageDetail(
   cookieHeader: string,
@@ -120,73 +127,22 @@ export default async function ReadingPassagePage({ params }: Props) {
         <span>{contentTypeLabel}</span>
       </div>
 
-      {/* Action row: reading timer, bookmark toggle, notes toggle */}
-      <div className="mb-6 flex items-center gap-4 text-sm">
-        {/* Reading timer — starts client-side in PassageRenderer (05-07 plan) */}
-        <div
-          className="flex items-center gap-1.5 text-xs text-muted-foreground"
-          aria-live="polite"
-          aria-label="Reading time"
-        >
-          <Clock className="h-4 w-4" />
-          <span>0m 0s</span>
-        </div>
-
-        {/* Bookmark toggle — client interaction wired in 05-07 */}
-        <button
-          type="button"
-          aria-label={data.isBookmarked ? "Remove bookmark" : "Bookmark passage"}
-          className="inline-flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-muted"
-        >
-          {data.isBookmarked ? (
-            <>
-              <BookmarkCheck className="h-4 w-4 text-amber-400" />
-              <span>Bookmarked</span>
-            </>
-          ) : (
-            <>
-              <Bookmark className="h-4 w-4" />
-              <span>Bookmark</span>
-            </>
-          )}
-        </button>
-
-        {/* Notes toggle — client interaction wired in 05-07 */}
-        <button
-          type="button"
-          aria-label="Toggle notes panel"
-          className="inline-flex min-h-[44px] items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-muted"
-        >
-          <StickyNote className="h-4 w-4" />
-          <span>Notes</span>
-        </button>
-      </div>
-
-      {/* 2b: Passage body area
-          Temporary fallback — PassageRenderer client component (plan 05-07) will
-          replace this with DOMPurify sanitization + word-span wrapping.
-          Content was sanitized by isomorphic-dompurify in SeedService at storage time
-          (T-05-06-01 mitigation). */}
-      <div
-        className="max-w-[65ch] text-[18px] leading-[1.75] text-foreground"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: data.content }}
+      {/*
+        ReadingPassageClient handles all client-side interactivity:
+        - Reading timer (action row)
+        - Bookmark toggle
+        - Notes panel toggle
+        - PassageRenderer with highlight state
+        - QuestionsSection with timer coordination
+        - NotesPanel
+      */}
+      <ReadingPassageClient
+        data={data}
+        passageId={passageId}
+        PassageRendererComponent={PassageRenderer}
       />
 
       <Separator className="my-8" />
-
-      {/* 2c: Questions section placeholder
-          QuestionsSection client component (plan 05-07) will replace this static heading
-          with interactive per-question cards, answer state, and inline feedback. */}
-      <section aria-label="Comprehension questions">
-        <h2 className="mb-4 text-sm font-semibold text-foreground">
-          Comprehension Questions
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {data.questions.length} question
-          {data.questions.length !== 1 ? "s" : ""}
-        </p>
-      </section>
     </div>
   );
 }
