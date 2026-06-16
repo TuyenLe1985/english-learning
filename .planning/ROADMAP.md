@@ -260,11 +260,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on 06-02, 06-04)*
 
-- [ ] 06-05-PLAN.md — Pipeline: ListeningCrawlerService (VOA/BBC/ESLPod/lecture) + ListeningSeedService (3 exercise types, 200-300 items, 500-batch) + pnpm scripts (LIST-01, LIST-02, LIST-07)
+- [x] 06-05-PLAN.md — Pipeline: ListeningCrawlerService (VOA/BBC/ESLPod/lecture) + ListeningSeedService (3 exercise types, 200-300 items, 500-batch) + pnpm scripts (LIST-01, LIST-02, LIST-07)
 
 **Wave 5** *(blocked on 06-03, 06-04)*
 
-- [ ] 06-06-PLAN.md — FillMissingWords + Dictation exercise components + ListeningSession orchestrator + ListeningScoreCard + full ListeningItemClient (LIST-02, LIST-03, LIST-04, LIST-05, LIST-06, LIST-07)
+- [x] 06-06-PLAN.md — FillMissingWords + Dictation exercise components + ListeningSession orchestrator + ListeningScoreCard + full ListeningItemClient (LIST-02, LIST-03, LIST-04, LIST-05, LIST-06, LIST-07)
 
 **Wave 6** *(blocked on 06-05, 06-06)*
 
@@ -318,6 +318,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 1/9 | In Progress|  |
-| 6. Listening Comprehension | 4/7 | In Progress|  |
+| 6. Listening Comprehension | 6/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
