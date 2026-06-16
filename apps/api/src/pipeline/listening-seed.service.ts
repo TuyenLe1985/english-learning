@@ -40,35 +40,36 @@ export class ListeningSeedService {
 
     let seeded = 0;
     const BATCH_SIZE = 500;
-    const batch: GeneratedExercise[] = [];
+
+    // Accumulate (contentId + exercise) pairs across items; flush when batch is full or at end of all items
+    const globalBatch: Array<GeneratedExercise & { contentId: string }> = [];
+
+    const flushBatch = async () => {
+      if (globalBatch.length === 0) return;
+      // Insert in chunks of BATCH_SIZE
+      for (let offset = 0; offset < globalBatch.length; offset += BATCH_SIZE) {
+        const chunk = globalBatch.slice(offset, offset + BATCH_SIZE);
+        await this.prisma!.listeningQuestion.createMany({
+          data: chunk,
+          skipDuplicates: true,
+        });
+      }
+      globalBatch.length = 0;
+    };
 
     for (const item of items as SeedContent[]) {
       if (item._count.questions > 0) continue;
       const exercises = await this.generateExercises(item);
       for (const ex of exercises) {
-        batch.push(ex);
-        if (batch.length >= BATCH_SIZE) {
-          await this.prisma.listeningQuestion.createMany({
-            data: batch.map(e => ({ ...e, contentId: item.id })),
-            skipDuplicates: true,
-          });
-          batch.length = 0;
-        }
+        globalBatch.push({ ...ex, contentId: item.id });
       }
-      if (batch.length > 0) {
-        await this.prisma.listeningQuestion.createMany({
-          data: batch.map(e => ({ ...e, contentId: item.id })),
-          skipDuplicates: true,
-        });
-        batch.length = 0;
+      if (globalBatch.length >= BATCH_SIZE) {
+        await flushBatch();
       }
       seeded++;
     }
 
-    await this.prisma.listeningContent.updateMany({
-      where: { isPublished: true, questions: { some: {} } },
-      data: {},
-    });
+    await flushBatch();
 
     console.log(`[ListeningSeedService] Seeded exercises for ${seeded} items`);
   }

@@ -8,6 +8,7 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import * as cheerio from 'cheerio';
+import { Prisma } from '@repo/database';
 import type { ContentType } from '@repo/database';
 
 interface WhisperWord {
@@ -78,8 +79,8 @@ export class ListeningCrawlerService {
       );
 
       const words = await this.callWhisperWorker(tmpPath);
-      const wordTimestamps = words.length > 0 ? (words as unknown as import('@prisma/client').Prisma.JsonValue) : null;
-      if (!wordTimestamps) console.warn(`[ListeningCrawler] No word timestamps for ${sourceUrl}`);
+      const wordTimestamps: Prisma.InputJsonValue | typeof Prisma.DbNull = words.length > 0 ? (words as unknown as Prisma.InputJsonValue) : Prisma.DbNull;
+      if (wordTimestamps === Prisma.DbNull) console.warn(`[ListeningCrawler] No word timestamps for ${sourceUrl}`);
 
       const { cefrLevel, cefrConfidence, flaggedForReview } =
         await this.classifierService.classifyPassage(transcriptText);
@@ -153,6 +154,7 @@ export class ListeningCrawlerService {
         if (href && !links.includes(href)) {
           links.push(href.startsWith('http') ? href : `https://learningenglish.voanews.com${href}`);
         }
+        return true; // cheerio each: return true to continue
       });
 
       for (const link of links.slice(0, limit)) {
@@ -164,7 +166,7 @@ export class ListeningCrawlerService {
           if (!audioUrl) { console.warn(`[VOA] No audio at ${link}`); continue; }
           const title = $item('h1').first().text().trim() || 'VOA Learning English';
           const paragraphs: string[] = [];
-          $item('.wsw p, .article-body p').each((_, p) => paragraphs.push($item(p).text().trim()));
+          $item('.wsw p, .article-body p').each((_, p) => { paragraphs.push($item(p).text().trim()); });
           const transcriptText = paragraphs.filter(Boolean).join(' ');
           if (transcriptText.split(' ').length < 50) { console.warn(`[VOA] Short transcript at ${link}`); continue; }
           await this.crawlItem(link, 'NEWS_REPORT', title, audioUrl, transcriptText);
@@ -191,6 +193,7 @@ export class ListeningCrawlerService {
         if (href && !links.includes(href)) {
           links.push(href.startsWith('http') ? href : `https://www.bbc.co.uk${href}`);
         }
+        return true; // cheerio each: return true to continue
       });
 
       const contentTypes: ContentType[] = ['CONVERSATION', 'INTERVIEW'];
@@ -207,9 +210,9 @@ export class ListeningCrawlerService {
           if (!audioUrl) { console.warn(`[BBC] No audio at ${link}`); continue; }
           const title = $item('h1').first().text().trim() || 'BBC 6 Minute English';
           const paragraphs: string[] = [];
-          $item('.widget-richtext p, .body-copy p').each((_, p) =>
-            paragraphs.push($item(p).text().trim()),
-          );
+          $item('.widget-richtext p, .body-copy p').each((_, p) => {
+            paragraphs.push($item(p).text().trim());
+          });
           const transcriptText = paragraphs.filter(Boolean).join(' ');
           if (transcriptText.split(' ').length < 50) { console.warn(`[BBC] Short transcript at ${link}`); continue; }
           await this.crawlItem(link, contentTypes[i % 2]!, title, audioUrl, transcriptText);
@@ -283,6 +286,7 @@ export class ListeningCrawlerService {
         if (href && href.includes('/talks/') && !links.includes(href)) {
           links.push(href.startsWith('http') ? href : `https://www.ted.com${href}`);
         }
+        return true; // cheerio each: return true to continue
       });
 
       for (const link of links.slice(0, limit)) {
@@ -293,7 +297,7 @@ export class ListeningCrawlerService {
           const sentences: string[] = [];
           $item(
             '.talk-transcript__sentence, [data-testid="transcript-sentence"]',
-          ).each((_, el) => sentences.push($item(el).text().trim()));
+          ).each((_, el) => { sentences.push($item(el).text().trim()); });
           const transcriptText = sentences.join(' ');
           if (transcriptText.split(' ').length < 50) { console.warn(`[TED] Short/no transcript at ${link}`); continue; }
           const title = $item('h1').first().text().trim() || 'TED Talk';
@@ -309,7 +313,7 @@ export class ListeningCrawlerService {
               contentType: 'LECTURE',
               cefrLevel,
               cefrConfidence,
-              wordTimestamps: null,
+              wordTimestamps: Prisma.DbNull,
               isPublished: false,
               flaggedForReview: true,
             },
