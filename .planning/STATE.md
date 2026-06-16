@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: context exhaustion at 76% (2026-06-15)
-last_updated: "2026-06-16T13:45:10.116Z"
-last_activity: 2026-06-16 -- Phase 06 execution started
+last_updated: "2026-06-16T13:52:24.204Z"
+last_activity: 2026-06-16 -- Phase 05 execution started
 progress:
   total_phases: 8
   completed_phases: 4
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-11)
 
 **Core value:** A learner can open the app, immediately find hundreds of exercises at their CEFR level across all skill areas, and feel their progress through XP and visible advancement — no empty screens, no placeholder data.
-**Current focus:** Phase 06 — listening-comprehension
+**Current focus:** Phase 05 — reading-comprehension-content-pipeline
 
 ## Current Position
 
-Phase: 06 (listening-comprehension) — EXECUTING
-Plan: 1 of 7
-Status: Executing Phase 06
-Last activity: 2026-06-16 -- Phase 06 execution started
+Phase: 05 (reading-comprehension-content-pipeline) — EXECUTING
+Plan: 1 of 9
+Status: Executing Phase 05
+Last activity: 2026-06-16 -- Phase 05 execution started
 
 Progress: [███████░░░] 72%
 
