@@ -7,7 +7,10 @@ import { ListeningSeedService } from './listening-seed.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['../../.env', '.env'],
+    }),
     PrismaModule,
   ],
   providers: [
