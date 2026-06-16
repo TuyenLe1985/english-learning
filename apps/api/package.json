@@ -9,7 +9,10 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint --config eslint.config.mjs src",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "pipeline:crawl:listening": "ts-node -r tsconfig-paths/register src/pipeline/crawl-listening.ts",
+    "pipeline:seed:listening": "ts-node -r tsconfig-paths/register src/pipeline/seed-listening.ts",
+    "pipeline:validate:listening": "ts-node -r tsconfig-paths/register src/pipeline/validate-listening.ts"
   },
   "dependencies": {
     "@auth/core": "^0.34.3",
