@@ -216,6 +216,20 @@ export class VocabularyService {
   }
 
   /**
+   * VOCAB-08 — GET /api/vocabulary/lookup?word=
+   * Case-insensitive word lookup. Returns the matching VocabularyWordDto or null
+   * when the word is not found (D-13 graceful no-match, not 404).
+   */
+  async lookupByWord(word: string): Promise<VocabularyWordDto | null> {
+    const words = await this.prisma.vocabularyWord.findMany({
+      where: { word: { equals: word, mode: 'insensitive' } },
+      select: WORD_SELECT,
+      take: 1,
+    });
+    return (words[0] as VocabularyWordDto) ?? null;
+  }
+
+  /**
    * VOCAB-03 / D-08 — Returns 4 words for a matching exercise grid.
    * Randomly samples 4 words from the given category.
    */
