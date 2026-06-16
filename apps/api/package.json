@@ -12,7 +12,11 @@
     "test:watch": "vitest",
     "pipeline:crawl:listening": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/crawl-listening.ts",
     "pipeline:seed:listening": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/seed-listening.ts",
-    "pipeline:validate:listening": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/validate-listening.ts"
+    "pipeline:validate:listening": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/validate-listening.ts",
+    "pipeline:validate": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/pipeline.cli.ts -- --validate",
+    "pipeline:crawl": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/pipeline.cli.ts -- --crawl",
+    "pipeline:seed": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/pipeline.cli.ts -- --seed",
+    "pipeline:run": "ts-node --project tsconfig.pipeline.json --transpile-only src/pipeline/pipeline.cli.ts -- --run"
   },
   "dependencies": {
     "@auth/core": "^0.34.3",
