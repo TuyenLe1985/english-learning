@@ -32,11 +32,11 @@ async function validateSource(
 }
 
 async function bootstrap() {
-  void crawler; // crawler injected for future per-URL audio checks
   const app = await NestFactory.createApplicationContext(PipelineModule, {
     logger: ['error', 'warn', 'log'],
   });
   const crawler = app.get(ListeningCrawlerService);
+  void crawler; // reserved for future per-URL audio checks
 
   const sources: SourceConfig[] = [
     {
