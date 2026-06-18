@@ -34,8 +34,8 @@ interface Props {
   passageId: string;
   highlights: HighlightDto[];
   onHighlightCreated: (h: HighlightDto) => void;
-  /** Called when a word span is clicked: (normalizedWord, sentenceContext) */
-  onWordTap?: (word: string, sentence: string) => void;
+  /** Called when a word span is clicked: (normalizedWord, sentenceContext, anchorElement) */
+  onWordTap?: (word: string, sentence: string, el: HTMLElement) => void;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -248,7 +248,8 @@ export function PassageRenderer({
       const textContent = container?.textContent ?? "";
       const wordPos = textContent.toLowerCase().indexOf(normalizedWord);
       const sentence = extractSentence(textContent, wordPos >= 0 ? wordPos : 0);
-      onWordTap(normalizedWord, sentence);
+      // Pass the wordSpan element as anchor for WordPopover positioning (VOCAB-08)
+      onWordTap(normalizedWord, sentence, wordSpan);
     },
     [onWordTap],
   );

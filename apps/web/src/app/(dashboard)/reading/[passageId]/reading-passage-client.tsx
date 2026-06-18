@@ -8,6 +8,7 @@
  * - Bookmark toggle with optimistic update (READ-06)
  * - Notes panel toggle state
  * - Highlight state (passed down to PassageRenderer)
+ * - WordPopover (VOCAB-08): word tap → vocabulary lookup → SRS enrollment
  * - QuestionsSection (timer coordination via onTimerStop callback)
  * - NotesPanel (Sheet on mobile, sidebar on desktop)
  *
@@ -20,6 +21,7 @@ import { Clock, Bookmark, BookmarkCheck, StickyNote } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { QuestionsSection } from "@/components/reading/questions-section";
 import { NotesPanel } from "@/components/reading/notes-panel";
+import { WordPopover } from "@/components/reading/word-popover";
 import type { ReadingPassageDetailDto, HighlightDto } from "@repo/shared";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -29,7 +31,7 @@ interface PassageRendererProps {
   passageId: string;
   highlights: HighlightDto[];
   onHighlightCreated: (h: HighlightDto) => void;
-  onWordTap?: (word: string, sentence: string) => void;
+  onWordTap?: (word: string, sentence: string, el: HTMLElement) => void;
 }
 
 interface Props {
@@ -134,11 +136,23 @@ export function ReadingPassageClient({
     setNotesOpen(false);
   }, []);
 
-  // ─── Word tap handler (VOCAB-08 — wired in plan 05-08) ───────────────────────
-  const handleWordTap = useCallback((word: string, _sentence: string) => {
-    // Word popover (WordPopover component) is added in plan 05-08.
-    // For now: no-op. The data-word spans are rendered and accessible.
-    void word;
+  // ─── Word tap state (VOCAB-08 / D-14) ─────────────────────────────────────
+  const [activeWord, setActiveWord] = useState<{
+    word: string;
+    contextSentence: string;
+    anchorEl: HTMLElement;
+  } | null>(null);
+
+  const handleWordTap = useCallback(
+    (word: string, sentence: string, el: HTMLElement) => {
+      // el is the clicked <span data-word> element — used as PopoverAnchor reference
+      setActiveWord({ word, contextSentence: sentence, anchorEl: el });
+    },
+    [],
+  );
+
+  const handleWordPopoverClose = useCallback(() => {
+    setActiveWord(null);
   }, []);
 
   // ─── Render ──────────────────────────────────────────────────────────────────
@@ -198,6 +212,16 @@ export function ReadingPassageClient({
         onHighlightCreated={handleHighlightCreated}
         onWordTap={handleWordTap}
       />
+
+      {/* 2e: Word tap popover (VOCAB-08 / D-14) */}
+      {activeWord && (
+        <WordPopover
+          word={activeWord.word}
+          contextSentence={activeWord.contextSentence}
+          anchorEl={activeWord.anchorEl}
+          onClose={handleWordPopoverClose}
+        />
+      )}
 
       {/* 2c: Questions section (inline, all questions visible) */}
       <QuestionsSection
