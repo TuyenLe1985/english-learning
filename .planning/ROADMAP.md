@@ -210,8 +210,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on 05-06, 05-02, 05-03 — parallel)*
 
-- [ ] 05-07-PLAN.md — Reading passage client components: PassageRenderer (DOMPurify+word-span+highlight restore), HighlightTooltip (selection→save), QuestionsSection (inline feedback+timer+submit), PassageScoreCard (framer-motion), NotesPanel (Sheet+auto-save) (READ-02, READ-03, READ-04, READ-05, READ-07)
-- [ ] 05-08-PLAN.md — Word tap popover (VOCAB-08): WordPopover component (lookup→enroll), bookmark toggle wiring in passage page (READ-06, VOCAB-08)
+- [x] 05-07-PLAN.md — Reading passage client components: PassageRenderer (DOMPurify+word-span+highlight restore), HighlightTooltip (selection→save), QuestionsSection (inline feedback+timer+submit), PassageScoreCard (framer-motion), NotesPanel (Sheet+auto-save) (READ-02, READ-03, READ-04, READ-05, READ-07)
+- [x] 05-08-PLAN.md — Word tap popover (VOCAB-08): WordPopover component (lookup→enroll), bookmark toggle wiring in passage page (READ-06, VOCAB-08)
 
 **Wave 5** *(blocked on 05-05, 05-07, 05-08)*
 
@@ -317,7 +317,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Authentication + User Profile | 6/6 | Complete   | 2026-06-12 |
 | 3. Vocabulary Module + SRS Core | 6/6 | Complete    | 2026-06-13 |
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
-| 5. Reading Comprehension + Content Pipeline | 6/9 | In Progress|  |
+| 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 0/TBD | Not started | - |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
