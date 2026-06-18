@@ -112,7 +112,6 @@ export function PassageRenderer({
     if (!container || wordSpanDoneRef.current) return;
     // Set sanitized HTML directly (avoids React reconciliation of large DOM)
     container.innerHTML = cleanHtml;
-    wordSpanDoneRef.current = false; // reset so wrapping runs below
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

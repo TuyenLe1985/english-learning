@@ -26,6 +26,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
+  if (JSON.stringify(body).length > 65536) {
+    return NextResponse.json({ error: "Request too large" }, { status: 413 });
+  }
+
   const reqHeaders = await headers();
   const cookieHeader = reqHeaders.get("cookie") ?? "";
 

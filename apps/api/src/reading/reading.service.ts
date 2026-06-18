@@ -102,9 +102,9 @@ export class ReadingService {
     userId: string,
   ): Promise<unknown> {
     const passage = await this.prisma.readingPassage.findUnique({
-      where: { id: passageId },
+      where: { id: passageId, isPublished: true },
       include: {
-        questions: { orderBy: { sortOrder: 'asc' } },
+        questions: { orderBy: { sortOrder: 'asc' }, take: 20 },
       },
     });
 

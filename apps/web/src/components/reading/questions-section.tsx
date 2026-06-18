@@ -152,22 +152,15 @@ export function QuestionsSection({ questions, passageId, onTimerStop }: Props) {
       const newAttempts = [...attempts, newAttempt];
       setAttempts(newAttempts);
 
-      // Check if this was the last question
-      const newAnsweredCount = answeredCount + 1;
+      // Derive counts from newAttempts — avoids stale closure values
+      const newAnsweredCount = newAttempts.length;
       if (newAnsweredCount >= totalQuestions) {
-        const newCorrectCount = correctCount + (isCorrect ? 1 : 0);
+        const newCorrectCount = newAttempts.filter((a) => a.isCorrect).length;
         const readingTimeSec = onTimerStop();
         void submitSession(newAttempts, newCorrectCount, readingTimeSec);
       }
     },
-    [
-      attempts,
-      answeredCount,
-      totalQuestions,
-      correctCount,
-      onTimerStop,
-      submitSession,
-    ],
+    [attempts, totalQuestions, onTimerStop, submitSession],
   );
 
   // ─── Render ───────────────────────────────────────────────────────────────

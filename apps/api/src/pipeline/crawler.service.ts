@@ -306,6 +306,7 @@ export class CrawlerService {
 
     const results: ValidationResult[] = [];
 
+    try {
     for (const source of SOURCES) {
       console.log(`\n[Validator] Testing ${source.name}...`);
       const sampleUrls = await this.getSampleUrls(browser, source, 50);
@@ -378,7 +379,9 @@ export class CrawlerService {
       }
     }
 
-    await browser.close();
+    } finally {
+      await browser.close();
+    }
 
     console.log('\n[Validator] Validation complete:');
     results.forEach((r) => {
@@ -407,6 +410,7 @@ export class CrawlerService {
     const seenHashes = new Set<string>();
     const seenUrls = new Set<string>();
 
+    try {
     for (const source of SOURCES) {
       console.log(`\n[Crawler] Starting ${source.name}...`);
       const sourcePassages = await this.crawlSource(
@@ -422,7 +426,9 @@ export class CrawlerService {
       );
     }
 
-    await browser.close();
+    } finally {
+      await browser.close();
+    }
 
     // Write to output file
     fs.writeFileSync(

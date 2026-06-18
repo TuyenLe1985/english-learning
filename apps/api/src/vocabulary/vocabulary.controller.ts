@@ -94,14 +94,12 @@ export class VocabularyController {
   @Get(':category/words')
   async getWordsByCategory(
     @Param('category') category: string,
-    @Query('page') page = 1,
-    @Query('limit') limit = 20,
+    @Query('page') page = '1',
+    @Query('limit') limit = '20',
   ): Promise<PaginatedWordsDto> {
-    return this.vocabularyService.getWordsByCategory(
-      category,
-      +page,
-      +limit,
-    );
+    const parsedPage = Math.max(1, parseInt(String(page), 10) || 1);
+    const parsedLimit = Math.min(100, Math.max(1, parseInt(String(limit), 10) || 20));
+    return this.vocabularyService.getWordsByCategory(category, parsedPage, parsedLimit);
   }
 
   /**

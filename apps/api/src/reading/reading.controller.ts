@@ -69,12 +69,14 @@ export class ReadingController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ): Promise<unknown> {
+    const parsedPage = Math.max(1, parseInt(page ?? '1', 10) || 1);
+    const parsedLimit = Math.min(100, Math.max(1, parseInt(limit ?? '20', 10) || 20));
     return this.readingService.getPassages(req.user.userId, {
       cefrLevel,
       topic,
       contentType,
-      page: page ? parseInt(page, 10) : undefined,
-      limit: limit ? parseInt(limit, 10) : undefined,
+      page: parsedPage,
+      limit: parsedLimit,
     });
   }
 

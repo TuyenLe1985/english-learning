@@ -12,6 +12,7 @@
 
 import { Injectable } from '@nestjs/common';
 import * as fs from 'node:fs';
+import DOMPurify from 'isomorphic-dompurify';
 import { ClassifierService } from './classifier.service';
 import { PrismaService } from '../prisma/prisma.service';
 import type { CrawledPassage } from './crawler.service';
@@ -35,14 +36,16 @@ type QuestionType = (typeof QUESTION_TYPES)[number];
 
 /** Topic detection keyword map. Simple keyword presence scoring. */
 const TOPIC_KEYWORDS: Record<string, string[]> = {
-  technology: ['technology', 'computer', 'internet', 'digital', 'software', 'artificial', 'robot', 'data', 'app', 'smartphone'],
-  health: ['health', 'medical', 'disease', 'hospital', 'doctor', 'medicine', 'treatment', 'patient', 'mental', 'body'],
-  business: ['business', 'economy', 'market', 'company', 'trade', 'financial', 'investment', 'startup', 'profit', 'management'],
-  travel: ['travel', 'tourism', 'country', 'destination', 'flight', 'hotel', 'tourist', 'culture', 'abroad', 'visit'],
-  education: ['education', 'school', 'university', 'student', 'learning', 'teacher', 'academic', 'study', 'research', 'knowledge'],
-  science: ['science', 'scientist', 'research', 'experiment', 'discovery', 'biology', 'chemistry', 'physics', 'space', 'evolution'],
-  environment: ['environment', 'climate', 'pollution', 'energy', 'nature', 'wildlife', 'carbon', 'green', 'sustainable', 'ecology'],
-  society: ['society', 'social', 'community', 'government', 'politics', 'rights', 'people', 'population', 'culture', 'tradition'],
+  'Technology': ['technology', 'computer', 'internet', 'digital', 'software', 'artificial', 'robot', 'data', 'app', 'smartphone'],
+  'Health': ['health', 'medical', 'disease', 'hospital', 'doctor', 'medicine', 'treatment', 'patient', 'mental', 'body'],
+  'Business': ['business', 'economy', 'market', 'company', 'trade', 'financial', 'investment', 'startup', 'profit', 'management'],
+  'Travel': ['travel', 'tourism', 'country', 'destination', 'flight', 'hotel', 'tourist', 'culture', 'abroad', 'visit'],
+  'Education': ['education', 'school', 'university', 'student', 'learning', 'teacher', 'academic', 'study', 'research', 'knowledge'],
+  'Science': ['science', 'scientist', 'research', 'experiment', 'discovery', 'biology', 'chemistry', 'physics', 'space', 'evolution'],
+  'Environment': ['environment', 'climate', 'pollution', 'energy', 'nature', 'wildlife', 'carbon', 'green', 'sustainable', 'ecology'],
+  'Social Topics': ['society', 'social', 'community', 'government', 'politics', 'rights', 'people', 'population', 'culture', 'tradition'],
+  'Daily Life': ['daily', 'routine', 'family', 'home', 'food', 'cooking', 'lifestyle', 'habit', 'weekend', 'neighbourhood'],
+  'Academic': ['academic', 'thesis', 'journal', 'hypothesis', 'methodology', 'analysis', 'literature', 'theory', 'framework', 'empirical'],
 };
 
 // ── Interfaces ────────────────────────────────────────────────────────────────
@@ -98,21 +101,11 @@ function stripHtmlToText(html: string): string {
  * T-05-05-01: Threat mitigation for crawled HTML content.
  */
 function sanitizeHtml(html: string): string {
-  // Remove script and style tags entirely
-  let sanitized = html
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-    // Remove event handler attributes (onclick, onload, etc.)
-    .replace(/\s+on[a-z]+="[^"]*"/gi, '')
-    .replace(/\s+on[a-z]+=\s*'[^']*'/gi, '')
-    .replace(/\s+on[a-z]+=[^\s>]*/gi, '')
-    // Remove javascript: hrefs/srcs
-    .replace(/href\s*=\s*["']?\s*javascript:[^"'\s>]*/gi, 'href="#"')
-    .replace(/src\s*=\s*["']?\s*javascript:[^"'\s>]*/gi, 'src=""')
-    // Remove data: URIs in attributes that can execute
-    .replace(/src\s*=\s*["']?\s*data:[^"'\s>]*/gi, 'src=""')
-    .trim();
-  return sanitized;
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['p', 'b', 'i', 'strong', 'em', 'br', 'ul', 'ol', 'li', 'blockquote', 'a'],
+    ALLOWED_ATTR: ['href'],
+    ALLOW_DATA_ATTR: false,
+  });
 }
 
 /**

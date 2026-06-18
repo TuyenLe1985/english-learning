@@ -228,7 +228,7 @@ export class ClassifierService {
     const markerCount = tokens.filter((w) => MARKERS.has(w)).length;
     const per100 =
       tokens.length > 0 ? (markerCount / tokens.length) * 100 : 0;
-    return Math.min(1, per100 / 5); // 5+ markers per 100 words → full C1 signal
+    return Math.min(1, per100 / 3); // 3+ markers per 100 words → full C1 signal (per CLAUDE.md)
   }
 
   /**

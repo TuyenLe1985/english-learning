@@ -13,7 +13,7 @@
  * UI-SPEC §2g: Notes panel anatomy, Sheet, auto-save, copywriting contract.
  */
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { X, Check } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
@@ -53,7 +53,11 @@ export function NotesPanel({ passageId, initialContent, isOpen, onClose }: Props
   const isMobile = useIsMobile();
   const [content, setContent] = useState(initialContent ?? "");
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
-  const savedTimerRef = { current: null as ReturnType<typeof setTimeout> | null };
+  const savedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (savedTimerRef.current) clearTimeout(savedTimerRef.current); };
+  }, []);
 
   // ─── Auto-save on blur ────────────────────────────────────────────────────
 
