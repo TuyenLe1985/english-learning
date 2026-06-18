@@ -163,6 +163,12 @@ export function useAudioPlayer(audioUrl: string) {
     stopRafLoop();
   }, [stopRafLoop]);
 
+  // Fired when the <audio> element cannot load its source (404, unsupported format, etc.)
+  const onError = useCallback(() => {
+    stopRafLoop();
+    setState((prev) => ({ ...prev, isPlaying: false, hasListenedEnough: true }));
+  }, [stopRafLoop]);
+
   return {
     audioRef,
     audioUrl,
@@ -177,5 +183,6 @@ export function useAudioPlayer(audioUrl: string) {
     onPause,
     onLoadedMetadata,
     onEnded,
+    onError,
   };
 }

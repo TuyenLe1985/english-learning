@@ -47,6 +47,7 @@ export function ListeningItemClient({ item }: ListeningItemClientProps) {
     onPause,
     onLoadedMetadata,
     onEnded,
+    onError,
   } = useAudioPlayer(item.audioUrl);
 
   // D-15: transcript starts locked; atomically unlocked on session submit
@@ -83,6 +84,7 @@ export function ListeningItemClient({ item }: ListeningItemClientProps) {
         onPause={onPause}
         onLoadedMetadata={onLoadedMetadata}
         onEnded={onEnded}
+        onError={onError}
       />
 
       {/* Transcript panel — blurred/locked until exercises complete */}

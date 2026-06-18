@@ -36,6 +36,7 @@ interface AudioPlayerProps {
   onPause: () => void;
   onLoadedMetadata: () => void;
   onEnded: () => void;
+  onError: () => void;
 }
 
 // ─── AudioPlayer ─────────────────────────────────────────────────────────────
@@ -52,6 +53,7 @@ export function AudioPlayer({
   onPause,
   onLoadedMetadata,
   onEnded,
+  onError,
 }: AudioPlayerProps) {
   const { isPlaying, currentTime, duration, playbackRate } = state;
 
@@ -66,6 +68,7 @@ export function AudioPlayer({
           onPause={onPause}
           onLoadedMetadata={onLoadedMetadata}
           onEnded={onEnded}
+          onError={onError}
           preload="metadata"
           className="hidden"
         />
