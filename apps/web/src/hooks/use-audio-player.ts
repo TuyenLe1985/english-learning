@@ -55,7 +55,8 @@ export function useAudioPlayer(audioUrl: string) {
     duration: 0,
     isPlaying: false,
     playbackRate: 1,
-    hasListenedEnough: false,
+    // No audio source → bypass the listen-first gate immediately
+    hasListenedEnough: !audioUrl,
   });
 
   // ─── rAF tick ──────────────────────────────────────────────────────────────
@@ -113,7 +114,11 @@ export function useAudioPlayer(audioUrl: string) {
   // ─── Playback controls ──────────────────────────────────────────────────────
 
   const play = useCallback(() => {
-    audioRef.current?.play();
+    audioRef.current?.play().catch(() => {
+      // Audio unavailable (no source, network error, unsupported format)
+      // Auto-grant the listen-first gate so exercises remain accessible
+      setState((prev) => ({ ...prev, hasListenedEnough: true }));
+    });
     // startRafLoop is also triggered by the onPlay audio event in AudioPlayer
   }, []);
 

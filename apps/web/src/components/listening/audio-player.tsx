@@ -57,24 +57,27 @@ export function AudioPlayer({
 
   return (
     <div className="sticky top-0 z-40 bg-background border-b border-border h-16 flex items-center gap-4 px-4">
-      {/* Hidden audio element */}
-      <audio
-        ref={audioRef}
-        src={audioUrl}
-        onPlay={onPlay}
-        onPause={onPause}
-        onLoadedMetadata={onLoadedMetadata}
-        onEnded={onEnded}
-        preload="metadata"
-        className="hidden"
-      />
+      {/* Hidden audio element — only rendered when a source URL exists */}
+      {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onPlay={onPlay}
+          onPause={onPause}
+          onLoadedMetadata={onLoadedMetadata}
+          onEnded={onEnded}
+          preload="metadata"
+          className="hidden"
+        />
+      )}
 
-      {/* Play / Pause button */}
+      {/* Play / Pause button — disabled when no audio source */}
       <Button
         variant="ghost"
         size="icon"
         aria-label={isPlaying ? 'Pause' : 'Play'}
         onClick={isPlaying ? pause : play}
+        disabled={!audioUrl}
       >
         {isPlaying ? (
           <Pause className="size-5" aria-hidden="true" />
@@ -83,10 +86,16 @@ export function AudioPlayer({
         )}
       </Button>
 
-      {/* Time display */}
-      <span className="text-sm text-muted-foreground tabular-nums w-[84px] shrink-0">
-        {formatTime(currentTime)} / {formatTime(duration)}
-      </span>
+      {/* Time display / no-audio notice */}
+      {audioUrl ? (
+        <span className="text-sm text-muted-foreground tabular-nums w-[84px] shrink-0">
+          {formatTime(currentTime)} / {formatTime(duration)}
+        </span>
+      ) : (
+        <span className="text-sm text-muted-foreground italic shrink-0">
+          No audio available
+        </span>
+      )}
 
       {/* Seek bar */}
       <Slider
