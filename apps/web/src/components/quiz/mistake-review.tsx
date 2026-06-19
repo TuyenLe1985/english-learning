@@ -109,8 +109,8 @@ export function MistakeReview({
               {question.prompt}
             </p>
 
-            {/* Answer options */}
-            <div className="flex flex-col gap-2">
+            {/* Answer options — read-only display, not interactive controls (WR-08) */}
+            <div role="group" aria-label="Answer options" className="flex flex-col gap-2">
               {allOptions.map((option) => {
                 const optionClass = getOptionClass(
                   option,
@@ -126,9 +126,7 @@ export function MistakeReview({
                 return (
                   <div
                     key={option}
-                    role="radio"
-                    aria-checked={option === question.answer}
-                    aria-disabled="true"
+                    role="none"
                     aria-label={ariaLabel}
                     className={cn(
                       "min-h-[44px] rounded-lg border px-4 py-3 text-sm transition-colors flex items-center",
