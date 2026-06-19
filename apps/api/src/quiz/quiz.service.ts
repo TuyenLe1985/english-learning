@@ -378,20 +378,39 @@ export class QuizService {
     const bonusXp = calculateXp(XP_RATES.QUIZ_SESSION_BONUS, cefrLevel);
     const totalXp = correct * perAnswerXp + bonusXp;
 
-    // QUIZ-05: bulk insert QuizAnswer with skillArea per answer
-    await this.prisma.quizAnswer.createMany({
-      data: dto.answers.map((a) => ({
-        sessionId,
-        questionRef: a.questionRef,
-        skillArea: a.skillArea,
-        isCorrect: a.isCorrect,
-        userAnswer: a.userAnswer ?? null,
-        correctAnswer: a.correctAnswer ?? null,
-        xpEarned: a.isCorrect ? perAnswerXp : 0,
-      })),
-      skipDuplicates: false,
+    // WR-02: atomic transaction — answers + session update must commit together.
+    // completedAt being non-null is the idempotency guard; if it is written in the
+    // same transaction as the answers, a failure between the two cannot leave a
+    // half-written state that allows double-submission.
+    await this.prisma.$transaction(async (tx) => {
+      // QUIZ-05: bulk insert QuizAnswer with skillArea per answer
+      await tx.quizAnswer.createMany({
+        data: dto.answers.map((a) => ({
+          sessionId,
+          questionRef: a.questionRef,
+          skillArea: a.skillArea,
+          isCorrect: a.isCorrect,
+          userAnswer: a.userAnswer ?? null,
+          correctAnswer: a.correctAnswer ?? null,
+          xpEarned: a.isCorrect ? perAnswerXp : 0,
+        })),
+        skipDuplicates: false,
+      });
+
+      // Update QuizSession with final state in the same transaction
+      await tx.quizSession.update({
+        where: { id: sessionId },
+        data: {
+          score,
+          accuracy,
+          timeTakenSec: dto.timeTakenSec,
+          xpEarned: totalXp,
+          completedAt: new Date(),
+        },
+      });
     });
 
+    // Gamification runs AFTER the transaction commits (cannot be inside Prisma tx)
     // Award XP via GamificationService
     const xpResult = await this.gamification.awardXp(
       userId,
@@ -405,18 +424,6 @@ export class QuizService {
     const newAchievements = await this.gamification.checkAchievements(userId, {
       type: "QUIZ_COMPLETE",
       metadata: { sessionId },
-    });
-
-    // Update QuizSession with final state
-    await this.prisma.quizSession.update({
-      where: { id: sessionId },
-      data: {
-        score,
-        accuracy,
-        timeTakenSec: dto.timeTakenSec,
-        xpEarned: totalXp,
-        completedAt: new Date(),
-      },
     });
 
     // Re-hydrate incorrect questions for client-side mistake preview (QUIZ-04)
