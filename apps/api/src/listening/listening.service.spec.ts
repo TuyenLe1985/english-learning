@@ -1,21 +1,20 @@
 /**
  * ListeningService unit tests — Wave 1 RED scaffolds (Plan 06-01)
+ * Updated in Plan 04 to wire gamification assertions.
  *
  * LIST-01: getItems() returns paginated item list with filters
  * LIST-01: getItemById() throws NotFoundException when content not found
- * LIST-07: completeSession() upserts ListeningProgress + creates XpEvent with skillArea: 'LISTENING'
+ * LIST-07: completeSession() upserts ListeningProgress + calls gamification.awardXp (replaces direct xpEvent.create)
  *
  * Tests use direct instantiation with a mocked PrismaService (no NestJS DI).
  * Pattern mirrors apps/api/src/reading/reading.service.spec.ts.
- *
- * These tests FAIL intentionally — ListeningService does not yet exist.
- * Plan 06-02 turns these green.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NotFoundException } from '@nestjs/common';
 import { ListeningService } from './listening.service';
 import type { PrismaService } from '../prisma/prisma.service';
+import type { GamificationService } from '../gamification/gamification.service';
 
 // ─── Mock PrismaService ───────────────────────────────────────────────────────
 
@@ -24,7 +23,7 @@ const mockContentCount = vi.fn();
 const mockContentFindUnique = vi.fn();
 const mockProgressUpsert = vi.fn();
 const mockProgressFindUnique = vi.fn();
-const mockXpEventCreate = vi.fn();
+const mockUserFindUniqueOrThrow = vi.fn();
 
 const mockPrisma = {
   listeningContent: {
@@ -36,10 +35,20 @@ const mockPrisma = {
     upsert: mockProgressUpsert,
     findUnique: mockProgressFindUnique,
   },
-  xpEvent: {
-    create: mockXpEventCreate,
+  user: {
+    findUniqueOrThrow: mockUserFindUniqueOrThrow,
   },
 } as unknown as PrismaService;
+
+// ─── Mock GamificationService ─────────────────────────────────────────────────
+
+const mockAwardXp = vi.fn();
+const mockCheckAchievements = vi.fn();
+
+const mockGamification = {
+  awardXp: mockAwardXp,
+  checkAchievements: mockCheckAchievements,
+} as unknown as GamificationService;
 
 // ─── Sample fixtures ──────────────────────────────────────────────────────────
 
@@ -75,7 +84,11 @@ describe('ListeningService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new ListeningService(mockPrisma);
+    service = new ListeningService(mockPrisma, mockGamification);
+    // Default gamification mocks
+    mockAwardXp.mockResolvedValue({ xpEarned: 30, oldLevel: 1, newLevel: 1, levelUp: false });
+    mockCheckAchievements.mockResolvedValue([]);
+    mockUserFindUniqueOrThrow.mockResolvedValue({ id: 'user-001', cefrLevel: 'B2' });
   });
 
   // ---------------------------------------------------------------------------
@@ -194,7 +207,6 @@ describe('ListeningService', () => {
         accuracy: 75,
         completedAt: new Date(),
       });
-      mockXpEventCreate.mockResolvedValue({ id: 'xp-001' });
 
       await service.completeSession('user-001', sessionPayload);
 
@@ -205,21 +217,38 @@ describe('ListeningService', () => {
       );
     });
 
-    it('creates an XpEvent row with skillArea: LISTENING', async () => {
+    it('calls gamification.awardXp with skillArea LISTENING (replaces direct xpEvent.create)', async () => {
       mockProgressUpsert.mockResolvedValue({
         id: 'prog-001',
         score: 6,
         accuracy: 75,
         completedAt: new Date(),
       });
-      mockXpEventCreate.mockResolvedValue({ id: 'xp-001' });
 
       await service.completeSession('user-001', sessionPayload);
 
-      expect(mockXpEventCreate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: expect.objectContaining({ skillArea: 'LISTENING' }),
-        }),
+      expect(mockAwardXp).toHaveBeenCalledWith(
+        'user-001',
+        expect.any(Number),
+        'listening_session',
+        'LISTENING',
+        'content-001',
+      );
+    });
+
+    it('calls gamification.checkAchievements after awardXp', async () => {
+      mockProgressUpsert.mockResolvedValue({
+        id: 'prog-001',
+        score: 6,
+        accuracy: 75,
+        completedAt: new Date(),
+      });
+
+      await service.completeSession('user-001', sessionPayload);
+
+      expect(mockCheckAchievements).toHaveBeenCalledWith(
+        'user-001',
+        expect.objectContaining({ type: 'LISTENING' }),
       );
     });
 
@@ -230,7 +259,6 @@ describe('ListeningService', () => {
         accuracy: 75,
         completedAt: new Date(),
       });
-      mockXpEventCreate.mockResolvedValue({ id: 'xp-001' });
 
       const result = await service.completeSession('user-001', sessionPayload);
 

@@ -4,7 +4,7 @@
  *
  * READ-01: getPassages() — paginated passage list with CEFR/topic/contentType filters
  * READ-02: getPassageById() — full passage detail with questions, highlights, note, progress
- * READ-03: completeSession() — upserts ReadingProgress (score, accuracy, readingTimeSec)
+ * READ-03: completeSession() — upserts ReadingProgress + awards XP via GamificationService
  * READ-04: createHighlight() — creates and returns highlight with id
  * READ-04: deleteHighlight() — IDOR-protected delete (verifies ownership before delete)
  * READ-05: upsertNote() — one note per user+passage (upsert)
@@ -14,10 +14,13 @@
  *   - highlights and notes queries include `where: { userId }` — no cross-user data leakage
  *   - deleteHighlight verifies highlight.userId === requesting userId before delete
  *   - userId always sourced from JWT payload (enforced at controller layer)
+ *   - cefrLevel resolved from DB (T-07-10 — never from request body)
  */
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { GamificationService } from '../gamification/gamification.service';
+import { XP_RATES, calculateXp } from '../gamification/gamification.constants';
 import type {
   ReadingSessionCompleteDto,
   HighlightCreateDto,
@@ -39,7 +42,10 @@ interface PassagesQuery {
 
 @Injectable()
 export class ReadingService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly gamification: GamificationService,
+  ) {}
 
   /**
    * READ-01 — GET /api/reading/passages
@@ -135,10 +141,11 @@ export class ReadingService {
 
   /**
    * READ-03 — POST /api/reading/sessions/complete
-   * Upserts ReadingProgress for the user+passage pair.
+   * Upserts ReadingProgress for the user+passage pair and awards CEFR-weighted XP.
    * Safe to call multiple times (upsert, not create — no duplicate key error).
    *
    * Security (T-05-02-03): userId comes from JWT only; not from dto body.
+   * Security (T-07-10): cefrLevel resolved from DB, never from request body.
    */
   async completeSession(
     userId: string,
@@ -147,7 +154,7 @@ export class ReadingService {
     const { passageId, score, accuracy, readingTimeSec } = dto;
     const now = new Date();
 
-    return this.prisma.readingProgress.upsert({
+    await this.prisma.readingProgress.upsert({
       where: { userId_passageId: { userId, passageId } },
       create: {
         userId,
@@ -166,6 +173,34 @@ export class ReadingService {
         lastViewedAt: now,
       },
     });
+
+    // Award XP via GamificationService (T-07-10: cefrLevel from DB, never from body)
+    const user = await this.prisma.user.findUniqueOrThrow({ where: { id: userId } });
+    const xpAmount = calculateXp(XP_RATES.LESSON_COMPLETE, user.cefrLevel ?? 'B1');
+    const xpResult = await this.gamification.awardXp(
+      userId,
+      xpAmount,
+      'reading_session',
+      'READING',
+      passageId,
+    );
+
+    // Check achievements (D-12: synchronous inline after awardXp)
+    const newAchievements = await this.gamification.checkAchievements(userId, {
+      type: 'READING',
+      metadata: { passageId },
+    });
+
+    return {
+      passageId,
+      score,
+      accuracy,
+      readingTimeSec,
+      xpEarned: xpResult.xpEarned,
+      levelUp: xpResult.levelUp,
+      newLevel: xpResult.newLevel,
+      newAchievements,
+    };
   }
 
   /**

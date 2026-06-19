@@ -1,22 +1,22 @@
 /**
  * GrammarService unit tests — Wave 1 RED scaffolds (Plan 04-01)
+ * Updated in Plan 04 to add gamification wiring assertions.
  *
  * GRAM-01: getAreas() returns areas with topicCount
  * GRAM-01: getLessonDetail(slug) returns lesson with questions / throws NotFoundException
  * GRAM-04: completeSession() stores GrammarAttempts + upserts GrammarProgress with masteryPct
+ * GRAM-04+GAME-01: completeSession() calls gamification.awardXp with skillArea GRAMMAR
  * GRAM-06: getWeakQuestions() returns questions whose most-recent attempt is incorrect
  *
  * Tests use direct instantiation with a mocked PrismaService (no NestJS DI).
  * Pattern mirrors apps/api/src/vocabulary/vocabulary.service.spec.ts.
- *
- * These tests FAIL intentionally — GrammarService does not yet exist.
- * Plans 02/03 turn these green.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NotFoundException } from '@nestjs/common';
 import { GrammarService } from './grammar.service';
 import type { PrismaService } from '../prisma/prisma.service';
+import type { GamificationService } from '../gamification/gamification.service';
 
 // ─── Mock PrismaService ───────────────────────────────────────────────────────
 
@@ -26,6 +26,7 @@ const mockAttemptCreateMany = vi.fn();
 const mockProgressUpsert = vi.fn();
 const mockAttemptFindMany = vi.fn();
 const mockProgressFindUnique = vi.fn();
+const mockUserFindUniqueOrThrow = vi.fn();
 
 const mockPrisma = {
   grammarArea: {
@@ -42,7 +43,20 @@ const mockPrisma = {
     upsert: mockProgressUpsert,
     findUnique: mockProgressFindUnique,
   },
+  user: {
+    findUniqueOrThrow: mockUserFindUniqueOrThrow,
+  },
 } as unknown as PrismaService;
+
+// ─── Mock GamificationService ─────────────────────────────────────────────────
+
+const mockAwardXp = vi.fn();
+const mockCheckAchievements = vi.fn();
+
+const mockGamification = {
+  awardXp: mockAwardXp,
+  checkAchievements: mockCheckAchievements,
+} as unknown as GamificationService;
 
 // ─── Sample fixtures ──────────────────────────────────────────────────────────
 
@@ -87,7 +101,11 @@ describe('GrammarService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new GrammarService(mockPrisma);
+    service = new GrammarService(mockPrisma, mockGamification);
+    // Default gamification mocks
+    mockAwardXp.mockResolvedValue({ xpEarned: 20, oldLevel: 1, newLevel: 1, levelUp: false });
+    mockCheckAchievements.mockResolvedValue([]);
+    mockUserFindUniqueOrThrow.mockResolvedValue({ id: 'user-001', cefrLevel: 'B1' });
   });
 
   // ---------------------------------------------------------------------------
@@ -306,6 +324,53 @@ describe('GrammarService', () => {
           update: expect.objectContaining({ masteryPct: 40, attempts: 20, correct: 8 }),
         }),
       );
+    });
+
+    // ─── Gamification wiring assertions (07-04 RED) ────────────────────────────
+
+    it('calls gamification.awardXp with skillArea GRAMMAR after session completes', async () => {
+      mockAttemptCreateMany.mockResolvedValue({ count: 2 });
+      mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
+      mockProgressFindUnique.mockResolvedValue(null);
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 50, attempts: 2, correct: 1 });
+
+      await service.completeSession('user-001', sessionPayload);
+
+      expect(mockAwardXp).toHaveBeenCalledWith(
+        'user-001',
+        expect.any(Number),
+        'grammar_lesson',
+        'GRAMMAR',
+        'lesson-001',
+      );
+    });
+
+    it('calls gamification.checkAchievements after awardXp', async () => {
+      mockAttemptCreateMany.mockResolvedValue({ count: 2 });
+      mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
+      mockProgressFindUnique.mockResolvedValue(null);
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 50, attempts: 2, correct: 1 });
+
+      await service.completeSession('user-001', sessionPayload);
+
+      expect(mockCheckAchievements).toHaveBeenCalledWith(
+        'user-001',
+        expect.objectContaining({ type: 'LESSON_COMPLETE' }),
+      );
+    });
+
+    it('returns xpEarned and newAchievements in the result', async () => {
+      mockAttemptCreateMany.mockResolvedValue({ count: 2 });
+      mockLessonFindUnique.mockResolvedValue({ ...sampleLesson, topicId: 'topic-001' });
+      mockProgressFindUnique.mockResolvedValue(null);
+      mockProgressUpsert.mockResolvedValue({ masteryPct: 50, attempts: 2, correct: 1 });
+      mockAwardXp.mockResolvedValue({ xpEarned: 20, oldLevel: 1, newLevel: 1, levelUp: false });
+      mockCheckAchievements.mockResolvedValue([{ slug: 'first-lesson' }]);
+
+      const result = await service.completeSession('user-001', sessionPayload);
+
+      expect(result).toHaveProperty('xpEarned', 20);
+      expect(result).toHaveProperty('newAchievements');
     });
   });
 

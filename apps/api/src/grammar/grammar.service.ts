@@ -4,16 +4,20 @@
  * GRAM-01: getAreas() — returns all grammar areas with topicCount
  * GRAM-01: getLessonDetail(slug) — full lesson with questions; NotFoundException on missing slug
  * GRAM-04: completeSession() — stores GrammarAttempt rows + upserts GrammarProgress with masteryPct
+ * GRAM-04+GAME-01: completeSession() — awards CEFR-weighted XP via GamificationService.awardXp
  * GRAM-06: getWeakQuestions() — questions whose most-recent attempt was incorrect
  *
  * Security (T-04-03, T-04-04, T-04-05):
  *   - All endpoints protected by JwtAuthGuard (enforced in controller)
  *   - userId always sourced from JWT payload, never request body
  *   - Prisma parameterized queries only
+ *   - cefrLevel resolved from DB (T-07-10 — never from request body)
  */
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { GamificationService } from '../gamification/gamification.service';
+import { XP_RATES, calculateXp } from '../gamification/gamification.constants';
 import type {
   GrammarAreaDto,
   GrammarTopicDto,
@@ -28,7 +32,10 @@ import type {
 
 @Injectable()
 export class GrammarService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly gamification: GamificationService,
+  ) {}
 
   /**
    * GRAM-01 — GET /api/grammar/areas
@@ -192,14 +199,16 @@ export class GrammarService {
    * GRAM-04 — POST /api/grammar/sessions/complete
    * Records GrammarAttempt rows (one per question) and upserts GrammarProgress.
    * masteryPct = (existingCorrect + newCorrect) / (existingAttempts + newAttempts)
+   * Awards CEFR-weighted XP via GamificationService and checks achievements.
    *
    * Security (T-04-03): userId comes from JWT, never from body.
    * Security (T-04-05): only questionId, isCorrect, userAnswer accepted from client.
+   * Security (T-07-10): cefrLevel resolved from DB, never from request body.
    */
   async completeSession(
     userId: string,
     dto: GrammarSessionCompleteDto,
-  ): Promise<GrammarSessionResultDto> {
+  ): Promise<GrammarSessionResultDto & { xpEarned: number; levelUp: boolean; newLevel: number; newAchievements: unknown[] }> {
     const { lessonId, attempts } = dto;
 
     // 1. Resolve topicId from lessonId (needed for GrammarProgress upsert key)
@@ -256,10 +265,31 @@ export class GrammarService {
       },
     });
 
+    // 6. Award XP via GamificationService (T-07-10: cefrLevel from DB, never from body)
+    const user = await this.prisma.user.findUniqueOrThrow({ where: { id: userId } });
+    const xpAmount = calculateXp(XP_RATES.LESSON_COMPLETE, user.cefrLevel ?? 'B1');
+    const xpResult = await this.gamification.awardXp(
+      userId,
+      xpAmount,
+      'grammar_lesson',
+      'GRAMMAR',
+      lessonId,
+    );
+
+    // 7. Check achievements (D-12: synchronous inline after awardXp)
+    const newAchievements = await this.gamification.checkAchievements(userId, {
+      type: 'LESSON_COMPLETE',
+      metadata: { masteryPct: newMasteryPct, skillArea: 'GRAMMAR' },
+    });
+
     return {
       score: correctCount,
       total: totalCount,
       masteryPct: newMasteryPct,
+      xpEarned: xpResult.xpEarned,
+      levelUp: xpResult.levelUp,
+      newLevel: xpResult.newLevel,
+      newAchievements,
     };
   }
 

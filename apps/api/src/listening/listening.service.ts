@@ -3,19 +3,22 @@
  *
  * LIST-01: getItems()     — paginated list filtered by cefrLevel / topic / contentType
  * LIST-01: getItemById()  — item detail with presigned audio URL and word timestamps
- * LIST-07: completeSession() — upserts ListeningProgress + creates XpEvent with skillArea LISTENING
+ * LIST-07: completeSession() — upserts ListeningProgress + awards XP via GamificationService
  *
  * Security (T-06-02, T-06-03, T-06-04):
  *   - userId always from JWT payload, never request body
  *   - Server recomputes accuracy from attempts[] — client accuracy field is ignored
  *   - attempts.length validated against content._count.questions
  *   - Audio URLs presigned with 1-hour expiry (T-06-05)
+ *   - cefrLevel resolved from DB (T-07-10 — never from request body)
  */
 
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { PrismaService } from '../prisma/prisma.service';
+import { GamificationService } from '../gamification/gamification.service';
+import { XP_RATES, calculateXp } from '../gamification/gamification.constants';
 import type {
   ListeningItemDto,
   ListeningItemDetailDto,
@@ -58,7 +61,10 @@ const AUDIO_BUCKET = process.env.MINIO_BUCKET ?? 'english-learning';
 export class ListeningService {
   private readonly s3: S3Client;
 
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly gamification: GamificationService,
+  ) {
     this.s3 = createS3Client();
   }
 
@@ -183,11 +189,13 @@ export class ListeningService {
 
   /**
    * LIST-07 — POST /api/listening/sessions/complete
-   * Upserts ListeningProgress and creates XpEvent with skillArea LISTENING.
+   * Upserts ListeningProgress and awards CEFR-weighted XP via GamificationService.
+   * Replaces direct prisma.xpEvent.create (which never incremented User.xpTotal).
    *
    * Security (T-06-02): userId from JWT, never from request body.
    * Security (T-06-03): server recomputes accuracy — client accuracy field ignored.
    * Security (T-06-04): attempts.length validated against content._count.questions.
+   * Security (T-07-10): cefrLevel resolved from DB, never from request body.
    */
   async completeSession(
     userId: string,
@@ -229,22 +237,28 @@ export class ListeningService {
       },
     });
 
-    // Create XpEvent with skillArea LISTENING
-    const xpAmount = Math.round(dto.score * 10);
-    await this.prisma.xpEvent.create({
-      data: {
-        userId,
-        amount: xpAmount,
-        reason: 'listening_session',
-        skillArea: 'LISTENING',
-        sourceRef: dto.contentId,
-      },
+    // Award XP via GamificationService (T-07-10: cefrLevel from DB, never from body)
+    // Replaces direct prisma.xpEvent.create — awardXp atomically increments User.xpTotal
+    const user = await this.prisma.user.findUniqueOrThrow({ where: { id: userId } });
+    const xpAmount = calculateXp(XP_RATES.LESSON_COMPLETE, user.cefrLevel ?? 'B1');
+    const xpResult = await this.gamification.awardXp(
+      userId,
+      xpAmount,
+      'listening_session',
+      'LISTENING',
+      dto.contentId,
+    );
+
+    // Check achievements (D-12: synchronous inline after awardXp)
+    await this.gamification.checkAchievements(userId, {
+      type: 'LISTENING',
+      metadata: { contentId: dto.contentId },
     });
 
     return {
       score: dto.score,
       accuracy,
-      xpEarned: xpAmount,
+      xpEarned: xpResult.xpEarned,
       contentId: dto.contentId,
     };
   }

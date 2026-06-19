@@ -1,21 +1,21 @@
 /**
  * SrsService unit tests — Wave 0 RED scaffolds (Plan 03-01)
+ * Updated in Plan 04 to add gamification XP wiring assertions.
  *
  * VOCAB-04: enrollWord — idempotent enroll via upsert
- * VOCAB-05: submitReview — FSRS scheduling via ts-fsrs
+ * VOCAB-05: submitReview — FSRS scheduling via ts-fsrs + gamification.awardXp on Good/Easy
  * VOCAB-06: getDueQueue — due cards ordered by due ASC, max 20
+ * D-10: SRS Good/Easy = 3 flat XP (no CEFR multiplier), Again/Hard = no XP
  *
  * Tests use direct instantiation with a mocked PrismaService (no NestJS DI).
  * ts-fsrs is mocked to avoid real algorithm calls in unit tests.
- *
- * These tests FAIL intentionally — SrsService does not yet exist.
- * Plans 02 and 04 turn these green.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NotFoundException } from '@nestjs/common';
 import { SrsService } from './srs.service';
 import type { PrismaService } from '../prisma/prisma.service';
+import type { GamificationService } from '../gamification/gamification.service';
 
 // ─── Mock ts-fsrs ─────────────────────────────────────────────────────────────
 // Prevents real FSRS algorithm from running in unit tests.
@@ -36,6 +36,36 @@ vi.mock('ts-fsrs', () => ({
   }),
   fsrs: vi.fn().mockReturnValue({
     repeat: vi.fn().mockReturnValue({
+      // Rating.Again = 1
+      1: {
+        card: {
+          due: new Date('2026-06-13T00:00:00Z'),
+          stability: 0.5,
+          difficulty: 7,
+          elapsed_days: 0,
+          scheduled_days: 1,
+          learning_steps: 0,
+          reps: 0,
+          lapses: 1,
+          state: 3, // State.Relearning
+          last_review: new Date('2026-06-12T00:00:00Z'),
+        },
+      },
+      // Rating.Hard = 2
+      2: {
+        card: {
+          due: new Date('2026-06-16T00:00:00Z'),
+          stability: 1.0,
+          difficulty: 6,
+          elapsed_days: 0,
+          scheduled_days: 3,
+          learning_steps: 0,
+          reps: 1,
+          lapses: 0,
+          state: 2, // State.Review
+          last_review: new Date('2026-06-12T00:00:00Z'),
+        },
+      },
       // Rating.Good = 3
       3: {
         card: {
@@ -51,18 +81,18 @@ vi.mock('ts-fsrs', () => ({
           last_review: new Date('2026-06-12T00:00:00Z'),
         },
       },
-      // Rating.Again = 1
-      1: {
+      // Rating.Easy = 4
+      4: {
         card: {
-          due: new Date('2026-06-13T00:00:00Z'),
-          stability: 0.5,
-          difficulty: 7,
+          due: new Date('2026-06-26T00:00:00Z'),
+          stability: 2.5,
+          difficulty: 3,
           elapsed_days: 0,
-          scheduled_days: 1,
+          scheduled_days: 14,
           learning_steps: 0,
-          reps: 0,
-          lapses: 1,
-          state: 3, // State.Relearning
+          reps: 1,
+          lapses: 0,
+          state: 2, // State.Review
           last_review: new Date('2026-06-12T00:00:00Z'),
         },
       },
@@ -83,6 +113,7 @@ const mockFindUnique = vi.fn();
 const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockUpsert = vi.fn();
+const mockUserFindUniqueOrThrow = vi.fn();
 
 const mockPrisma = {
   srsCard: {
@@ -95,7 +126,20 @@ const mockPrisma = {
   userVocabularyItem: {
     upsert: mockUpsert,
   },
+  user: {
+    findUniqueOrThrow: mockUserFindUniqueOrThrow,
+  },
 } as unknown as PrismaService;
+
+// ─── Mock GamificationService ─────────────────────────────────────────────────
+
+const mockAwardXp = vi.fn();
+const mockCheckAchievements = vi.fn();
+
+const mockGamification = {
+  awardXp: mockAwardXp,
+  checkAchievements: mockCheckAchievements,
+} as unknown as GamificationService;
 
 // ─── Sample fixtures ──────────────────────────────────────────────────────────
 
@@ -130,7 +174,11 @@ describe('SrsService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new SrsService(mockPrisma);
+    service = new SrsService(mockPrisma, mockGamification);
+    // Default gamification mocks
+    mockAwardXp.mockResolvedValue({ xpEarned: 3, oldLevel: 1, newLevel: 1, levelUp: false });
+    mockCheckAchievements.mockResolvedValue([]);
+    mockUserFindUniqueOrThrow.mockResolvedValue({ id: 'user-001', cefrLevel: 'B1' });
   });
 
   // ---------------------------------------------------------------------------
@@ -241,6 +289,56 @@ describe('SrsService', () => {
       // State must be a string ('New', 'Learning', 'Review', 'Relearning'), not a number
       expect(typeof stateValue).toBe('string');
       expect(['New', 'Learning', 'Review', 'Relearning']).toContain(stateValue);
+    });
+
+    // ─── Gamification wiring assertions (07-04 RED — D-10) ──────────────────
+
+    it('awards 3 flat XP on Good rating via gamification.awardXp (D-10)', async () => {
+      mockFindFirst.mockResolvedValue(sampleCard);
+      mockUpdate.mockResolvedValue({ ...sampleCard, reps: 1, scheduledDays: 7 });
+
+      await service.submitReview('user-001', 'card-001', 'Good');
+
+      expect(mockAwardXp).toHaveBeenCalledWith(
+        'user-001',
+        3, // XP_RATES.SRS_REVIEW — flat, no CEFR multiplier
+        'srs_review',
+        'VOCABULARY',
+        'card-001',
+      );
+    });
+
+    it('awards 3 flat XP on Easy rating via gamification.awardXp (D-10)', async () => {
+      mockFindFirst.mockResolvedValue(sampleCard);
+      mockUpdate.mockResolvedValue({ ...sampleCard, reps: 1, scheduledDays: 14 });
+
+      await service.submitReview('user-001', 'card-001', 'Easy');
+
+      expect(mockAwardXp).toHaveBeenCalledWith(
+        'user-001',
+        3,
+        'srs_review',
+        'VOCABULARY',
+        'card-001',
+      );
+    });
+
+    it('does NOT award XP on Again rating (D-10)', async () => {
+      mockFindFirst.mockResolvedValue(sampleCard);
+      mockUpdate.mockResolvedValue({ ...sampleCard, lapses: 1, scheduledDays: 1 });
+
+      await service.submitReview('user-001', 'card-001', 'Again');
+
+      expect(mockAwardXp).not.toHaveBeenCalled();
+    });
+
+    it('does NOT award XP on Hard rating (D-10)', async () => {
+      mockFindFirst.mockResolvedValue(sampleCard);
+      mockUpdate.mockResolvedValue({ ...sampleCard, reps: 1, scheduledDays: 3 });
+
+      await service.submitReview('user-001', 'card-001', 'Hard');
+
+      expect(mockAwardXp).not.toHaveBeenCalled();
     });
   });
 
