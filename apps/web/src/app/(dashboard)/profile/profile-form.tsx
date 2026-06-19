@@ -4,6 +4,7 @@
  * Client component that:
  * - Fetches current profile from NestJS GET /api/users/me (with Bearer token from session)
  * - Displays CEFR badge, XP, member-since date
+ * - Displays LevelBadge, XpProgressBar, and AchievementGrid (GAME-02/03/04, 07-06)
  * - Avatar: boring-avatars initials default → Google image → uploaded avatarUrl
  * - Editable name with dirty-gated "Save changes" button
  * - Avatar upload flow: file input → POST upload-url → PUT file → PATCH /users/me
@@ -20,6 +21,9 @@ import Image from "next/image";
 import Avatar from "boring-avatars";
 import { Loader2, Lock, Pencil } from "lucide-react";
 import { CefrBadge } from "@/components/cefr-badge";
+import { LevelBadge } from "@/components/gamification/level-badge";
+import { XpProgressBar } from "@/components/gamification/xp-progress-bar";
+import { AchievementGrid } from "@/components/gamification/achievement-grid";
 import type { Session } from "next-auth";
 import type { UserProfileDto } from "@repo/shared";
 
@@ -42,7 +46,21 @@ function formatXp(xp: number): string {
   return `${xp.toLocaleString("en-US")} XP`;
 }
 
-export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
+// ─── Achievement shape from API ───────────────────────────────────────────────
+
+interface AchievementWithEarnedAt {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  iconUrl: string | null;
+  xpReward: number;
+  earnedAt: string | null; // ISO date string or null
+}
+
+// ─── ProfileForm ──────────────────────────────────────────────────────────────
+
+export function ProfileForm({ session, apiUrl: _apiUrl }: ProfileFormProps) {
   const [profile, setProfile] = useState<UserProfileDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
@@ -52,6 +70,10 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
   const [uploadError, setUploadError] = useState("");
   const [toast, setToast] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Gamification state
+  const [achievements, setAchievements] = useState<AchievementWithEarnedAt[]>([]);
+  const [achievementsLoading, setAchievementsLoading] = useState(true);
 
   // Fetch profile from NestJS via a relay approach
   // We use a Next.js API route to forward the request with the session token
@@ -71,9 +93,24 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
     }
   }, []);
 
+  // Fetch achievements from /api/profile/achievements
+  const fetchAchievements = useCallback(async () => {
+    try {
+      const res = await fetch("/api/profile/achievements");
+      if (!res.ok) throw new Error("Failed to fetch achievements");
+      const data = (await res.json()) as AchievementWithEarnedAt[];
+      setAchievements(data);
+    } catch {
+      setAchievements([]); // empty grid shows "Complete lessons..." empty state
+    } finally {
+      setAchievementsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     void fetchProfile();
-  }, [fetchProfile]);
+    void fetchAchievements();
+  }, [fetchProfile, fetchAchievements]);
 
   const isDirty = name !== savedName;
 
@@ -183,6 +220,8 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
     : profile?.image ?? null;
 
   const displayName = profile?.name ?? session.user.name ?? "User";
+  const currentLevel = profile?.level ?? 1;
+  const currentXpTotal = profile?.xpTotal ?? 0;
 
   if (loading) {
     return (
@@ -199,7 +238,7 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
         <div className="flex flex-col gap-8 md:flex-row">
           {/* ── Avatar column (left, 1/3) ── */}
           <div className="flex flex-col items-center gap-3 md:w-1/3">
-            {/* Avatar display */}
+            {/* Avatar + LevelBadge overlay */}
             <div className="relative">
               {avatarSrc ? (
                 <Image
@@ -236,6 +275,9 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
               </button>
             </div>
 
+            {/* Level badge below avatar — UI-SPEC Screen 5 */}
+            <LevelBadge level={currentLevel} size="md" />
+
             {/* Hidden file input */}
             <input
               ref={fileInputRef}
@@ -271,6 +313,9 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
                 {profile ? formatXp(profile.xpTotal) : "0 XP"}
               </span>
             </div>
+
+            {/* XP Progress bar — UI-SPEC Screen 5 (below CEFR badge) */}
+            <XpProgressBar xpTotal={currentXpTotal} level={currentLevel} />
 
             {/* Member since */}
             <p className="text-[0.875rem] text-muted-foreground">
@@ -336,6 +381,18 @@ export function ProfileForm({ session, apiUrl }: ProfileFormProps) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── Achievements section — UI-SPEC Screen 5 ── */}
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm mt-8">
+        <h2 className="mb-5 text-xl font-semibold text-foreground">Achievements</h2>
+        {achievementsLoading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : (
+          <AchievementGrid achievements={achievements} />
+        )}
       </div>
 
       {/* Toast notification */}

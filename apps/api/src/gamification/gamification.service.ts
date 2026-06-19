@@ -10,7 +10,7 @@
  * Source plan: 07-02.
  */
 
-import { Injectable } from "@nestjs/common";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { differenceInCalendarDays } from "date-fns";
 import {
@@ -20,9 +20,25 @@ import {
 import type { AchievementDto } from "@repo/shared";
 import type { SkillArea } from "@prisma/client";
 
+// ─── DTO for achievements with earned state ────────────────────────────────────
+
+export interface AchievementWithEarnedAtDto extends AchievementDto {
+  earnedAt: Date | null;
+}
+
 @Injectable()
-export class GamificationService {
+export class GamificationService implements OnModuleInit {
   constructor(private readonly prisma: PrismaService) {}
+
+  // ─── OnModuleInit ───────────────────────────────────────────────────────────
+  /**
+   * Seed achievement definitions on every module init (idempotent upsert).
+   * This ensures the 8 Achievement rows exist in the DB before any endpoint runs.
+   * Safe to call multiple times — upsert on slug prevents duplicates (T-07-18).
+   */
+  async onModuleInit(): Promise<void> {
+    await this.seedAchievements();
+  }
 
   // ─── awardXp ───────────────────────────────────────────────────────────────
   /**
@@ -275,5 +291,44 @@ export class GamificationService {
         },
       });
     }
+  }
+
+  // ─── getUserAchievements ───────────────────────────────────────────────────
+  /**
+   * Return all 8 achievement definitions merged with the user's earned state.
+   *
+   * GAME-03/04: Returns all Achievement rows (definition sequence) + UserAchievement.earnedAt.
+   * earnedAt is null when the achievement has not been earned yet (locked state).
+   *
+   * Security (T-07-16): userId is always from JWT — never from client input.
+   * Idempotent: seedAchievements runs on module init so all 8 rows always exist.
+   */
+  async getUserAchievements(userId: string): Promise<AchievementWithEarnedAtDto[]> {
+    // Load all 8 Achievement definitions (ordered by definition sequence via ACHIEVEMENT_DEFINITIONS)
+    const allAchievements = await this.prisma.achievement.findMany({
+      orderBy: { id: 'asc' },
+    });
+
+    // Load the user's earned achievements
+    const userAchievements = await this.prisma.userAchievement.findMany({
+      where: { userId },
+      select: { achievementId: true, earnedAt: true },
+    });
+
+    // Build a map for O(1) lookup
+    const earnedMap = new Map<string, Date>(
+      userAchievements.map((ua) => [ua.achievementId, ua.earnedAt]),
+    );
+
+    // Merge: return all 8 in definition order with earned state
+    return allAchievements.map((achievement) => ({
+      id: achievement.id,
+      slug: achievement.slug,
+      name: achievement.name,
+      description: achievement.description,
+      iconUrl: achievement.iconUrl ?? null,
+      xpReward: achievement.xpReward,
+      earnedAt: earnedMap.get(achievement.id) ?? null,
+    }));
   }
 }
