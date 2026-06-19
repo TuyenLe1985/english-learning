@@ -26,3 +26,6 @@ export * from "./reading.dto";
 
 // Phase 6: Listening DTOs
 export * from "./listening.dto";
+
+// Phase 7: Quiz Center + Gamification DTOs
+export * from "./quiz.dto";
