@@ -1,9 +1,10 @@
 /**
  * ReadingService unit tests — Wave 0 RED scaffolds (Plan 05-01)
+ * Updated in Plan 04 to wire gamification assertions.
  *
  * READ-01: getPassages() returns paginated passage list
  * READ-02: getPassageById() returns passage detail with questions, highlights, note, progress
- * READ-03: completeSession() upserts ReadingProgress with correct userId and passageId
+ * READ-03: completeSession() upserts ReadingProgress + calls gamification.awardXp with skillArea READING
  * READ-04: createHighlight() creates and returns highlight with id
  * READ-04: deleteHighlight() deletes highlight; throws NotFoundException if not found or userId mismatch
  * READ-05: upsertNote() calls prisma.note.upsert with correct userId and passageId
@@ -11,15 +12,13 @@
  *
  * Tests use direct instantiation with a mocked PrismaService (no NestJS DI).
  * Pattern mirrors apps/api/src/grammar/grammar.service.spec.ts.
- *
- * These tests FAIL intentionally — ReadingService does not yet exist.
- * Plans 05-02/05-03 turn these green.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NotFoundException } from '@nestjs/common';
 import { ReadingService } from './reading.service';
 import type { PrismaService } from '../prisma/prisma.service';
+import type { GamificationService } from '../gamification/gamification.service';
 
 // ─── Mock PrismaService ───────────────────────────────────────────────────────
 
@@ -37,6 +36,7 @@ const mockNoteFindFirst = vi.fn();
 const mockBookmarkUpsert = vi.fn();
 const mockBookmarkDelete = vi.fn();
 const mockBookmarkFindUnique = vi.fn();
+const mockUserFindUniqueOrThrow = vi.fn();
 
 const mockPrisma = {
   readingPassage: {
@@ -63,7 +63,20 @@ const mockPrisma = {
     delete: mockBookmarkDelete,
     findUnique: mockBookmarkFindUnique,
   },
+  user: {
+    findUniqueOrThrow: mockUserFindUniqueOrThrow,
+  },
 } as unknown as PrismaService;
+
+// ─── Mock GamificationService ─────────────────────────────────────────────────
+
+const mockAwardXp = vi.fn();
+const mockCheckAchievements = vi.fn();
+
+const mockGamification = {
+  awardXp: mockAwardXp,
+  checkAchievements: mockCheckAchievements,
+} as unknown as GamificationService;
 
 // ─── Sample fixtures ──────────────────────────────────────────────────────────
 
@@ -97,7 +110,11 @@ describe('ReadingService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new ReadingService(mockPrisma);
+    service = new ReadingService(mockPrisma, mockGamification);
+    // Default gamification mocks
+    mockAwardXp.mockResolvedValue({ xpEarned: 30, oldLevel: 1, newLevel: 1, levelUp: false });
+    mockCheckAchievements.mockResolvedValue([]);
+    mockUserFindUniqueOrThrow.mockResolvedValue({ id: 'user-001', cefrLevel: 'B2' });
   });
 
   // ---------------------------------------------------------------------------
@@ -181,6 +198,53 @@ describe('ReadingService', () => {
         expect.objectContaining({
           where: { userId_passageId: { userId: 'user-001', passageId: 'passage-001' } },
         }),
+      );
+    });
+
+    it('calls gamification.awardXp with skillArea READING after session completes', async () => {
+      mockProgressUpsert.mockResolvedValue({
+        id: 'prog-001',
+        score: 4,
+        accuracy: 80,
+        readingTimeSec: 200,
+      });
+
+      await service.completeSession('user-001', {
+        passageId: 'passage-001',
+        score: 4,
+        accuracy: 80,
+        readingTimeSec: 200,
+        attempts: [],
+      });
+
+      expect(mockAwardXp).toHaveBeenCalledWith(
+        'user-001',
+        expect.any(Number),
+        'reading_session',
+        'READING',
+        'passage-001',
+      );
+    });
+
+    it('calls gamification.checkAchievements after awardXp', async () => {
+      mockProgressUpsert.mockResolvedValue({
+        id: 'prog-001',
+        score: 4,
+        accuracy: 80,
+        readingTimeSec: 200,
+      });
+
+      await service.completeSession('user-001', {
+        passageId: 'passage-001',
+        score: 4,
+        accuracy: 80,
+        readingTimeSec: 200,
+        attempts: [],
+      });
+
+      expect(mockCheckAchievements).toHaveBeenCalledWith(
+        'user-001',
+        expect.objectContaining({ type: 'READING' }),
       );
     });
   });
