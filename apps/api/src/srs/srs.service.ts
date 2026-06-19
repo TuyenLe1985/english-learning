@@ -4,6 +4,7 @@
  * VOCAB-04: enrollWord() — upserts UserVocabularyItem + creates SrsCard via ts-fsrs createEmptyCard().
  *           Idempotent: returns existing card on repeat enroll (D-11, Pitfall 5).
  * VOCAB-05: submitReview() — fsrs().repeat() to compute next scheduling; writes next due to DB only (D-02).
+ *           Awards 3 flat XP on Good/Easy via GamificationService (D-10, no CEFR multiplier).
  * VOCAB-06: getDueQueue() — WHERE due <= NOW(), ORDER BY due ASC, LIMIT 20 (D-01, D-04).
  * D-07:     completeSession() — records batch practice result, returns SessionResultDto.
  *
@@ -20,6 +21,8 @@
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { GamificationService } from '../gamification/gamification.service';
+import { XP_RATES } from '../gamification/gamification.constants';
 import { createEmptyCard, fsrs, Rating, State, type Card, type Grade } from 'ts-fsrs';
 import type { SessionCompleteDto, SessionResultDto } from '@repo/shared';
 
@@ -85,7 +88,10 @@ function fsrsCardToDbUpdate(card: Card) {
 
 @Injectable()
 export class SrsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly gamification: GamificationService,
+  ) {}
 
   /**
    * VOCAB-04 — Enroll a word into the user's SRS schedule.
@@ -150,6 +156,7 @@ export class SrsService {
 
   /**
    * VOCAB-05 — Submit a review rating and reschedule via FSRS.
+   * Awards 3 flat XP on Good or Easy ratings (D-10: no CEFR multiplier).
    *
    * Security (T-03-06): findFirst { id: cardId, userId } — user can never
    *   reschedule another user's card.
@@ -174,13 +181,27 @@ export class SrsService {
     const ratingEnum = Rating[rating as keyof typeof Rating] as Grade;
     const nextCard = scheduling[ratingEnum].card;
 
-    return this.prisma.srsCard.update({
+    const updatedCard = await this.prisma.srsCard.update({
       where: { id: cardId },
       data: {
         ...fsrsCardToDbUpdate(nextCard),
         lastReview: now, // always record exact review time
       },
     });
+
+    // D-10: Award 3 flat XP on Good/Easy — no CEFR multiplier
+    // SRS word difficulty is already captured in the FSRS ease factor
+    if (rating === 'Good' || rating === 'Easy') {
+      await this.gamification.awardXp(
+        userId,
+        XP_RATES.SRS_REVIEW,
+        'srs_review',
+        'VOCABULARY',
+        cardId,
+      );
+    }
+
+    return updatedCard;
   }
 
   /**
