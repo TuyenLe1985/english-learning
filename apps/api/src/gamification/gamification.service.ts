@@ -263,7 +263,12 @@ export class GamificationService implements OnModuleInit {
       select: { loggedAt: true },
     });
 
-    // Deduplicate to unique calendar dates (YYYY-MM-DD), sorted descending
+    // Deduplicate to unique calendar dates (YYYY-MM-DD UTC), sorted descending.
+    // WR-05 NOTE: toISOString() always returns the UTC date. For users in timezones
+    // behind UTC (e.g. EST = UTC-5), activity at 11 PM local time is recorded under
+    // the NEXT UTC day. This can cause a streak to appear broken for one calendar day
+    // from the user's perspective. Fixing this requires storing user timezone on the
+    // User model and passing it here. Deferred to v2 — acceptable limitation for v1.
     const days = [
       ...new Set(logs.map((l) => l.loggedAt.toISOString().slice(0, 10))),
     ]
