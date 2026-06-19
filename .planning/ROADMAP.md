@@ -326,7 +326,30 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Global search returns results across vocabulary, grammar, reading, listening, and quizzes in under 300 ms using PostgreSQL GIN full-text index; results show content type, CEFR level, topic tag, and a text snippet; results are filterable by CEFR level, topic, and skill type
   5. Student analytics page shows CEFR progression over time, vocabulary retention rate, total learning time, and weekly activity heatmap; admin dashboard shows active users, retention rate, top content, and user growth chart
 
-**Plans**: TBD
+**Plans**: 7 plans in 5 waves
+
+**Wave 1** *(no dependencies)*
+
+- [ ] 08-01-PLAN.md — Foundation: deps (ioredis/recharts/react-activity-calendar) + shadcn (scroll-area/tabs/tooltip), [BLOCKING] CefrHistory model + GIN index migration, shared DTOs, RED scaffolds, admin seed, module skeletons + RolesGuard registered in app.module (ADPT-01/02/03/05, SRCH-02/03, ANLT-01/02, DASH-01/03)
+
+**Wave 2** *(blocked on 08-01 — parallel, zero file overlap)*
+
+- [ ] 08-02-PLAN.md — AdaptiveModule (skill scoring, dashboard, recommendation, streak, CefrHistory) + wire 5 session-complete endpoints (ADPT-01–05, DASH-01/02/04) [TDD]
+- [ ] 08-03-PLAN.md — SearchModule: GIN FTS UNION ALL across 4 tables, ts_headline snippets, filters, grouping (SRCH-01–04) [TDD]
+- [ ] 08-04-PLAN.md — AnalyticsModule: student + admin analytics, RedisCacheService (5-min TTL), RolesGuard admin gate (ANLT-01/02) [TDD]
+
+**Wave 3** *(blocked on 08-02)*
+
+- [ ] 08-05-PLAN.md — Dashboard UI slice: layout nav (TopNavSearch + role-gated Admin link), dashboard page + 8 components + adaptive relays (DASH-01–04, ADPT-03/05)
+
+**Wave 4** *(blocked on 08-03, 08-04, 08-05)*
+
+- [ ] 08-06-PLAN.md — Search + Analytics UI slices: /search (grouped results, filters, snippets) + /analytics (4 charts + heatmap) + relays (SRCH-01/03/04, ANLT-01)
+
+**Wave 5** *(blocked on 08-04, 08-06)*
+
+- [ ] 08-07-PLAN.md — Admin UI slice (/admin role-gated dashboard) + full-suite verification + human checkpoint on all 5 success criteria (ANLT-02) [has checkpoint]
+
 **UI hint**: yes
 
 ## Progress
@@ -343,4 +366,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 6/7 | In Progress|  |
-| 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
+| 8. Adaptive Engine + Dashboard + Search + Analytics | 0/7 | Planned | - |
