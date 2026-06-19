@@ -68,6 +68,13 @@ export function QuizSession({ sessionId, cefrLevel = "B2" }: QuizSessionProps) {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(Date.now());
 
+  // WR-06: ref-based guard for double-answer prevention.
+  // A React state check (answers.some(...)) is subject to stale closures —
+  // if handleAnswer is called synchronously twice before React commits the first
+  // state update, both calls see the pre-update answers array and both pass the
+  // guard. The ref is mutated synchronously and is always current.
+  const answeredRefsRef = useRef<Set<string>>(new Set());
+
   // Load session data from sessionStorage on mount
   useEffect(() => {
     const stored = sessionStorage.getItem(`quiz-session-${sessionId}`);
@@ -129,11 +136,13 @@ export function QuizSession({ sessionId, cefrLevel = "B2" }: QuizSessionProps) {
   // ─── Answer handler ───────────────────────────────────────────────────────
 
   const handleAnswer = (answer: SessionAnswer) => {
-    // Prevent double-answering (MultipleChoiceExercise fires once after 900ms)
-    if (answers.some((a) => a.questionRef === answer.questionRef)) return;
+    // WR-06: check the ref first (synchronous, always current) to prevent stale-closure
+    // double-answers. A state-based check (answers.some(...)) can miss concurrent calls
+    // that arrive before React commits the first state update.
+    if (answeredRefsRef.current.has(answer.questionRef)) return;
+    answeredRefsRef.current.add(answer.questionRef);
 
-    const newAnswers = [...answers, answer];
-    setAnswers(newAnswers);
+    setAnswers((prev) => [...prev, answer]);
     setWaitingForNext(true);
     setState("ANSWER_LOCKED");
   };
