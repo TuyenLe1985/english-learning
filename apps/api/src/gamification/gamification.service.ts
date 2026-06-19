@@ -59,22 +59,32 @@ export class GamificationService implements OnModuleInit {
     skillArea: SkillArea,
     sourceRef?: string,
   ): Promise<{ xpEarned: number; oldLevel: number; newLevel: number; levelUp: boolean }> {
-    // Read current state — cannot use increment alone for level calc (need boundary detection)
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { id: userId },
-      select: { xpTotal: true, level: true },
-    });
-
-    const oldLevel = user.level;
-    const newXpTotal = user.xpTotal + amount;
-    const newLevel = levelForXp(newXpTotal);
-
     // Determine activityType from reason for streak tracking
     const activityType = reason === "srs_review" ? "SRS_REVIEW" : "LESSON_COMPLETE";
 
-    // Atomic: XpEvent create + User.xpTotal increment + ActivityLog write
-    await this.prisma.$transaction([
-      this.prisma.xpEvent.create({
+    // Interactive transaction: read-compute-write is atomic to prevent concurrent
+    // callers from computing level from a stale pre-transaction xpTotal (CR-01).
+    const { oldLevel, newLevel } = await this.prisma.$transaction(async (tx) => {
+      // Read current state inside the transaction
+      const user = await tx.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: { xpTotal: true, level: true },
+      });
+
+      const txOldLevel = user.level;
+      const newXpTotal = user.xpTotal + amount;
+      const txNewLevel = levelForXp(newXpTotal);
+
+      // Write absolute values (not increment) so level is consistent with xpTotal
+      await tx.user.update({
+        where: { id: userId },
+        data: {
+          xpTotal: newXpTotal,
+          level: txNewLevel,
+        },
+      });
+
+      await tx.xpEvent.create({
         data: {
           userId,
           amount,
@@ -82,22 +92,18 @@ export class GamificationService implements OnModuleInit {
           skillArea,
           sourceRef: sourceRef ?? null,
         },
-      }),
-      this.prisma.user.update({
-        where: { id: userId },
-        data: {
-          xpTotal: { increment: amount },
-          level: newLevel,
-        },
-      }),
-      this.prisma.activityLog.create({
+      });
+
+      await tx.activityLog.create({
         data: {
           userId,
           activityType,
           skillArea,
         },
-      }),
-    ]);
+      });
+
+      return { oldLevel: txOldLevel, newLevel: txNewLevel };
+    });
 
     return { xpEarned: amount, oldLevel, newLevel, levelUp: newLevel > oldLevel };
   }
