@@ -25,35 +25,39 @@ import type { PrismaService } from "../prisma/prisma.service";
 
 // ─── Mock PrismaService ───────────────────────────────────────────────────────
 
-const mockUserFindUniqueOrThrow = vi.fn();
-const mockUserUpdate = vi.fn();
-const mockXpEventCreate = vi.fn();
-const mockActivityLogCreate = vi.fn();
+// Outer-level mocks (used outside transactions)
 const mockActivityLogFindMany = vi.fn();
 const mockAchievementFindUnique = vi.fn();
-const mockUserAchievementUpsert = vi.fn();
-const mockUserAchievementCount = vi.fn();
-const mockTransaction = vi.fn();
+
+// Transaction-level mocks (passed via the interactive tx callback)
+const mockTxUserFindUniqueOrThrow = vi.fn();
+const mockTxUserUpdate = vi.fn();
+const mockTxXpEventCreate = vi.fn();
+const mockTxActivityLogCreate = vi.fn();
+const mockTxUserAchievementFindFirst = vi.fn();
+const mockTxUserAchievementCreate = vi.fn();
+
+const mockTx = {
+  user: {
+    findUniqueOrThrow: mockTxUserFindUniqueOrThrow,
+    update: mockTxUserUpdate,
+  },
+  xpEvent: { create: mockTxXpEventCreate },
+  activityLog: { create: mockTxActivityLogCreate },
+  userAchievement: {
+    findFirst: mockTxUserAchievementFindFirst,
+    create: mockTxUserAchievementCreate,
+  },
+};
+
+// Interactive transaction: execute the callback with mockTx so service logic runs normally
+const mockTransaction = vi.fn((cb: (tx: typeof mockTx) => Promise<unknown>) =>
+  cb(mockTx),
+);
 
 const mockPrisma = {
-  user: {
-    findUniqueOrThrow: mockUserFindUniqueOrThrow,
-    update: mockUserUpdate,
-  },
-  xpEvent: {
-    create: mockXpEventCreate,
-  },
-  activityLog: {
-    create: mockActivityLogCreate,
-    findMany: mockActivityLogFindMany,
-  },
-  achievement: {
-    findUnique: mockAchievementFindUnique,
-  },
-  userAchievement: {
-    upsert: mockUserAchievementUpsert,
-    count: mockUserAchievementCount,
-  },
+  activityLog: { findMany: mockActivityLogFindMany },
+  achievement: { findUnique: mockAchievementFindUnique },
   $transaction: mockTransaction,
 } as unknown as PrismaService;
 
@@ -64,6 +68,8 @@ describe("GamificationService", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    // Re-apply interactive transaction implementation after clearAllMocks resets it
+    mockTransaction.mockImplementation((cb: (tx: typeof mockTx) => Promise<unknown>) => cb(mockTx));
     service = new GamificationService(mockPrisma);
   });
 
@@ -142,9 +148,11 @@ describe("GamificationService", () => {
   // ---------------------------------------------------------------------------
   describe("awardXp()", () => {
     it("creates exactly one XpEvent, updates user xpTotal, writes one activityLog via $transaction — returns { xpEarned, oldLevel, newLevel, levelUp }", async () => {
-      // Arrange: user with xpTotal=0, level=1
-      mockUserFindUniqueOrThrow.mockResolvedValue({ xpTotal: 0, level: 1 });
-      mockTransaction.mockResolvedValue([]);
+      // Arrange: user with xpTotal=0, level=1 — read inside tx (CR-01 interactive transaction)
+      mockTxUserFindUniqueOrThrow.mockResolvedValue({ xpTotal: 0, level: 1 });
+      mockTxUserUpdate.mockResolvedValue({});
+      mockTxXpEventCreate.mockResolvedValue({});
+      mockTxActivityLogCreate.mockResolvedValue({});
 
       // Act
       const result = await service.awardXp(
@@ -154,12 +162,12 @@ describe("GamificationService", () => {
         "GRAMMAR",
       );
 
-      // Assert: transaction called once (atomic)
+      // Assert: transaction called once (atomic interactive transaction)
       expect(mockTransaction).toHaveBeenCalledTimes(1);
-
-      // Assert: transaction called with exactly 3 operations (XpEvent, User update, ActivityLog)
-      const transactionArgs = mockTransaction.mock.calls[0]![0] as unknown[];
-      expect(transactionArgs).toHaveLength(3);
+      // Assert: all three DB writes occurred inside the transaction
+      expect(mockTxUserUpdate).toHaveBeenCalledTimes(1);
+      expect(mockTxXpEventCreate).toHaveBeenCalledTimes(1);
+      expect(mockTxActivityLogCreate).toHaveBeenCalledTimes(1);
 
       // Assert: return shape
       expect(result).toEqual({
@@ -171,9 +179,11 @@ describe("GamificationService", () => {
     });
 
     it("returns levelUp: true when xpTotal crosses 100-boundary (old=98, amount=5 → newXpTotal=103)", async () => {
-      // Arrange: user just below level boundary
-      mockUserFindUniqueOrThrow.mockResolvedValue({ xpTotal: 98, level: 1 });
-      mockTransaction.mockResolvedValue([]);
+      // Arrange: user just below level boundary — read inside tx (CR-01)
+      mockTxUserFindUniqueOrThrow.mockResolvedValue({ xpTotal: 98, level: 1 });
+      mockTxUserUpdate.mockResolvedValue({});
+      mockTxXpEventCreate.mockResolvedValue({});
+      mockTxActivityLogCreate.mockResolvedValue({});
 
       const result = await service.awardXp("user-001", 5, "quiz", "GRAMMAR");
 
@@ -188,21 +198,20 @@ describe("GamificationService", () => {
   // ---------------------------------------------------------------------------
   describe("checkAchievements()", () => {
     it("awards 'first-lesson' achievement on first LESSON_COMPLETE event", async () => {
+      // xpReward=0 to avoid triggering nested awardXp (keeps test focused on achievement detection)
       const mockAchievement = {
         id: "ach-001",
         slug: "first-lesson",
         name: "First Step",
         description: "Complete your first lesson",
         iconUrl: null,
-        xpReward: 10,
+        xpReward: 0,
       };
 
       mockAchievementFindUnique.mockResolvedValue(mockAchievement);
-      // First call: count before=0, after=1 → newly awarded
-      mockUserAchievementCount
-        .mockResolvedValueOnce(0) // before
-        .mockResolvedValueOnce(1); // after
-      mockUserAchievementUpsert.mockResolvedValue({});
+      // Interactive tx: findFirst returns null (not yet awarded) → create succeeds
+      mockTxUserAchievementFindFirst.mockResolvedValue(null);
+      mockTxUserAchievementCreate.mockResolvedValue({ userId: "user-001", achievementId: "ach-001" });
 
       const result = await service.checkAchievements("user-001", {
         type: "LESSON_COMPLETE",
@@ -212,22 +221,19 @@ describe("GamificationService", () => {
       expect(result[0]).toMatchObject({ slug: "first-lesson" });
     });
 
-    it("returns empty array on second call (idempotent via upsert no-op)", async () => {
+    it("returns empty array on second call (idempotent — findFirst returns existing row)", async () => {
       const mockAchievement = {
         id: "ach-001",
         slug: "first-lesson",
         name: "First Step",
         description: "Complete your first lesson",
         iconUrl: null,
-        xpReward: 10,
+        xpReward: 0,
       };
 
       mockAchievementFindUnique.mockResolvedValue(mockAchievement);
-      // Second call: count before=1, after=1 → no new award
-      mockUserAchievementCount
-        .mockResolvedValueOnce(1) // before
-        .mockResolvedValueOnce(1); // after (upsert no-op)
-      mockUserAchievementUpsert.mockResolvedValue({});
+      // Interactive tx: findFirst returns existing row → create is skipped, isNew stays false
+      mockTxUserAchievementFindFirst.mockResolvedValue({ userId: "user-001" });
 
       const result = await service.checkAchievements("user-001", {
         type: "LESSON_COMPLETE",
