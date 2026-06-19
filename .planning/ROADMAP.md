@@ -304,7 +304,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on 07-03, 07-04, 07-05)*
 
-- [ ] 07-06-PLAN.md — Gamification UI: XpToast + LevelUpModal + LevelBadge + mistake-review + results wiring; achievements endpoint + relay; profile additions (XpProgressBar + AchievementGrid) (GAME-02, GAME-03, GAME-04, QUIZ-04)
+- [x] 07-06-PLAN.md — Gamification UI: XpToast + LevelUpModal + LevelBadge + mistake-review + results wiring; achievements endpoint + relay; profile additions (XpProgressBar + AchievementGrid) (GAME-02, GAME-03, GAME-04, QUIZ-04)
 
 **Wave 5** *(blocked on 07-03, 07-04, 07-05, 07-06)*
 
@@ -342,5 +342,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
-| 7. Quiz Center + Gamification | 5/7 | In Progress|  |
+| 7. Quiz Center + Gamification | 6/7 | In Progress|  |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
