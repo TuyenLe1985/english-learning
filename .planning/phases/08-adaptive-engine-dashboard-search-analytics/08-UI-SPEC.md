@@ -45,7 +45,7 @@ Declared values (must be multiples of 4):
 Exceptions:
 - Dashboard hero card: `p-6` (24px) inner padding — wider than default card to give XP bar breathing room
 - Horizontal scroll rows: `gap-4` (16px) between scroll item cards; `pb-4` (16px) scroll gutter
-- Activity heatmap grid cells: `gap-[3px]` (not a full 4px token) — standard GitHub heatmap visual density
+- Activity heatmap grid cells: `gap-[4px]` (equivalent to `gap-1`) — standard heatmap visual density
 - Search input in top nav: `h-9` (36px) height — matches existing top nav button sizing
 - Touch targets on Continue Learning CTA and skill score items: minimum `min-h-[44px]`
 - Admin/student analytics chart containers: `min-h-[200px]` to prevent empty-state layout collapse
@@ -256,7 +256,7 @@ Active filters shown as dismissible `Badge` chips (`variant="secondary"`, `×` d
 - Cell 3: `LearningTimeChart` — Card "Learning Time". Time range `Select` (Daily / Weekly / Monthly) in `CardHeader` right side. Recharts BarChart, Y-axis: minutes.
 - Cell 4: `ActivityHeatmap` — Card "Activity" spanning full width (`col-span-1 md:col-span-2`). 52×7 grid with `Tooltip` on hover per cell.
 
-**Activity heatmap detail:** `react-activity-calendar` or custom CSS grid `grid grid-cols-[repeat(52,1fr)] gap-[3px]`. Each cell: `w-3 h-3 rounded-sm`. Cell color per intensity level (see Color section). Month labels above columns in `text-xs text-muted-foreground`. Day-of-week labels (M/W/F) to the left.
+**Activity heatmap detail:** `react-activity-calendar` or custom CSS grid `grid grid-cols-[repeat(52,1fr)] gap-[4px]`. Each cell: `w-3 h-3 rounded-sm`. Cell color per intensity level (see Color section). Month labels above columns in `text-xs text-muted-foreground`. Day-of-week labels (M/W/F) to the left.
 
 **Empty state — no CEFR history:** "Complete lessons to track your CEFR progression." — `text-sm text-muted-foreground` centered in chart card, replaces chart.
 
@@ -371,7 +371,7 @@ All animations use Framer Motion (already in project from Phase 3+).
 | No results body | "Try adjusting your filters or search with different keywords." |
 | No results CTA | "Clear filters" |
 | Error state | "Search failed. Check your connection and try again." |
-| Error retry CTA | "Try again" |
+| Error retry CTA | "Retry search" |
 | Show more link | "Show {n} more →" |
 | Section header — Vocabulary | "Vocabulary" |
 | Section header — Grammar | "Grammar Lessons" |
