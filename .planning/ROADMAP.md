@@ -274,7 +274,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ### Phase 7: Quiz Center + Gamification
 
-**Goal**: Users can take mixed-skill and topic-based quizzes, review their mistakes, and experience a complete gamification system — complexity-weighted XP, a 1–100 level system with content unlocks, achievement badges, and an XP audit log
+**Goal**: Users can take mixed-skill and topic-based quizzes, review their mistakes, and experience a complete gamification system — complexity-weighted XP, a 1–100 level system (display-only in Phase 7; content unlocks deferred to Phase 8 per D-08), achievement badges, and an XP audit log
 **Mode:** mvp
 **Depends on**: Phase 6
 **Requirements**: QUIZ-01, QUIZ-02, QUIZ-03, QUIZ-04, QUIZ-05, GAME-01, GAME-02, GAME-03, GAME-04, GAME-05
@@ -286,7 +286,30 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. User earns XP after completing any lesson or quiz; harder and higher-CEFR exercises award more XP than easy ones; XP accumulates to a visible level (1–100) displayed on the profile and dashboard
   5. Achievement badges are awarded automatically at defined milestones (first lesson, 100 vocab words, grammar topic mastered, 30-day activity, etc.) and displayed on the profile page with earned date; every XP event is recorded in an audit log
 
-**Plans**: TBD
+**Plans**: 7 plans in 5 waves
+
+**Wave 1** *(no dependencies)*
+
+- [x] 07-01-PLAN.md — Foundation: shared quiz.dto.ts, gamification.constants (XP_RATES/CEFR_MULTIPLIERS/8 ACHIEVEMENT_DEFINITIONS), GamificationModule skeleton + service stub, Wave 0 RED scaffolds (gamification.service.spec, quiz.service.spec) (QUIZ-01–05, GAME-01–05) [TDD]
+
+**Wave 2** *(blocked on 07-01 — parallel)*
+
+- [ ] 07-02-PLAN.md — GamificationService implementation: awardXp (atomic XpEvent + xpTotal increment + level + ActivityLog), checkAchievements (idempotent upsert), streak detection, seedAchievements (GAME-01, GAME-02, GAME-03, GAME-04, GAME-05) [TDD]
+- [ ] 07-03-PLAN.md — QuizModule API: polymorphic $queryRaw RANDOM() selection (grammar/vocab/reading/listening), completeSession (server accuracy + awardXp + checkAchievements), getMistakes, controller + AppModule registration (QUIZ-01, QUIZ-02, QUIZ-03, QUIZ-04, QUIZ-05) [TDD]
+
+**Wave 3** *(blocked on 07-02; 07-05 blocked on 07-01 — parallel)*
+
+- [ ] 07-04-PLAN.md — Wire all 5 modules to GamificationService: grammar/reading/listening/vocabulary/srs session-complete + SRS Good/Easy 3 XP; remove direct xpEvent.create (GAME-01, GAME-02, GAME-03, GAME-04, GAME-05) [TDD]
+- [ ] 07-05-PLAN.md — Frontend quiz slice: /quiz browse + QuizTypeSelector, /quiz/[sessionId] paginated session (QuizSession/QuizQuestion/QuizProgressBar), results score card, 3 relay routes (QUIZ-01, QUIZ-02, QUIZ-03)
+
+**Wave 4** *(blocked on 07-03, 07-04, 07-05)*
+
+- [ ] 07-06-PLAN.md — Gamification UI: XpToast + LevelUpModal + LevelBadge + mistake-review + results wiring; achievements endpoint + relay; profile additions (XpProgressBar + AchievementGrid) (GAME-02, GAME-03, GAME-04, QUIZ-04)
+
+**Wave 5** *(blocked on 07-03, 07-04, 07-05, 07-06)*
+
+- [ ] 07-07-PLAN.md — End-to-end verification: [BLOCKING] prisma db push sync + seed achievements + full suite + human checkpoint on all 5 success criteria (QUIZ-01–05, GAME-01–05) [has checkpoint]
+
 **UI hint**: yes
 
 ### Phase 8: Adaptive Engine + Dashboard + Search + Analytics
@@ -319,5 +342,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
-| 7. Quiz Center + Gamification | 0/TBD | Not started | - |
+| 7. Quiz Center + Gamification | 1/7 | In Progress|  |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
