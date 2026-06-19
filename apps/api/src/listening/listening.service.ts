@@ -219,6 +219,7 @@ export class ListeningService {
     const accuracy = total > 0 ? (correct / total) * 100 : 0;
 
     // Upsert ListeningProgress (compound key: userId_contentId)
+    // WR-04: use server-recomputed `correct` count, not client-supplied dto.score
     await this.prisma.listeningProgress.upsert({
       where: {
         userId_contentId: { userId, contentId: dto.contentId },
@@ -226,12 +227,12 @@ export class ListeningService {
       create: {
         userId,
         contentId: dto.contentId,
-        score: dto.score,
+        score: correct,
         accuracy,
         completedAt: new Date(),
       },
       update: {
-        score: dto.score,
+        score: correct,
         accuracy,
         completedAt: new Date(),
       },
@@ -256,7 +257,7 @@ export class ListeningService {
     });
 
     return {
-      score: dto.score,
+      score: correct, // WR-04: return server-recomputed score, not client-supplied dto.score
       accuracy,
       xpEarned: xpResult.xpEarned,
       contentId: dto.contentId,
