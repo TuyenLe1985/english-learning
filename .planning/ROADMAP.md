@@ -299,7 +299,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on 07-02; 07-05 blocked on 07-01 — parallel)*
 
-- [ ] 07-04-PLAN.md — Wire all 5 modules to GamificationService: grammar/reading/listening/vocabulary/srs session-complete + SRS Good/Easy 3 XP; remove direct xpEvent.create (GAME-01, GAME-02, GAME-03, GAME-04, GAME-05) [TDD]
+- [x] 07-04-PLAN.md — Wire all 5 modules to GamificationService: grammar/reading/listening/vocabulary/srs session-complete + SRS Good/Easy 3 XP; remove direct xpEvent.create (GAME-01, GAME-02, GAME-03, GAME-04, GAME-05) [TDD]
 - [x] 07-05-PLAN.md — Frontend quiz slice: /quiz browse + QuizTypeSelector, /quiz/[sessionId] paginated session (QuizSession/QuizQuestion/QuizProgressBar), results score card, 3 relay routes (QUIZ-01, QUIZ-02, QUIZ-03)
 
 **Wave 4** *(blocked on 07-03, 07-04, 07-05)*
@@ -342,5 +342,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 4. Grammar Module | 6/6 | Complete    | 2026-06-14 |
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
-| 7. Quiz Center + Gamification | 4/7 | In Progress|  |
+| 7. Quiz Center + Gamification | 5/7 | In Progress|  |
 | 8. Adaptive Engine + Dashboard + Search + Analytics | 0/TBD | Not started | - |
