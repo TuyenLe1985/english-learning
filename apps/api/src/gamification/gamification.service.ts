@@ -126,8 +126,10 @@ export class GamificationService implements OnModuleInit {
 
     /**
      * tryAward: attempt to award an achievement by slug.
-     * Uses count-before / upsert / count-after delta to detect new awards.
-     * Returns true if the badge was newly earned this call.
+     * Uses an interactive transaction with findFirst-then-create to detect new awards
+     * without the racy count-before/upsert/count-after pattern (WR-01).
+     * The @@unique constraint prevents duplicate rows even under concurrency;
+     * the transaction makes the detection atomic. If newly awarded, grants xpReward XP.
      */
     const tryAward = async (slug: string): Promise<boolean> => {
       const achievement = await this.prisma.achievement.findUnique({
@@ -135,22 +137,28 @@ export class GamificationService implements OnModuleInit {
       });
       if (!achievement) return false;
 
-      const before = await this.prisma.userAchievement.count({
-        where: { userId, achievementId: achievement.id },
-      });
+      // Atomic detection: findFirst + create inside a transaction.
+      // If another concurrent caller wins the race, the create throws a unique violation
+      // which is caught and treated as "already awarded" (not new).
+      let isNew = false;
+      try {
+        await this.prisma.$transaction(async (tx) => {
+          const existing = await tx.userAchievement.findFirst({
+            where: { userId, achievementId: achievement.id },
+            select: { userId: true },
+          });
+          if (existing) return; // already earned — not new
+          await tx.userAchievement.create({
+            data: { userId, achievementId: achievement.id },
+          });
+          isNew = true;
+        });
+      } catch {
+        // Unique constraint violation from a concurrent winner — treat as already awarded
+        isNew = false;
+      }
 
-      // Always upsert — never create — to avoid double-award race (@@unique constraint)
-      await this.prisma.userAchievement.upsert({
-        where: { userId_achievementId: { userId, achievementId: achievement.id } },
-        create: { userId, achievementId: achievement.id },
-        update: {}, // no-op if already exists
-      });
-
-      const after = await this.prisma.userAchievement.count({
-        where: { userId, achievementId: achievement.id },
-      });
-
-      if (after > before) {
+      if (isNew) {
         newlyAwarded.push({
           id: achievement.id,
           slug,
@@ -159,6 +167,10 @@ export class GamificationService implements OnModuleInit {
           iconUrl: achievement.iconUrl ?? null,
           xpReward: achievement.xpReward,
         });
+        // Grant the achievement's XP reward (was missing before — WR-01)
+        if (achievement.xpReward > 0) {
+          await this.awardXp(userId, achievement.xpReward, `achievement:${slug}`, "MIXED");
+        }
         return true;
       }
       return false;
