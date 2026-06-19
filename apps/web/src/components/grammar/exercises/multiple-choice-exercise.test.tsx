@@ -58,11 +58,12 @@ describe("MultipleChoiceExercise", () => {
     expect(defaultProps.onCorrect).toHaveBeenCalledTimes(1);
   });
 
-  it("calls onIncorrect when an incorrect option is selected", () => {
+  it("calls onIncorrect when an incorrect option is selected, passing the selected option", () => {
     render(<MultipleChoiceExercise {...defaultProps} />);
     fireEvent.click(screen.getByText("is been"));
     act(() => { vi.runAllTimers(); });
     expect(defaultProps.onIncorrect).toHaveBeenCalledTimes(1);
+    expect(defaultProps.onIncorrect).toHaveBeenCalledWith("is been");
   });
 
   it("does not call onCorrect for a wrong answer", () => {

@@ -68,15 +68,14 @@ export function QuizQuestion({
     });
   };
 
-  // MultipleChoiceExercise calls onIncorrect() after 900ms — no userAnswer passed.
-  // We record the answer as incorrect; the exact wrong choice is not surfaced by
-  // the existing exercise component. Mistake review uses correctAnswer + incorrect flag.
-  const handleIncorrect = () => {
+  // MultipleChoiceExercise passes the user's selected option to onIncorrect (CR-05).
+  // This allows MistakeReview to highlight which answer the user actually chose.
+  const handleIncorrect = (selectedOption: string) => {
     onAnswer({
       questionRef: question.questionRef,
       skillArea: question.skillArea,
       isCorrect: false,
-      userAnswer: "",
+      userAnswer: selectedOption,
       correctAnswer: question.answer,
     });
   };

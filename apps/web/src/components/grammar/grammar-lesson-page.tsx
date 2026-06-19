@@ -71,7 +71,8 @@ function renderExercise(
         <MultipleChoiceExercise
           question={question}
           onCorrect={onCorrect}
-          onIncorrect={onIncorrect}
+          // Grammar lesson context does not need the selectedOption — wrap to ignore it
+          onIncorrect={(_selectedOption: string) => onIncorrect()}
         />
       );
     case "FILL_IN_THE_BLANK":

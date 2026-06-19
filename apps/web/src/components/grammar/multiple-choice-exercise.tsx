@@ -18,7 +18,8 @@ interface GrammarQuestion {
 interface Props {
   question: GrammarQuestion;
   onCorrect: () => void;
-  onIncorrect: () => void;
+  /** Called with the user's selected (wrong) option so callers can record it for mistake review (CR-05). */
+  onIncorrect: (selectedOption: string) => void;
 }
 
 export function MultipleChoiceExercise({ question, onCorrect, onIncorrect }: Props) {
@@ -45,7 +46,7 @@ export function MultipleChoiceExercise({ question, onCorrect, onIncorrect }: Pro
     setAnswered(true);
     const correct = option === answer;
     timerRef.current = setTimeout(() => {
-      if (correct) onCorrect(); else onIncorrect();
+      if (correct) onCorrect(); else onIncorrect(option);
     }, 900);
   };
 
