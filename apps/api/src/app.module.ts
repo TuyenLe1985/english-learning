@@ -10,6 +10,8 @@ import { SrsModule } from './srs/srs.module';
 import { GrammarModule } from './grammar/grammar.module';
 import { ListeningModule } from './listening/listening.module';
 import { ReadingModule } from './reading/reading.module';
+import { GamificationModule } from './gamification/gamification.module';
+import { QuizModule } from './quiz/quiz.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { ReadingModule } from './reading/reading.module';
     GrammarModule,
     ListeningModule,
     ReadingModule,
+    GamificationModule,
+    QuizModule,
   ],
   controllers: [],
   providers: [],
