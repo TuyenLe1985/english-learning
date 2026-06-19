@@ -37,7 +37,13 @@ export class GamificationService implements OnModuleInit {
    * Safe to call multiple times — upsert on slug prevents duplicates (T-07-18).
    */
   async onModuleInit(): Promise<void> {
-    await this.seedAchievements();
+    // WR-07: wrap in try/catch so a slow or unavailable DB at boot does not crash
+    // the GamificationModule. Achievements will be seeded on the next startup.
+    try {
+      await this.seedAchievements();
+    } catch (err) {
+      console.error("Achievement seeding failed on module init — will retry on next startup:", err);
+    }
   }
 
   // ─── awardXp ───────────────────────────────────────────────────────────────
@@ -298,22 +304,25 @@ export class GamificationService implements OnModuleInit {
    * Safe to run multiple times — idempotent on `slug`.
    */
   async seedAchievements(): Promise<void> {
-    for (const def of ACHIEVEMENT_DEFINITIONS) {
-      await this.prisma.achievement.upsert({
-        where: { slug: def.slug },
-        create: {
-          slug: def.slug,
-          name: def.name,
-          description: def.description,
-          xpReward: def.xpReward,
-        },
-        update: {
-          name: def.name,
-          description: def.description,
-          xpReward: def.xpReward,
-        },
-      });
-    }
+    // WR-07: run all upserts in parallel instead of sequentially to reduce startup latency
+    await Promise.all(
+      ACHIEVEMENT_DEFINITIONS.map((def) =>
+        this.prisma.achievement.upsert({
+          where: { slug: def.slug },
+          create: {
+            slug: def.slug,
+            name: def.name,
+            description: def.description,
+            xpReward: def.xpReward,
+          },
+          update: {
+            name: def.name,
+            description: def.description,
+            xpReward: def.xpReward,
+          },
+        }),
+      ),
+    );
   }
 
   // ─── getUserAchievements ───────────────────────────────────────────────────
