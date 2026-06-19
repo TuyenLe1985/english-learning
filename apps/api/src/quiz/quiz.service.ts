@@ -560,12 +560,25 @@ export class QuizService {
           );
           const row = rows[0];
           if (row) {
+            // WR-03: use definitions of other words as distractors (not synonyms).
+            // The original quiz shows competing definitions; mistake review must match.
+            const otherDefs = await this.prisma.vocabularyWord.findMany({
+              where: { id: { not: id } },
+              select: { definition: true },
+              take: 3,
+            });
+            // Fall back to synonyms only if fewer than 1 other definition is available
+            const distractors =
+              otherDefs.length >= 1
+                ? otherDefs.map((w) => w.definition)
+                : row.synonyms.slice(0, 3);
+
             result.push({
               questionRef: answer.questionRef,
               skillArea: "VOCABULARY",
               prompt: `What is the meaning of "${row.word}"?`,
               answer: row.definition,
-              distractors: row.synonyms.slice(0, 3),
+              distractors: distractors.slice(0, 3),
               explanation: row.examples[0] ?? null,
             });
           }
