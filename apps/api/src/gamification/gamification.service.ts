@@ -243,7 +243,7 @@ export class GamificationService implements OnModuleInit {
    */
   private async checkStreak(userId: string, streakTarget: number): Promise<boolean> {
     const since = new Date();
-    since.setDate(since.getDate() - (streakTarget + 1));
+    since.setDate(since.getDate() - (streakTarget + 2)); // +2 (not +1) to guarantee boundary day inclusion (CR-02)
 
     const logs = await this.prisma.activityLog.findMany({
       where: { userId, loggedAt: { gte: since } },
