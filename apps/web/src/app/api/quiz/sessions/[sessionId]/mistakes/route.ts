@@ -28,6 +28,11 @@ export async function GET(
 
   const { sessionId } = await params;
 
+  // Defence-in-depth: validate sessionId format before interpolating into internal URL (CR-04)
+  if (!/^[a-zA-Z0-9_-]{1,64}$/.test(sessionId)) {
+    return NextResponse.json({ error: "Invalid session ID" }, { status: 400 });
+  }
+
   const reqHeaders = await headers();
   const cookieHeader = reqHeaders.get("cookie") ?? "";
 
