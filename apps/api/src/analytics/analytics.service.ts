@@ -231,36 +231,42 @@ export class AnalyticsService {
         : 0;
 
     // ── Top Content ────────────────────────────────────────────────────────
-    // Top 10 most-completed reading items
-    const readingProgressRows = (await this.prisma.readingProgress.findMany({
-      where: { completedAt: { not: null } },
-    })) ?? [];
+    // CR-04: Use DB-level groupBy+_count instead of full table scan in process.
+    // WR-07: Batch-fetch passage titles instead of exposing raw passageId cuid.
+    const ninetyDaysAgo = subDays(now, 90);
+    const topPassageGroups = await this.prisma.readingProgress.groupBy({
+      by: ['passageId'],
+      where: { completedAt: { not: null, gte: ninetyDaysAgo } },
+      _count: { passageId: true },
+      orderBy: { _count: { passageId: 'desc' } },
+      take: 10,
+    });
 
-    const completionByPassage = new Map<string, number>();
-    for (const rp of readingProgressRows) {
-      completionByPassage.set(
-        rp.passageId,
-        (completionByPassage.get(rp.passageId) ?? 0) + 1,
-      );
-    }
+    const topPassageIds = topPassageGroups.map((g) => g.passageId);
+    const topPassages = await this.prisma.readingPassage.findMany({
+      where: { id: { in: topPassageIds } },
+      select: { id: true, title: true },
+    });
+    const titleById = new Map(topPassages.map((p) => [p.id, p.title]));
 
-    const topContent = Array.from(completionByPassage.entries())
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([passageId, completions]) => ({
-        title: passageId,
-        module: 'reading',
-        completions,
-      }));
+    const topContent = topPassageGroups.map((g) => ({
+      title: titleById.get(g.passageId) ?? g.passageId,
+      module: 'reading',
+      completions: g._count.passageId,
+    }));
 
     // ── Completion Rate By Module ──────────────────────────────────────────
     // ANLT-02: completed / total per module across 5 modules
-    const allReadingRows = (await this.prisma.readingProgress.findMany()) ?? [];
-    const readingCompleted = readingProgressRows.length;
-    const readingTotal = allReadingRows.length;
+    // CR-04: Use DB-level counts instead of fetching all rows.
+    const thirtyDaysForActivity = subDays(now, 30);
+    const [readingCompleted, readingTotal] = await Promise.all([
+      this.prisma.readingProgress.count({ where: { completedAt: { not: null } } }),
+      this.prisma.readingProgress.count(),
+    ]);
 
-    // For other modules use activityLog as signal
+    // For other modules use activityLog as signal — limit to last 30 days (CR-04)
     const allActivityLogs = (await this.prisma.activityLog.findMany({
+      where: { loggedAt: { gte: thirtyDaysForActivity } },
       select: { activityType: true },
     })) ?? [];
 
