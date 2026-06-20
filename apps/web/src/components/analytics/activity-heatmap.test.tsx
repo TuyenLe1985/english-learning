@@ -17,8 +17,9 @@ import { render, screen } from "@testing-library/react";
 import { ActivityHeatmap } from "./activity-heatmap";
 
 // Mock react-activity-calendar to avoid canvas/SVG issues in jsdom
+// react-activity-calendar v3 uses named export { ActivityCalendar } (not default)
 vi.mock("react-activity-calendar", () => ({
-  default: ({
+  ActivityCalendar: ({
     data,
   }: {
     data: Array<{ date: string; count: number; level: number }>;
