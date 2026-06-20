@@ -110,6 +110,7 @@ model User {
   notes             Note[]
   bookmarks         Bookmark[]
   activityLogs      ActivityLog[]
+  cefrHistory       CefrHistory[]
 
   @@index([cefrLevel])
   @@index([xpTotal])
@@ -587,4 +588,15 @@ model ActivityLog {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, loggedAt])
+}
+
+model CefrHistory {
+  id         String    @id @default(cuid())
+  userId     String
+  cefrLevel  CefrLevel
+  recordedAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, recordedAt])
 }
