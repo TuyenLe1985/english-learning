@@ -752,27 +752,31 @@ Write a `CefrHistory` record when `cefrLevel` changes (in `AdaptiveService` or w
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **CefrHistory write trigger**
    - What we know: `CefrHistory` needs to be populated for the CEFR progression chart.
    - What's unclear: Should it be written (a) on every session complete, (b) only when `cefrLevel` changes, or (c) on a daily snapshot?
    - Recommendation: Write only when `User.cefrLevel` changes — detected by comparing old vs. new in `AdaptiveService`. This minimizes writes and produces a meaningful time series.
+   - **RESOLVED:** Write a CefrHistory entry only on CEFR level change (when `User.cefrLevel` changes from the previous value). Implemented via `recordCefrSnapshotIfChanged(userId, currentLevel)` in AdaptiveService (08-02).
 
 2. **ScrollArea component missing from shadcn/ui installed components**
    - What we know: `apps/web/src/components/ui/` does not contain `scroll-area.tsx`. The UI-SPEC requires it for horizontal scroll rows (D-04).
    - What's unclear: Was it intentionally omitted, or simply not yet added via `npx shadcn@latest add scroll-area`?
    - Recommendation: Wave 0 task must add ScrollArea: `npx shadcn@latest add scroll-area` in `apps/web`.
+   - **RESOLVED:** ScrollArea is installed in 08-01a Task 1 via `pnpm --filter @repo/web dlx shadcn@latest add scroll-area`.
 
 3. **Streak display on dashboard hero**
    - What we know: `User` model has no `streak` field; streak is computed from `ActivityLog`.
    - What's unclear: Should `AdaptiveService.getDashboardData()` compute the streak, or should the API expose a separate endpoint?
    - Recommendation: Add a private `computeCurrentStreak(userId)` helper to `AdaptiveService` mirroring `GamificationService.checkStreak()`. Include result in the dashboard endpoint response.
+   - **RESOLVED:** Streak display uses a `computeCurrentStreak()` private helper in AdaptiveService (08-02), sourced from ActivityLog over the last 365 days, returned in the dashboard endpoint response.
 
 4. **Recently Viewed cross-module scope**
    - What we know: `ReadingProgress.lastViewedAt` exists for reading. Grammar has `GrammarProgress.lastAttemptAt`. Listening has `ListeningProgress.lastViewedAt`.
    - What's unclear: DASH-04 says "recently viewed lessons" — does it cover all 5 modules or just reading?
    - Recommendation: Scope to reading + listening passages in v1 (both have `lastViewedAt`). Grammar/vocab/quiz can be added in a follow-up. Document scope in the plan.
+   - **RESOLVED:** Recently Viewed scope = reading + listening only (`lastViewedAt` exists on ReadingPassage/ReadingProgress + ListeningContent/ListeningProgress); grammar/vocab/quiz excluded in v1.
 
 ---
 
