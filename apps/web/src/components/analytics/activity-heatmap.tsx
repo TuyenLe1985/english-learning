@@ -49,9 +49,6 @@ export function ActivityHeatmap({ activityData }: ActivityHeatmapProps) {
           ],
         }}
         showWeekdayLabels
-        labels={{
-          tooltip: "<strong>{{count}} activities</strong> on {{date}}",
-        }}
       />
     </div>
   );
