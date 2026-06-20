@@ -298,12 +298,13 @@ export class AdaptiveService {
   /**
    * Compute consecutive-day streak from ActivityLog.
    *
-   * Queries last 32 days, deduplicates to calendar dates, counts backward from today
-   * using date-fns differenceInCalendarDays. Mirrors GamificationService.checkStreak.
+   * Queries last 400 days (WR-01: previous 32-day cap truncated long streaks),
+   * deduplicates to calendar dates, counts backward from today using
+   * date-fns differenceInCalendarDays. Mirrors GamificationService.checkStreak.
    */
   private async computeCurrentStreak(userId: string): Promise<number> {
     const since = new Date();
-    since.setDate(since.getDate() - 32);
+    since.setDate(since.getDate() - 400); // WR-01: allow up to ~1 year of streak
 
     const logs = await this.prisma.activityLog.findMany({
       where: { userId, loggedAt: { gte: since } },
