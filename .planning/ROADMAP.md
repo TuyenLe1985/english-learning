@@ -346,7 +346,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on 08-03, 08-04, 08-05)*
 
-- [ ] 08-06-PLAN.md — Search + Analytics UI slices: /search (grouped results, filters, snippets) + /analytics (CEFR progression, vocab retention, learning time, skill breakdown, heatmap) + relays (SRCH-01/03/04, ANLT-01)
+- [x] 08-06-PLAN.md — Search + Analytics UI slices: /search (grouped results, filters, snippets) + /analytics (CEFR progression, vocab retention, learning time, skill breakdown, heatmap) + relays (SRCH-01/03/04, ANLT-01)
 
 **Wave 5** *(blocked on 08-04, 08-06)*
 
@@ -368,4 +368,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 6/7 | In Progress|  |
-| 8. Adaptive Engine + Dashboard + Search + Analytics | 7/9 | In Progress|  |
+| 8. Adaptive Engine + Dashboard + Search + Analytics | 8/9 | In Progress|  |
