@@ -19,13 +19,13 @@ async function main() {
     create: {
       email,
       name,
-      password: hash,
+      passwordHash: hash,
       role: "ADMIN",
       emailVerified: new Date(),
     },
     update: {
       name,
-      password: hash,
+      passwordHash: hash,
       role: "ADMIN",
     },
   });
