@@ -222,6 +222,7 @@ export class ListeningService {
 
     // Upsert ListeningProgress (compound key: userId_contentId)
     // WR-04: use server-recomputed `correct` count, not client-supplied dto.score
+    // WR-08: update lastViewedAt on re-completion so dashboard "recently viewed" stays current
     await this.prisma.listeningProgress.upsert({
       where: {
         userId_contentId: { userId, contentId: dto.contentId },
@@ -237,6 +238,7 @@ export class ListeningService {
         score: correct,
         accuracy,
         completedAt: new Date(),
+        lastViewedAt: new Date(), // WR-08: refresh so dashboard recent-activity sorts correctly
       },
     });
 
