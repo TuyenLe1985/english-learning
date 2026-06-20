@@ -50,30 +50,33 @@ export class AdaptiveService {
     skillArea: SkillArea,
     accuracy: number,
   ): Promise<void> {
-    // Fetch existing score first to compute EMA
-    const existing = await this.prisma.skillScore.findUnique({
-      where: { userId_skillArea: { userId, skillArea } },
-      select: { accuracy: true },
-    });
+    // CR-02: Use a Prisma transaction to make the read-modify-write atomic,
+    // preventing lost updates when concurrent sessions complete simultaneously.
+    await this.prisma.$transaction(async (tx) => {
+      const existing = await tx.skillScore.findUnique({
+        where: { userId_skillArea: { userId, skillArea } },
+        select: { accuracy: true },
+      });
 
-    const newAccuracy = existing
-      ? existing.accuracy * (1 - EMA_ALPHA) + accuracy * EMA_ALPHA
-      : accuracy;
+      const newAccuracy = existing
+        ? existing.accuracy * (1 - EMA_ALPHA) + accuracy * EMA_ALPHA
+        : accuracy;
 
-    const isWeak = newAccuracy < WEAK_THRESHOLD;
+      const isWeak = newAccuracy < WEAK_THRESHOLD;
 
-    await this.prisma.skillScore.upsert({
-      where: { userId_skillArea: { userId, skillArea } },
-      create: {
-        userId,
-        skillArea,
-        accuracy: newAccuracy,
-        isWeak,
-      },
-      update: {
-        accuracy: newAccuracy,
-        isWeak,
-      },
+      await tx.skillScore.upsert({
+        where: { userId_skillArea: { userId, skillArea } },
+        create: {
+          userId,
+          skillArea,
+          accuracy: newAccuracy,
+          isWeak,
+        },
+        update: {
+          accuracy: newAccuracy,
+          isWeak,
+        },
+      });
     });
   }
 
