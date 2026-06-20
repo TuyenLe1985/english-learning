@@ -326,14 +326,15 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Global search returns results across vocabulary, grammar, reading, listening, and quizzes in under 300 ms using PostgreSQL GIN full-text index; results show content type, CEFR level, topic tag, and a text snippet; results are filterable by CEFR level, topic, and skill type
   5. Student analytics page shows CEFR progression over time, vocabulary retention rate, total learning time, and weekly activity heatmap; admin dashboard shows active users, retention rate, top content, and user growth chart
 
-**Plans**: 8 plans in 5 waves
+**Plans**: 9 plans in 5 waves
 
 **Wave 1** *(no dependencies)*
 
 - [ ] 08-01a-PLAN.md — Foundation A: deps (ioredis/recharts/react-activity-calendar) + shadcn (scroll-area/tabs/tooltip), [BLOCKING] CefrHistory model + GIN index migration (ADPT-01, SRCH-02, ANLT-01)
-- [ ] 08-01b-PLAN.md — Foundation B: shared DTOs (incl. ANLT-01 skillBreakdown + ANLT-02 completionRateByModule), RED scaffolds (incl. ADPT-03/04), admin seed, module skeletons + RolesGuard registered in app.module (ADPT-01/02/03/04/05, SRCH-02/03, ANLT-01/02, DASH-01/03)
+- [ ] 08-01b-PLAN.md — Foundation B: module skeletons (Adaptive/Search/Analytics) + RolesGuard + roles.decorator registered in app.module (ADPT-01/02/03/04/05, SRCH-02/03, ANLT-01/02)
+- [ ] 08-01c-PLAN.md — Foundation C: shared DTOs (incl. ANLT-01 skillBreakdown + ANLT-02 completionRateByModule), RED scaffolds (incl. ADPT-03/04), admin seed + db:seed:admin (ADPT-01/02/03/04/05, SRCH-02/03, ANLT-01/02, DASH-01/03)
 
-**Wave 2** *(blocked on 08-01a + 08-01b — parallel, zero file overlap)*
+**Wave 2** *(blocked on 08-01a + 08-01b + 08-01c — parallel, zero file overlap)*
 
 - [ ] 08-02-PLAN.md — AdaptiveModule (skill scoring, dashboard, recommendation, streak, CefrHistory) + wire 5 session-complete endpoints (ADPT-01–05, DASH-01/02/04) [TDD]
 - [ ] 08-03-PLAN.md — SearchModule: GIN FTS UNION ALL across 4 tables, ts_headline snippets, filters, grouping (SRCH-01–04) [TDD]
@@ -341,7 +342,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on 08-02)*
 
-- [ ] 08-05-PLAN.md — Dashboard UI slice: layout nav (TopNavSearch + role-gated Admin link), dashboard page + 8 components + adaptive relays (DASH-01–04, ADPT-03/05)
+- [ ] 08-05-PLAN.md — Dashboard UI slice: layout with Sidebar nav (module links + role-gated Admin link, D-15) + TopNavSearch, dashboard page + 8 components + adaptive relays (DASH-01–04, ADPT-03/05)
 
 **Wave 4** *(blocked on 08-03, 08-04, 08-05)*
 

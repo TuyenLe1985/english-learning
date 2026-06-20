@@ -12,7 +12,6 @@ files_modified:
   - apps/web/src/components/ui/tabs.tsx
   - apps/web/src/components/ui/tooltip.tsx
   - packages/database/prisma/schema.prisma
-  - packages/database/package.json
   - packages/database/prisma/migrations
 autonomous: true
 requirements: [ADPT-01, SRCH-02, ANLT-01]
@@ -126,7 +125,7 @@ NOTE: Shared DTOs are NOT created here — 08-01b owns packages/shared/*.dto.ts.
 
 <task type="auto">
   <name>Task 3: [BLOCKING] Run Prisma migration + GIN index SQL</name>
-  <files>packages/database/package.json, packages/database/prisma/migrations</files>
+  <files>packages/database/prisma/migrations</files>
   <read_first>
     - packages/database/package.json (db:migrate script: `prisma migrate dev --schema ./prisma/schema.prisma`)
     - packages/database/prisma/migrations (existing migration directory structure)
