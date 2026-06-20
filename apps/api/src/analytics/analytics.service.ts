@@ -214,16 +214,22 @@ export class AnalyticsService {
     const mau = (mauRows ?? []).length;
 
     // ── Week-2 Retention Rate ──────────────────────────────────────────────
-    // Users signed up 14-21 days ago vs active in week 2
+    // CR-05: Scope week2Active to users in the day-14–21 cohort only.
+    // Users signed up 14-21 days ago vs active during their second week.
     const week2Start = subDays(now, 21);
     const week2End = subDays(now, 14);
-    const [cohortTotal, week2ActiveRows] = await Promise.all([
-      this.prisma.user.count({ where: { createdAt: { gte: week2Start, lt: week2End } } }),
-      this.prisma.activityLog.groupBy({
-        by: ['userId'] as ['userId'],
-        where: { loggedAt: { gte: week2End, lt: now } },
-      }),
-    ]);
+    const cohortUsers = await this.prisma.user.findMany({
+      where: { createdAt: { gte: week2Start, lt: week2End } },
+      select: { id: true },
+    });
+    const cohortIds = cohortUsers.map((u) => u.id);
+    const cohortTotal = cohortIds.length;
+    const week2ActiveRows = cohortTotal > 0
+      ? await this.prisma.activityLog.groupBy({
+          by: ['userId'] as ['userId'],
+          where: { userId: { in: cohortIds }, loggedAt: { gte: week2End, lt: now } },
+        })
+      : [];
 
     const retentionRate =
       cohortTotal > 0
