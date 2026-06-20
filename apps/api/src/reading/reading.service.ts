@@ -153,23 +153,28 @@ export class ReadingService {
     userId: string,
     dto: ReadingSessionCompleteDto,
   ): Promise<unknown> {
-    const { passageId, score, accuracy, readingTimeSec } = dto;
+    const { passageId, readingTimeSec } = dto;
     const now = new Date();
+
+    // CR-06: Clamp client-supplied values to prevent score inflation.
+    // accuracy must be in [0, 1]; score must be non-negative and at most 100.
+    const clampedAccuracy = Math.min(1, Math.max(0, dto.accuracy ?? 0));
+    const clampedScore = Math.min(100, Math.max(0, dto.score ?? 0));
 
     await this.prisma.readingProgress.upsert({
       where: { userId_passageId: { userId, passageId } },
       create: {
         userId,
         passageId,
-        score,
-        accuracy,
+        score: clampedScore,
+        accuracy: clampedAccuracy,
         readingTimeSec,
         completedAt: now,
         lastViewedAt: now,
       },
       update: {
-        score,
-        accuracy,
+        score: clampedScore,
+        accuracy: clampedAccuracy,
         readingTimeSec,
         completedAt: now,
         lastViewedAt: now,
@@ -188,8 +193,8 @@ export class ReadingService {
     );
 
     // Update adaptive skill score (Phase 8 D-12 inline call-chain, after awardXp)
-    // accuracy is a 0.0–1.0 float from the session DTO
-    await this.adaptive.updateSkillScore(userId, 'READING', accuracy ?? 0);
+    // Use clamped accuracy to prevent adaptive engine manipulation
+    await this.adaptive.updateSkillScore(userId, 'READING', clampedAccuracy);
 
     // Check achievements (D-12: synchronous inline after awardXp)
     const newAchievements = await this.gamification.checkAchievements(userId, {
@@ -199,8 +204,8 @@ export class ReadingService {
 
     return {
       passageId,
-      score,
-      accuracy,
+      score: clampedScore,
+      accuracy: clampedAccuracy,
       readingTimeSec,
       xpEarned: xpResult.xpEarned,
       levelUp: xpResult.levelUp,
