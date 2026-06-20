@@ -17,7 +17,13 @@
  * @returns Sanitized string containing only text and <mark>/<\/mark> tags
  */
 export function sanitizeSnippet(html: string): string {
-  // Strip all HTML tags EXCEPT <mark> and </mark>
-  // The negative lookahead (?!\/?mark...) preserves <mark> and </mark> only
-  return html.replace(/<(?!\/?(?:mark)(?=>|\s.*?>))[^>]*>/gi, "");
+  // 1. Strip all tags that are not <mark> or </mark>
+  //    The negative lookahead preserves <mark ...> and </mark> while removing all others.
+  const noForeignTags = html.replace(
+    /<(?!\/?mark(?=>|\s|$))[^>]*>/gi,
+    "",
+  );
+  // 2. Strip any attributes from surviving <mark ...> tags to prevent XSS
+  //    e.g. <mark onmouseover="..."> → <mark>  (CR-01, CR-07)
+  return noForeignTags.replace(/<mark\s[^>]*>/gi, "<mark>");
 }
