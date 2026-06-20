@@ -20,6 +20,7 @@ import { NotFoundException, BadRequestException } from "@nestjs/common";
 import { QuizService } from "./quiz.service";
 import { XP_RATES } from "../gamification/gamification.constants";
 import type { PrismaService } from "../prisma/prisma.service";
+import type { AdaptiveService } from "../adaptive/adaptive.service";
 
 // ─── Mock PrismaService ───────────────────────────────────────────────────────
 
@@ -44,6 +45,11 @@ const mockGamificationService = {
     }),
   checkAchievements: vi.fn().mockResolvedValue([]),
 };
+
+// Mock AdaptiveService
+const mockAdaptiveService = {
+  updateSkillScore: vi.fn().mockResolvedValue(undefined),
+} as unknown as AdaptiveService;
 
 const mockPrisma = {
   quizSession: {
@@ -107,7 +113,7 @@ describe("QuizService", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new QuizService(mockPrisma, mockGamificationService as any);
+    service = new QuizService(mockPrisma, mockGamificationService as any, mockAdaptiveService);
   });
 
   // ---------------------------------------------------------------------------

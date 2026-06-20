@@ -22,6 +22,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GamificationService } from '../gamification/gamification.service';
+import { AdaptiveService } from '../adaptive/adaptive.service';
 import { XP_RATES } from '../gamification/gamification.constants';
 import { createEmptyCard, fsrs, Rating, State, type Card, type Grade } from 'ts-fsrs';
 import type { SessionCompleteDto, SessionResultDto } from '@repo/shared';
@@ -91,6 +92,7 @@ export class SrsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly gamification: GamificationService,
+    private readonly adaptive: AdaptiveService,
   ) {}
 
   /**
@@ -209,9 +211,12 @@ export class SrsService {
    *
    * No dedicated table in Phase 3 schema. Compute and return SessionResultDto.
    * The enroll flow (Plan 05 UI) will call enrollWord for wrong/uncertain words.
+   *
+   * Phase 8: calls updateSkillScore once per session (not per card) with VOCABULARY
+   * skill area and session recall rate (0.0–1.0). Avoid noisy single-card EMA.
    */
   async completeSession(
-    _userId: string,
+    userId: string,
     dto: SessionCompleteDto,
   ): Promise<SessionResultDto> {
     const total = dto.answers.length;
@@ -219,6 +224,13 @@ export class SrsService {
       .filter((a) => !a.isCorrect)
       .map((a) => a.wordId);
     const score = total - wrongWordIds.length;
+
+    // Update adaptive skill score once per session (Phase 8 D-12, not per card)
+    // recallRate is the session-level accuracy as a 0.0–1.0 float
+    if (total > 0) {
+      const recallRate = score / total;
+      await this.adaptive.updateSkillScore(userId, 'VOCABULARY', recallRate);
+    }
 
     return {
       score,

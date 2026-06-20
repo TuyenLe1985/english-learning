@@ -14,7 +14,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { differenceInCalendarDays } from 'date-fns';
-import type { SkillArea, CefrLevel } from '@prisma/client';
+import type { SkillArea, CefrLevel } from '@repo/database';
 import type { DashboardDto, ContinueLearningDto, SkillScoreDto, ContentItemDto } from '@repo/shared';
 
 // EMA alpha: 0.3 blends new accuracy into history with 30% weight

@@ -15,6 +15,7 @@ import { NotFoundException } from '@nestjs/common';
 import { ListeningService } from './listening.service';
 import type { PrismaService } from '../prisma/prisma.service';
 import type { GamificationService } from '../gamification/gamification.service';
+import type { AdaptiveService } from '../adaptive/adaptive.service';
 
 // ─── Mock PrismaService ───────────────────────────────────────────────────────
 
@@ -50,6 +51,14 @@ const mockGamification = {
   checkAchievements: mockCheckAchievements,
 } as unknown as GamificationService;
 
+// ─── Mock AdaptiveService ─────────────────────────────────────────────────────
+
+const mockUpdateSkillScore = vi.fn().mockResolvedValue(undefined);
+
+const mockAdaptive = {
+  updateSkillScore: mockUpdateSkillScore,
+} as unknown as AdaptiveService;
+
 // ─── Sample fixtures ──────────────────────────────────────────────────────────
 
 const sampleContent = {
@@ -84,7 +93,7 @@ describe('ListeningService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new ListeningService(mockPrisma, mockGamification);
+    service = new ListeningService(mockPrisma, mockGamification, mockAdaptive);
     // Default gamification mocks
     mockAwardXp.mockResolvedValue({ xpEarned: 30, oldLevel: 1, newLevel: 1, levelUp: false });
     mockCheckAchievements.mockResolvedValue([]);

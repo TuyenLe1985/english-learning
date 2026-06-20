@@ -17,6 +17,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GamificationService } from '../gamification/gamification.service';
+import { AdaptiveService } from '../adaptive/adaptive.service';
 import { XP_RATES, calculateXp } from '../gamification/gamification.constants';
 import type {
   GrammarAreaDto,
@@ -35,6 +36,7 @@ export class GrammarService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly gamification: GamificationService,
+    private readonly adaptive: AdaptiveService,
   ) {}
 
   /**
@@ -276,7 +278,11 @@ export class GrammarService {
       lessonId,
     );
 
-    // 7. Check achievements (D-12: synchronous inline after awardXp)
+    // 7a. Update adaptive skill score (Phase 8 D-12 inline call-chain, after awardXp)
+    const grammarAccuracy = totalCount > 0 ? correctCount / totalCount : 0;
+    await this.adaptive.updateSkillScore(userId, 'GRAMMAR', grammarAccuracy);
+
+    // 7b. Check achievements (D-12: synchronous inline after awardXp)
     const newAchievements = await this.gamification.checkAchievements(userId, {
       type: 'LESSON_COMPLETE',
       metadata: { masteryPct: newMasteryPct, skillArea: 'GRAMMAR' },

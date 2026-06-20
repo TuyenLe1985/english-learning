@@ -20,6 +20,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GamificationService } from '../gamification/gamification.service';
+import { AdaptiveService } from '../adaptive/adaptive.service';
 import { XP_RATES, calculateXp } from '../gamification/gamification.constants';
 import type {
   ReadingSessionCompleteDto,
@@ -45,6 +46,7 @@ export class ReadingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly gamification: GamificationService,
+    private readonly adaptive: AdaptiveService,
   ) {}
 
   /**
@@ -184,6 +186,10 @@ export class ReadingService {
       'READING',
       passageId,
     );
+
+    // Update adaptive skill score (Phase 8 D-12 inline call-chain, after awardXp)
+    // accuracy is a 0.0–1.0 float from the session DTO
+    await this.adaptive.updateSkillScore(userId, 'READING', accuracy ?? 0);
 
     // Check achievements (D-12: synchronous inline after awardXp)
     const newAchievements = await this.gamification.checkAchievements(userId, {
