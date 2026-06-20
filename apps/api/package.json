@@ -34,6 +34,7 @@
     "class-validator": "^0.15.1",
     "date-fns": "^3.6.0",
     "dom-anchor-text-position": "^5.0.0",
+    "ioredis": "^5.11.1",
     "isomorphic-dompurify": "^3.17.0",
     "natural": "^8.1.1",
     "passport-jwt": "^4.0.1",
