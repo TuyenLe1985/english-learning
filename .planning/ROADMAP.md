@@ -330,9 +330,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 1** *(no dependencies)*
 
-- [ ] 08-01a-PLAN.md — Foundation A: deps (ioredis/recharts/react-activity-calendar) + shadcn (scroll-area/tabs/tooltip), [BLOCKING] CefrHistory model + GIN index migration (ADPT-01, SRCH-02, ANLT-01)
-- [ ] 08-01b-PLAN.md — Foundation B: module skeletons (Adaptive/Search/Analytics) + RolesGuard + roles.decorator registered in app.module (ADPT-01/02/03/04/05, SRCH-02/03, ANLT-01/02)
-- [ ] 08-01c-PLAN.md — Foundation C: shared DTOs (incl. ANLT-01 skillBreakdown + ANLT-02 completionRateByModule), RED scaffolds (incl. ADPT-03/04), admin seed + db:seed:admin (ADPT-01/02/03/04/05, SRCH-02/03, ANLT-01/02, DASH-01/03)
+- [x] 08-01a-PLAN.md — Foundation A: deps (ioredis/recharts/react-activity-calendar) + shadcn (scroll-area/tabs/tooltip), [BLOCKING] CefrHistory model + GIN index migration (ADPT-01, SRCH-02, ANLT-01)
+- [x] 08-01b-PLAN.md — Foundation B: module skeletons (Adaptive/Search/Analytics) + RolesGuard + roles.decorator registered in app.module (ADPT-01/02/03/04/05, SRCH-02/03, ANLT-01/02)
+- [x] 08-01c-PLAN.md — Foundation C: shared DTOs (incl. ANLT-01 skillBreakdown + ANLT-02 completionRateByModule), RED scaffolds (incl. ADPT-03/04), admin seed + db:seed:admin (ADPT-01/02/03/04/05, SRCH-02/03, ANLT-01/02, DASH-01/03)
 
 **Wave 2** *(blocked on 08-01a + 08-01b + 08-01c — parallel, zero file overlap)*
 
@@ -368,4 +368,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 6/7 | In Progress|  |
-| 8. Adaptive Engine + Dashboard + Search + Analytics | 0/7 | Planned | - |
+| 8. Adaptive Engine + Dashboard + Search + Analytics | 3/9 | In Progress|  |
