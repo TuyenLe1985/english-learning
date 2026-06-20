@@ -13,7 +13,6 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -62,16 +61,18 @@ export function PassageScoreCard({ score, total, readingTimeSec }: Props) {
 
           {/* CTA buttons */}
           <div className="flex w-full flex-col gap-3">
-            <Button asChild className="min-h-[44px] w-full">
-              <Link href="/reading">Try another passage</Link>
-            </Button>
-            <Button
-              variant="outline"
-              asChild
-              className="min-h-[44px] w-full"
+            <Link
+              href="/reading"
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/80 transition-colors"
             >
-              <Link href="/reading">Browse all passages</Link>
-            </Button>
+              Try another passage
+            </Link>
+            <Link
+              href="/reading"
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border border-border bg-background px-4 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            >
+              Browse all passages
+            </Link>
           </div>
         </CardContent>
       </Card>
