@@ -62,7 +62,7 @@ export function ActivityBarChart({ data }: ActivityBarChartProps) {
                   borderRadius: "6px",
                   fontSize: "12px",
                 }}
-                formatter={(value: number) => [value, "Exercises"]}
+                formatter={(value) => [Number(value), "Exercises"]}
               />
               <Bar
                 dataKey="count"

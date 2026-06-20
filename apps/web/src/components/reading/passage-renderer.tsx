@@ -44,7 +44,7 @@ interface Props {
  * DOMPurify config — tight whitelist matching the CEFR content format.
  * No script, style, iframe, object, embed, form elements allowed (T-05-07-01).
  */
-const DOMPURIFY_CONFIG: DOMPurify.Config = {
+const DOMPURIFY_CONFIG: { ALLOWED_TAGS?: string[]; ALLOWED_ATTR?: string[] } = {
   ALLOWED_TAGS: ["p", "b", "i", "strong", "em", "br", "ul", "ol", "li", "blockquote"],
   ALLOWED_ATTR: [],
 };

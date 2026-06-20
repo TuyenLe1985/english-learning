@@ -69,7 +69,7 @@ export function SkillRadarChart({ skillScores }: SkillRadarChartProps) {
                 fillOpacity={0.2}
               />
               <Tooltip
-                formatter={(value: number) => [`${value}%`, "Accuracy"]}
+                formatter={(value) => [`${Number(value)}%`, "Accuracy"]}
               />
             </RadarChart>
           </ResponsiveContainer>
