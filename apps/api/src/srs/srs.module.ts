@@ -15,9 +15,10 @@ import { SessionController } from './session.controller';
 import { SrsService } from './srs.service';
 import { AuthModule } from '../auth/auth.module';
 import { GamificationModule } from '../gamification/gamification.module';
+import { AdaptiveModule } from '../adaptive/adaptive.module';
 
 @Module({
-  imports: [AuthModule, GamificationModule],
+  imports: [AuthModule, GamificationModule, AdaptiveModule],
   controllers: [SrsController, SessionController],
   providers: [SrsService],
   exports: [SrsService],

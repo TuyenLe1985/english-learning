@@ -23,6 +23,7 @@ import {
 import { Prisma } from "@repo/database";
 import { PrismaService } from "../prisma/prisma.service";
 import { GamificationService } from "../gamification/gamification.service";
+import { AdaptiveService } from "../adaptive/adaptive.service";
 import { XP_RATES, calculateXp } from "../gamification/gamification.constants";
 import type {
   QuizStartDto,
@@ -113,6 +114,7 @@ export class QuizService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly gamification: GamificationService,
+    private readonly adaptive: AdaptiveService,
   ) {}
 
   // ─── startSession ───────────────────────────────────────────────────────────
@@ -419,6 +421,11 @@ export class QuizService {
       "MIXED",
       sessionId,
     );
+
+    // Update adaptive skill score (Phase 8 D-12 inline call-chain, after awardXp)
+    // accuracy variable above is percentage (0–100); normalize to 0.0–1.0
+    const quizAccuracyNorm = total > 0 ? correct / total : 0;
+    await this.adaptive.updateSkillScore(userId, "MIXED", quizAccuracyNorm);
 
     // Check achievements
     const newAchievements = await this.gamification.checkAchievements(userId, {

@@ -11,9 +11,10 @@ import { ReadingController } from './reading.controller';
 import { ReadingService } from './reading.service';
 import { AuthModule } from '../auth/auth.module';
 import { GamificationModule } from '../gamification/gamification.module';
+import { AdaptiveModule } from '../adaptive/adaptive.module';
 
 @Module({
-  imports: [AuthModule, GamificationModule],
+  imports: [AuthModule, GamificationModule, AdaptiveModule],
   controllers: [ReadingController],
   providers: [ReadingService],
   exports: [ReadingService],

@@ -11,9 +11,10 @@ import { GrammarController } from './grammar.controller';
 import { GrammarService } from './grammar.service';
 import { AuthModule } from '../auth/auth.module';
 import { GamificationModule } from '../gamification/gamification.module';
+import { AdaptiveModule } from '../adaptive/adaptive.module';
 
 @Module({
-  imports: [AuthModule, GamificationModule],
+  imports: [AuthModule, GamificationModule, AdaptiveModule],
   controllers: [GrammarController],
   providers: [GrammarService],
   exports: [GrammarService],

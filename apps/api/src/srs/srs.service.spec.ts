@@ -16,6 +16,7 @@ import { NotFoundException } from '@nestjs/common';
 import { SrsService } from './srs.service';
 import type { PrismaService } from '../prisma/prisma.service';
 import type { GamificationService } from '../gamification/gamification.service';
+import type { AdaptiveService } from '../adaptive/adaptive.service';
 
 // ─── Mock ts-fsrs ─────────────────────────────────────────────────────────────
 // Prevents real FSRS algorithm from running in unit tests.
@@ -141,6 +142,14 @@ const mockGamification = {
   checkAchievements: mockCheckAchievements,
 } as unknown as GamificationService;
 
+// ─── Mock AdaptiveService ─────────────────────────────────────────────────────
+
+const mockUpdateSkillScore = vi.fn().mockResolvedValue(undefined);
+
+const mockAdaptive = {
+  updateSkillScore: mockUpdateSkillScore,
+} as unknown as AdaptiveService;
+
 // ─── Sample fixtures ──────────────────────────────────────────────────────────
 
 const sampleCard = {
@@ -174,7 +183,7 @@ describe('SrsService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new SrsService(mockPrisma, mockGamification);
+    service = new SrsService(mockPrisma, mockGamification, mockAdaptive);
     // Default gamification mocks
     mockAwardXp.mockResolvedValue({ xpEarned: 3, oldLevel: 1, newLevel: 1, levelUp: false });
     mockCheckAchievements.mockResolvedValue([]);

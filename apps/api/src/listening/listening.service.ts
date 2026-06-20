@@ -18,6 +18,7 @@ import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { PrismaService } from '../prisma/prisma.service';
 import { GamificationService } from '../gamification/gamification.service';
+import { AdaptiveService } from '../adaptive/adaptive.service';
 import { XP_RATES, calculateXp } from '../gamification/gamification.constants';
 import type {
   ListeningItemDto,
@@ -64,6 +65,7 @@ export class ListeningService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly gamification: GamificationService,
+    private readonly adaptive: AdaptiveService,
   ) {
     this.s3 = createS3Client();
   }
@@ -249,6 +251,11 @@ export class ListeningService {
       'LISTENING',
       dto.contentId,
     );
+
+    // Update adaptive skill score (Phase 8 D-12 inline call-chain, after awardXp)
+    // accuracy here is a percentage (0–100); convert to 0.0–1.0 for updateSkillScore
+    const listeningAccuracyNorm = total > 0 ? correct / total : 0;
+    await this.adaptive.updateSkillScore(userId, 'LISTENING', listeningAccuracyNorm);
 
     // Check achievements (D-12: synchronous inline after awardXp)
     await this.gamification.checkAchievements(userId, {

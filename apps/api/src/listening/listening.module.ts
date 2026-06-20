@@ -11,9 +11,10 @@ import { ListeningController } from './listening.controller';
 import { ListeningService } from './listening.service';
 import { AuthModule } from '../auth/auth.module';
 import { GamificationModule } from '../gamification/gamification.module';
+import { AdaptiveModule } from '../adaptive/adaptive.module';
 
 @Module({
-  imports: [AuthModule, GamificationModule],
+  imports: [AuthModule, GamificationModule, AdaptiveModule],
   controllers: [ListeningController],
   providers: [ListeningService],
   exports: [ListeningService],
