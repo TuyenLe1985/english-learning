@@ -336,7 +336,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 2** *(blocked on 08-01a + 08-01b + 08-01c — parallel, zero file overlap)*
 
-- [ ] 08-02-PLAN.md — AdaptiveModule (skill scoring, dashboard, recommendation, streak, CefrHistory) + wire 5 session-complete endpoints (ADPT-01–05, DASH-01/02/04) [TDD]
+- [x] 08-02-PLAN.md — AdaptiveModule (skill scoring, dashboard, recommendation, streak, CefrHistory) + wire 5 session-complete endpoints (ADPT-01–05, DASH-01/02/04) [TDD]
 - [x] 08-03-PLAN.md — SearchModule: GIN FTS UNION ALL across 4 tables, ts_headline snippets, filters, grouping (SRCH-01–04) [TDD]
 - [x] 08-04-PLAN.md — AnalyticsModule: student + admin analytics, RedisCacheService (5-min TTL), RolesGuard admin gate (ANLT-01/02) [TDD]
 
@@ -368,4 +368,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 6/7 | In Progress|  |
-| 8. Adaptive Engine + Dashboard + Search + Analytics | 5/9 | In Progress|  |
+| 8. Adaptive Engine + Dashboard + Search + Analytics | 6/9 | In Progress|  |
