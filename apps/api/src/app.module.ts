@@ -12,6 +12,9 @@ import { ListeningModule } from './listening/listening.module';
 import { ReadingModule } from './reading/reading.module';
 import { GamificationModule } from './gamification/gamification.module';
 import { QuizModule } from './quiz/quiz.module';
+import { AdaptiveModule } from './adaptive/adaptive.module';
+import { SearchModule } from './search/search.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -31,6 +34,9 @@ import { QuizModule } from './quiz/quiz.module';
     ReadingModule,
     GamificationModule,
     QuizModule,
+    AdaptiveModule,
+    SearchModule,
+    AnalyticsModule,
   ],
   controllers: [],
   providers: [],
