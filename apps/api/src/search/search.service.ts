@@ -3,12 +3,16 @@
 // GIN indexes created in Plan 08-01a; SearchModule registered in app.module.ts (08-01b).
 // Quiz content excluded per locked D-11 (compound session content, not indexable).
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from '../prisma/prisma.service';
 import type { SearchResultDto, SearchFilters } from './search.dto';
 
 const CONTENT_TYPES = ['vocabulary', 'grammar', 'reading', 'listening'] as const;
+
+// WR-04: Valid filter values — prevent enum crash and confusing empty results
+const VALID_LEVELS = new Set(['B1', 'B2', 'C1']);
+const VALID_SKILLS = new Set(['vocabulary', 'grammar', 'reading', 'listening']);
 
 @Injectable()
 export class SearchService {
@@ -17,6 +21,15 @@ export class SearchService {
   async search(q: string, filters: SearchFilters): Promise<SearchResultDto[]> {
     const trimmed = q.trim();
     if (!trimmed) return [];
+
+    // WR-04: Validate filter values before constructing SQL to prevent
+    // PostgreSQL enum errors (invalid CefrLevel) and confusing empty results.
+    if (filters.level && !VALID_LEVELS.has(filters.level)) {
+      throw new BadRequestException(`Invalid level filter: ${filters.level}. Must be one of B1, B2, C1.`);
+    }
+    if (filters.skill && !VALID_SKILLS.has(filters.skill)) {
+      throw new BadRequestException(`Invalid skill filter: ${filters.skill}. Must be one of vocabulary, grammar, reading, listening.`);
+    }
 
     // Build per-branch SQL fragments. Skill filter limits to a single branch.
     const { level, topic, skill } = filters;
