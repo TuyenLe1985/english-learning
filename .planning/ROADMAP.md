@@ -342,7 +342,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on 08-02)*
 
-- [ ] 08-05-PLAN.md — Dashboard UI slice: layout with Sidebar nav (module links + role-gated Admin link, D-15) + TopNavSearch, dashboard page + 8 components + adaptive relays (DASH-01–04, ADPT-03/05)
+- [x] 08-05-PLAN.md — Dashboard UI slice: layout with Sidebar nav (module links + role-gated Admin link, D-15) + TopNavSearch, dashboard page + 8 components + adaptive relays (DASH-01–04, ADPT-03/05)
 
 **Wave 4** *(blocked on 08-03, 08-04, 08-05)*
 
@@ -368,4 +368,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. Reading Comprehension + Content Pipeline | 8/9 | In Progress|  |
 | 6. Listening Comprehension | 6/7 | In Progress|  |
 | 7. Quiz Center + Gamification | 6/7 | In Progress|  |
-| 8. Adaptive Engine + Dashboard + Search + Analytics | 6/9 | In Progress|  |
+| 8. Adaptive Engine + Dashboard + Search + Analytics | 7/9 | In Progress|  |
