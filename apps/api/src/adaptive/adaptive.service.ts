@@ -167,8 +167,11 @@ export class AdaptiveService {
     // Compute current streak
     const streak = await this.computeCurrentStreak(userId);
 
+    // CR-03: Guard against null cefrLevel (e.g. legacy rows before NOT NULL constraint)
+    const cefrLevel = user.cefrLevel ?? 'B1';
+
     // Record CEFR snapshot if level changed (Pitfall 9)
-    await this.recordCefrSnapshotIfChanged(userId, user.cefrLevel);
+    await this.recordCefrSnapshotIfChanged(userId, cefrLevel);
 
     // Skill scores for radar chart
     const skillScoreRows = await this.prisma.skillScore.findMany({
@@ -192,7 +195,7 @@ export class AdaptiveService {
     const lessonsCompleted = readingCount + listeningCount + grammarCount + quizCount;
 
     // Recommendation — pass cefrLevel so next-tier logic works without an extra query
-    const recommendation = await this.getContinueLearningRecommendation(userId, user.cefrLevel);
+    const recommendation = await this.getContinueLearningRecommendation(userId, cefrLevel);
 
     // Recently viewed: reading + listening sorted by lastViewedAt desc, last RECENT_LIMIT combined
     const [recentReading, recentListening] = await Promise.all([
@@ -279,7 +282,7 @@ export class AdaptiveService {
         name: user.name ?? '',
         xpTotal: user.xpTotal,
         level: user.level,
-        cefrLevel: user.cefrLevel,
+        cefrLevel: cefrLevel,
         streak,
       },
       skillScores,
