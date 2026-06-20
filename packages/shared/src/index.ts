@@ -29,3 +29,8 @@ export * from "./listening.dto";
 
 // Phase 7: Quiz Center + Gamification DTOs
 export * from "./quiz.dto";
+
+// Phase 8: Adaptive Engine + Dashboard + Search + Analytics DTOs
+export * from "./adaptive.dto";
+export * from "./search.dto";
+export * from "./analytics.dto";
