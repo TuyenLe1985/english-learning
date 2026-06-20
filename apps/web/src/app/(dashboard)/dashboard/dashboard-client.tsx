@@ -33,18 +33,19 @@ async function fetchDashboardData(): Promise<DashboardDto> {
   return res.json() as Promise<DashboardDto>;
 }
 
-// Generate last 7 days of activity data from dashboard stats
-// (In production this would come from a dedicated activity endpoint)
-function buildActivityData(lessonsCompleted: number) {
+// Generate last 7 days of activity labels with real zero counts.
+// WR-02: The previous implementation fabricated a non-zero count for today
+// (Math.round(lessonsCompleted / days)) which was incorrect — lessonsCompleted
+// is a cumulative total, not today's activity. Until a dedicated per-day activity
+// endpoint exists, we show real zeros rather than misleading fabricated data.
+function buildActivityData() {
   const days = 7;
   const today = new Date();
   return Array.from({ length: days }, (_, i) => {
     const date = new Date(today);
     date.setDate(today.getDate() - (days - 1 - i));
     const label = date.toLocaleDateString("en-US", { weekday: "short" });
-    // Distribute lessons across days (simplified for Phase 8)
-    const count = i === days - 1 ? Math.max(1, Math.round(lessonsCompleted / days)) : 0;
-    return { date: label, count };
+    return { date: label, count: 0 };
   });
 }
 
@@ -117,7 +118,7 @@ export function DashboardClient() {
     );
   }
 
-  const activityData = buildActivityData(data.lessonsCompleted);
+  const activityData = buildActivityData();
   const recommendation = data.recommendation ?? DEFAULT_RECOMMENDATION;
 
   return (
